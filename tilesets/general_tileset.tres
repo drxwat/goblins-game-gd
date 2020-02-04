@@ -1,9 +1,11 @@
-[gd_resource type="TileSet" load_steps=5 format=2]
+[gd_resource type="TileSet" load_steps=7 format=2]
 
 [ext_resource path="res://tile_textures/grass-1.png" type="Texture" id=1]
 [ext_resource path="res://tile_textures/big-tree-dark.png" type="Texture" id=2]
 [ext_resource path="res://tile_textures/big-tree-light.png" type="Texture" id=3]
 [ext_resource path="res://tile_textures/big-tree-yello.png" type="Texture" id=4]
+[ext_resource path="res://tile_textures/bush-2.png" type="Texture" id=5]
+[ext_resource path="res://tile_textures/bush-1.png" type="Texture" id=6]
 
 [resource]
 0/name = "grass-1.png 0"
@@ -46,3 +48,23 @@
 3/navigation_offset = Vector2( 0, 0 )
 3/shapes = [  ]
 3/z_index = 0
+4/name = "bush-1.png 4"
+4/texture = ExtResource( 6 )
+4/tex_offset = Vector2( 0, -192 )
+4/modulate = Color( 1, 1, 1, 1 )
+4/region = Rect2( 0, 0, 256, 512 )
+4/tile_mode = 0
+4/occluder_offset = Vector2( 0, 0 )
+4/navigation_offset = Vector2( 0, 0 )
+4/shapes = [  ]
+4/z_index = 0
+5/name = "bush-2.png 5"
+5/texture = ExtResource( 5 )
+5/tex_offset = Vector2( 0, -192 )
+5/modulate = Color( 1, 1, 1, 1 )
+5/region = Rect2( 0, 0, 256, 512 )
+5/tile_mode = 0
+5/occluder_offset = Vector2( 0, 0 )
+5/navigation_offset = Vector2( 0, 0 )
+5/shapes = [  ]
+5/z_index = 0
