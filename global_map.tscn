@@ -2,10 +2,10 @@
 
 [ext_resource path="res://tilesets/general_tileset.tres" type="TileSet" id=1]
 [ext_resource path="res://tilesets/road_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://TileMap.gd" type="Script" id=3]
+[ext_resource path="res://scripts/tile_map.gd" type="Script" id=3]
 [ext_resource path="res://icon.png" type="Texture" id=4]
-[ext_resource path="res://global_map.gd" type="Script" id=5]
-[ext_resource path="res://Unit.gd" type="Script" id=6]
+[ext_resource path="res://scripts/global_map.gd" type="Script" id=5]
+[ext_resource path="res://scripts/unit.gd" type="Script" id=6]
 [ext_resource path="res://tilesets/decorations_s.tres" type="TileSet" id=7]
 [ext_resource path="res://tilesets/decorations_w.tres" type="TileSet" id=8]
 [ext_resource path="res://tilesets/decorations_e.tres" type="TileSet" id=9]
@@ -91,16 +91,18 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Unit" type="Node2D" parent="."]
+[node name="Line2D" type="Line2D" parent="."]
+width = 5.0
+
+[node name="Player" type="Node2D" parent="."]
 position = Vector2( 550.13, 2118.52 )
 script = ExtResource( 6 )
 
-[node name="Sprite" type="Sprite" parent="Unit"]
+[node name="Sprite" type="Sprite" parent="Player"]
 texture = ExtResource( 4 )
 
-[node name="Camera2D" type="Camera2D" parent="Unit"]
+[node name="Camera2D" type="Camera2D" parent="Player"]
 current = true
 zoom = Vector2( 2, 2 )
 
-[node name="Line2D" type="Line2D" parent="."]
-width = 5.0
+[node name="Units" type="Node2D" parent="."]
