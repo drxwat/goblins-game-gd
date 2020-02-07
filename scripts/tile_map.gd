@@ -15,6 +15,7 @@ onready var tm_ground: TileMap = get_node("Ground")
 onready var tm_road: TileMap = get_node("Road")
 onready var tm_forest: TileMap = get_node("Forest")
 
+
 func _ready():
 	_init_terrain_grid()
 	_change_cells_weights(tm_road, WeightScales.ROAD)
@@ -52,6 +53,7 @@ func _init_terrain_grid() -> void:
 		var cell = tm_ground.map_to_world(ground_cells[i]) + TILE_ADJ
 		_ground_cells_indexes[cell] = i
 		astar.add_point(i, cell, WeightScales.GRASS)
+
 
 	# Connecting neighbouring points
 	for cell in ground_cells:

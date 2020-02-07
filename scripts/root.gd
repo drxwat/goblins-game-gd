@@ -6,20 +6,22 @@ onready var tile_map: TileMap = get_node("TileMap")
 onready var line: Line2D = get_node("Line2D")
 onready var units_parent = get_node("Units");
 
-onready var unit := load(Constants.UNIT_SCENE_PATH)
+onready var unit_class := load(Constants.UNIT_SCENE_PATH)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var new_unit: Node2D = unit.instance()
-	units_parent.add_child(new_unit)
-	new_unit.position = Vector2(0, 0)
+	var enemy: Node2D = unit_class.instance()
+	units_parent.add_child(enemy)
+	enemy.position = Vector2(500, 2000)
+	enemy.base_speed = enemy.base_speed / 1.5
 	set_process(true)
-	
+
 
 func _process(delta):
 	if (units_parent.get_child_count() > 0):
 		for enemy in units_parent.get_children():
 			move_unit_to(enemy, player.global_position)
+
 
 func _unhandled_input(event: InputEvent):
 	if not event is InputEventMouseButton:
