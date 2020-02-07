@@ -1,7 +1,10 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://scripts/unit.gd" type="Script" id=1]
+[ext_resource path="res://scripts/units/player.gd" type="Script" id=1]
 [ext_resource path="res://icon.png" type="Texture" id=2]
+
+[sub_resource type="CircleShape2D" id=1]
+radius = 35.0
 
 [node name="Player" type="Node2D"]
 position = Vector2( -3514.47, -1330.27 )
@@ -13,3 +16,9 @@ texture = ExtResource( 2 )
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 2, 2 )
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+shape = SubResource( 1 )

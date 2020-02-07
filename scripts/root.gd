@@ -6,21 +6,16 @@ onready var tile_map: TileMap = get_node("TileMap")
 onready var line: Line2D = get_node("Line2D")
 onready var units_parent = get_node("Units");
 
-onready var unit_class := load(Constants.UNIT_SCENE_PATH)
+onready var enemy_class := load(Constants.ENEMY_SCENE_PATH)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	var enemy: Node2D = unit_class.instance()
+	var enemy: Node2D = enemy_class.instance()
 	units_parent.add_child(enemy)
-	enemy.position = Vector2(500, 2000)
+	enemy.position = Vector2(0, 0)
 	enemy.base_speed = enemy.base_speed / 1.5
+	enemy._aim = player
 	set_process(true)
-
-
-func _process(delta):
-	if (units_parent.get_child_count() > 0):
-		for enemy in units_parent.get_children():
-			move_unit_to(enemy, player.global_position)
 
 
 func _unhandled_input(event: InputEvent):
@@ -29,35 +24,4 @@ func _unhandled_input(event: InputEvent):
 	if event.button_index != BUTTON_LEFT or not event.pressed:
 		return
 	
-	move_unit_to(player, get_global_mouse_position(), true)
-
-
-func move_unit_to(unit: Node2D, target: Vector2, draw_line := false) -> void:
-	var path = tile_map.get_map_path(
-		unit.global_position, 
-		target
-		)
-	
-	# Path post processing
-	path = _move_path_point_to_tile_borders(path)
-	if (tile_map.is_point_inside_map(target)):
-		if (path.size() == 0):
-			path = PoolVector2Array([target])
-		else:
-			path[-1] = target
-	
-	if (draw_line):
-		line.points = path
-	
-	unit.set_path(path, tile_map.get_path_weights(path))
-
-
-# Adjusts path points from the center of the tile to it's border towards next tile
-# It forces terrain weight to affect only within the tile
-func _move_path_point_to_tile_borders(path: PoolVector2Array) -> PoolVector2Array:
-	var new_path = []
-	for i in range(1, path.size()):
-		new_path.append(path[i - 1].linear_interpolate(path[i], 0.5))
-	return PoolVector2Array(new_path)
-
-
+	player.set_target(get_global_mouse_position())

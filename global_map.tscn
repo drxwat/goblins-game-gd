@@ -9,7 +9,7 @@
 [ext_resource path="res://tilesets/decorations_w.tres" type="TileSet" id=8]
 [ext_resource path="res://tilesets/decorations_e.tres" type="TileSet" id=9]
 [ext_resource path="res://tilesets/decorations_n.tres" type="TileSet" id=10]
-[ext_resource path="res://scene_objects/Unit.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scene_objects/Enemy.tscn" type="PackedScene" id=11]
 
 [node name="Root" type="Node2D"]
 script = ExtResource( 5 )
@@ -97,9 +97,10 @@ width = 5.0
 
 [node name="Units" type="Node2D" parent="."]
 
-[node name="Unit" parent="Units" instance=ExtResource( 11 )]
-position = Vector2( -759.333, -345.859 )
+[node name="Enemy" parent="Units" instance=ExtResource( 11 )]
+position = Vector2( -1850.88, -868.143 )
 base_speed = 600.0
+_aim_node_path = NodePath("../../Player")
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( -3458.58, -1282.23 )
+position = Vector2( -1365.4, -642.721 )
