@@ -33,7 +33,7 @@ func _on_process(delta):
 	._on_process(delta)
 
 
-func _on_Area2D_body_shape_entered(body_id, body, body_shape, area_shape):
+func _on_Area2D_body_shape_entered(_body_id, _body, _body_shape, _area_shape):
 	if _follow_aim:
 		return
 	
@@ -42,7 +42,7 @@ func _on_Area2D_body_shape_entered(body_id, body, body_shape, area_shape):
 	set_process(true)
 
 
-func _on_Area2D_body_shape_exited(body_id, body, body_shape, area_shape):
+func _on_Area2D_body_shape_exited(_body_id, _body, _body_shape, _area_shape):
 	if not _follow_aim:
 		return
 	
