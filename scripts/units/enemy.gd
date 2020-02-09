@@ -1,15 +1,21 @@
 extends "./unit.gd"
 
+enum Behavior { IDLE, PATROL, FOLLOW, FLEE }
+
 export (NodePath) var _aim_node_path
 export (float) var guard_radius = 350
 export (float) var guard_radius_hunt_multiplier = 1.3
 
-var _aim: Node2D
-var _follow_aim: bool = false
-var _guard_area: CollisionShape2D
+var _behavior: int = Behavior.IDLE
+var _in_guard_area = false
+
 var _visible = false
+
+var _aim: Node2D
 var _sprite: Sprite
 var _tween: Tween
+var _guard_area: CollisionShape2D
+
 
 func _on_ready():
 	_guard_area = get_node("GuardArea/CollisionShape2D")
@@ -25,10 +31,15 @@ func _on_ready():
 
 
 func _on_process(delta):
-#	if _visible and _sprite.
-	# Iterpolate modulate with Tween
-	if _aim and _follow_aim:
-		set_target(_aim.global_position)
+	match _behavior:
+		Behavior.FLEE:
+			flee(_aim)
+		Behavior.FOLLOW:
+			follow(_aim)
+		Behavior.IDLE:
+			if is_moving():
+				stop_moving()
+
 	._on_process(delta)
 
 
@@ -47,21 +58,33 @@ func apply_visibility() -> void:
 	_tween.start()
 
 
-func _on_GuardArea_body_shape_entered(_body_id, _body, _body_shape, _area_shape):
-	if _follow_aim:
-		return
+func follow(aim: Node2D):
+	set_target(aim.global_position)
 
+
+func flee(aim: Node2D):
+	var flee_direction = -global_position.direction_to(aim.global_position)
+	set_target(global_position + flee_direction * 10)
+
+
+func _on_GuardArea_body_shape_entered(_body_id, _body, _body_shape, _area_shape):
+	if _in_guard_area:
+		return
+	
+	var contact_behavior = Behavior.FLEE
+	_behavior = contact_behavior
 	_guard_area.shape.radius *=  guard_radius_hunt_multiplier
-	_follow_aim = true
+	_in_guard_area = true
 
 
 func _on_GuardArea_body_shape_exited(_body_id, _body, _body_shape, _area_shape):
-	if not _follow_aim:
+	if not _in_guard_area:
 		return
 
+	var contact_behavior = Behavior.IDLE
+	_behavior = contact_behavior
 	_guard_area.shape.radius /=  guard_radius_hunt_multiplier
-	_follow_aim = false
-	stop_moving()
+	_in_guard_area = false
 
 
 func _on_VisibilityArea_body_entered(_body):
