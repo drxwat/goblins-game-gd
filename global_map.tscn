@@ -92,13 +92,11 @@ __meta__ = {
 "_editor_description_": ""
 }
 
-[node name="Line2D" type="Line2D" parent="."]
-width = 5.0
-
 [node name="Units" type="Node2D" parent="."]
 
 [node name="Enemy" parent="Units" instance=ExtResource( 11 )]
-position = Vector2( -1029.22, -446.716 )
+position = Vector2( -2411.31, -1126.79 )
 _aim_node_path = NodePath("../../Player")
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
+position = Vector2( -1394.63, -611.13 )

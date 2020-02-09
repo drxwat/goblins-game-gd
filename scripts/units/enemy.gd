@@ -71,7 +71,7 @@ func _on_GuardArea_body_shape_entered(_body_id, _body, _body_shape, _area_shape)
 	if _in_guard_area:
 		return
 	
-	var contact_behavior = Behavior.FLEE
+	var contact_behavior = Behavior.FOLLOW
 	_behavior = contact_behavior
 	_guard_area.shape.radius *=  guard_radius_hunt_multiplier
 	_in_guard_area = true

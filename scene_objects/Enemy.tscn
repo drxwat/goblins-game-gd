@@ -17,15 +17,15 @@ base_speed = 600.0
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 1 )
 
-[node name="Tween" type="Tween" parent="." index="2"]
+[node name="Tween" type="Tween" parent="." index="1"]
 
-[node name="GuardArea" type="Area2D" parent="." index="3"]
+[node name="GuardArea" type="Area2D" parent="." index="2"]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GuardArea" index="0"]
 shape = SubResource( 1 )
 
-[node name="VisibilityArea" type="Area2D" parent="." index="4"]
+[node name="VisibilityArea" type="Area2D" parent="." index="3"]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisibilityArea" index="0"]
