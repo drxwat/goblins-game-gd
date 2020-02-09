@@ -22,11 +22,20 @@ func _process(delta):
 
 
 func _on_ready():
-	set_process(false)
+	pass
 
 
 func _on_process(delta):
-	move_along_path(delta)
+	if is_moving():
+		move_along_path(delta)
+
+
+func is_moving() -> bool:
+	return _path and _path.size() > 0 
+	
+
+func stop_moving():
+	set_target(global_position)
 
 
 # Sets target Vector2 point to go to
@@ -65,7 +74,6 @@ func move_along_path(delta: float) -> void:
 			break
 		elif current_distance < 0.0:
 			position = _path[0]
-			set_process(false)
 			break
 		remaining_time -= distance_to_next / current_speed
 		start_point = _path[0]
@@ -76,9 +84,6 @@ func move_along_path(delta: float) -> void:
 func set_path(path: PoolVector2Array, weights: PoolRealArray) -> void:
 	_path = path
 	_path_weights = weights
-	if _path.size() == 0:
-		return
-	set_process(true)
 
 
 # Adjusts path points from the center of the tile to it's border towards next tile

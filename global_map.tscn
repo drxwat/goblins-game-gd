@@ -98,9 +98,9 @@ width = 5.0
 [node name="Units" type="Node2D" parent="."]
 
 [node name="Enemy" parent="Units" instance=ExtResource( 11 )]
-position = Vector2( -1850.88, -868.143 )
+position = Vector2( -2986.41, -1184.15 )
 base_speed = 600.0
 _aim_node_path = NodePath("../../Player")
 
 [node name="Player" parent="." instance=ExtResource( 4 )]
-position = Vector2( -1365.4, -642.721 )
+position = Vector2( -1639.73, -760.789 )
