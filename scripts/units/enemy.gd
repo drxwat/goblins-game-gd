@@ -64,14 +64,14 @@ func follow(aim: Node2D):
 
 func flee(aim: Node2D):
 	var flee_direction = -global_position.direction_to(aim.global_position)
-	set_target(global_position + flee_direction * 10)
+	set_target(global_position + flee_direction * guard_radius)
 
 
 func _on_GuardArea_body_shape_entered(_body_id, _body, _body_shape, _area_shape):
 	if _in_guard_area:
 		return
 	
-	var contact_behavior = Behavior.FOLLOW
+	var contact_behavior = Behavior.FLEE
 	_behavior = contact_behavior
 	_guard_area.shape.radius *=  guard_radius_hunt_multiplier
 	_in_guard_area = true
@@ -96,3 +96,6 @@ func _on_VisibilityArea_body_exited(_body):
 	_visible = false
 	apply_visibility()
 
+
+func _get_path_line_color():
+	return Color(1, 0, 0, 1)

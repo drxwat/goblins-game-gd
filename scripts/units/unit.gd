@@ -13,7 +13,6 @@ var _path_weights := PoolRealArray()
 onready var tile_map: Node2D = get_tree().get_root().get_node("Root/TileMap")
 
 var _path_line: Line2D
-var _path_line_color := Color(0, 0, 1, 1)
 
 
 func _ready():
@@ -21,7 +20,7 @@ func _ready():
 		var root = get_tree().get_root()
 		_path_line = Line2D.new()
 		_path_line.width = 5
-		_path_line.default_color = _path_line_color
+		_path_line.default_color = _get_path_line_color()
 		root.call_deferred("add_child", _path_line)
 
 	_on_ready()
@@ -67,7 +66,10 @@ func set_target(value: Vector2):
 			path[-1] = _target
 	
 	if Constants.DEBUG_PATH:
-		_path_line.points = path
+		var path_line_points = PoolVector2Array()
+		path_line_points.append(global_position)
+		path_line_points.append_array(path)
+		_path_line.points = path_line_points
 	
 	set_path(path, tile_map.get_path_weights(path))
 
@@ -106,3 +108,7 @@ func _move_path_point_to_tile_borders(path: PoolVector2Array) -> PoolVector2Arra
 	for i in range(1, path.size()):
 		new_path.append(path[i - 1].linear_interpolate(path[i], 0.5))
 	return PoolVector2Array(new_path)
+
+
+func _get_path_line_color():
+	return Color(0, 0, 1, 1)
