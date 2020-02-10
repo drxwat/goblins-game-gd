@@ -26,24 +26,48 @@ func _on_ready():
 		
 	_sprite = get_node("Sprite")
 	_tween = get_node("Tween")
-	apply_visibility()
+	_apply_visibility()
 	._on_ready()
 
 
 func _on_process(delta):
-	match _behavior:
-		Behavior.FLEE:
-			flee(_aim)
-		Behavior.FOLLOW:
-			follow(_aim)
-		Behavior.IDLE:
-			if is_moving():
-				stop_moving()
-
+	_apply_behavior()
 	._on_process(delta)
 
 
-func apply_visibility() -> void:
+func follow(aim: Node2D) -> void:
+	set_target(aim.global_position)
+
+
+func flee(aim: Node2D) -> void:
+	var flee_direction = -global_position.direction_to(aim.global_position)
+	set_target(global_position + flee_direction * guard_radius)
+
+
+func _apply_behavior() -> bool:
+	match _behavior:
+		Behavior.FLEE:
+			flee(_aim)
+			return true
+		Behavior.FOLLOW:
+			follow(_aim)
+			return true
+		Behavior.IDLE:
+			if is_moving():
+				stop_moving()
+			return true
+	return false
+
+
+func _get_in_guard_behavior() -> int:
+	return Behavior.FLEE
+
+
+func _get_out_guard_behavior() -> int:
+	return Behavior.IDLE
+
+
+func _apply_visibility() -> void:
 	if (_tween.is_active()):
 		# warning-ignore:return_value_discarded
 		_tween.stop_all()
@@ -58,20 +82,11 @@ func apply_visibility() -> void:
 	_tween.start()
 
 
-func follow(aim: Node2D):
-	set_target(aim.global_position)
-
-
-func flee(aim: Node2D):
-	var flee_direction = -global_position.direction_to(aim.global_position)
-	set_target(global_position + flee_direction * guard_radius)
-
-
 func _on_GuardArea_body_shape_entered(_body_id, _body, _body_shape, _area_shape):
 	if _in_guard_area:
 		return
 	
-	var contact_behavior = Behavior.FLEE
+	var contact_behavior = _get_in_guard_behavior()
 	_behavior = contact_behavior
 	_guard_area.shape.radius *=  guard_radius_hunt_multiplier
 	_in_guard_area = true
@@ -81,7 +96,7 @@ func _on_GuardArea_body_shape_exited(_body_id, _body, _body_shape, _area_shape):
 	if not _in_guard_area:
 		return
 
-	var contact_behavior = Behavior.IDLE
+	var contact_behavior = _get_out_guard_behavior()
 	_behavior = contact_behavior
 	_guard_area.shape.radius /=  guard_radius_hunt_multiplier
 	_in_guard_area = false
@@ -89,12 +104,12 @@ func _on_GuardArea_body_shape_exited(_body_id, _body, _body_shape, _area_shape):
 
 func _on_VisibilityArea_body_entered(_body):
 	_visible = true
-	apply_visibility()
+	_apply_visibility()
 
 
 func _on_VisibilityArea_body_exited(_body):
 	_visible = false
-	apply_visibility()
+	_apply_visibility()
 
 
 func _get_path_line_color():

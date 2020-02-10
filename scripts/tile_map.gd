@@ -9,17 +9,23 @@ enum WeightScales {
 const TILE_ADJ = Vector2(0, 64)
 
 var _ground_cells_indexes = {}
+var _ground_cells_raod_indexes = {}
 
 onready var astar := AStar2D.new()
+onready var astar_roads := AStar2D.new()
 onready var tm_ground: TileMap = get_node("Ground")
 onready var tm_road: TileMap = get_node("Road")
 onready var tm_forest: TileMap = get_node("Forest")
 
 
 func _ready():
-	_init_terrain_grid()
-	_change_cells_weights(tm_road, WeightScales.ROAD)
-	_change_cells_weights(tm_forest, WeightScales.FOREST)
+	# General terrain initialization
+	_init_terrain_grid(tm_ground, astar, _ground_cells_indexes, WeightScales.GRASS)
+	_change_cells_weights(tm_road, astar, _ground_cells_indexes, WeightScales.ROAD)
+	_change_cells_weights(tm_forest, astar, _ground_cells_indexes, WeightScales.FOREST)
+	# Roads only terrain initialization
+	_init_terrain_grid(tm_road, astar_roads, 
+		_ground_cells_raod_indexes, WeightScales.ROAD)
 
 
 func get_map_path(from: Vector2, to: Vector2) -> PoolVector2Array:
@@ -42,17 +48,20 @@ func is_point_inside_map(point: Vector2):
 	return tm_ground.get_cellv(map_position) != TileMap.INVALID_CELL
 
 
-func _init_terrain_grid() -> void:
-	print("Terrain grid initialization...")
-	
-	var ground_cells = tm_ground.get_used_cells()
+func _init_terrain_grid(
+		tile_map: TileMap, 
+		grid_astar: AStar2D, 
+		indexes_map: Dictionary, 
+		weight: float
+		) -> void:
+	var ground_cells = tile_map.get_used_cells()
 	ground_cells.sort()
 	
 	# Initializing all tiles as points for A*
 	for i in range(ground_cells.size()):
-		var cell = tm_ground.map_to_world(ground_cells[i]) + TILE_ADJ
-		_ground_cells_indexes[cell] = i
-		astar.add_point(i, cell, WeightScales.GRASS)
+		var cell = tile_map.map_to_world(ground_cells[i]) + TILE_ADJ
+		indexes_map[cell] = i
+		grid_astar.add_point(i, cell, weight)
 
 
 	# Connecting neighbouring points
@@ -64,17 +73,22 @@ func _init_terrain_grid() -> void:
 			]
 		
 		for neghbour in neighbours:
-			if (tm_ground.get_cellv(neghbour) == TileMap.INVALID_CELL):
+			if (tile_map.get_cellv(neghbour) == TileMap.INVALID_CELL):
 				continue
 			
-			astar.connect_points(
-					_ground_cells_indexes[tm_ground.map_to_world(cell) + TILE_ADJ], 
-					_ground_cells_indexes[tm_ground.map_to_world(neghbour) + TILE_ADJ]
+			grid_astar.connect_points(
+					indexes_map[tile_map.map_to_world(cell) + TILE_ADJ], 
+					indexes_map[tile_map.map_to_world(neghbour) + TILE_ADJ]
 					)
 
 
-func _change_cells_weights(tm: TileMap, weight: float) -> void:
+func _change_cells_weights(
+		tm: TileMap, 
+		grid_astar: AStar2D, 
+		indexes_map: Dictionary, 
+		weight: float
+		) -> void:
 	for cell in tm.get_used_cells():
-		var cell_idx = _ground_cells_indexes[tm.map_to_world(cell) + TILE_ADJ]
-		astar.set_point_weight_scale(cell_idx, weight)
+		var cell_idx = indexes_map[tm.map_to_world(cell) + TILE_ADJ]
+		grid_astar.set_point_weight_scale(cell_idx, weight)
 
