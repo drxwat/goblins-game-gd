@@ -1,0 +1,30 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://battle/units/models/Metal.material" type="Material" id=1]
+[ext_resource path="res://battle/units/models/Skin.material" type="Material" id=2]
+[ext_resource path="res://battle/units/models/Mouth.material" type="Material" id=3]
+[ext_resource path="res://battle/units/models/Wood.material" type="Material" id=4]
+[ext_resource path="res://battle/units/models/Rope.material" type="Material" id=5]
+[ext_resource path="res://battle/units/models/Eyes.material" type="Material" id=6]
+[ext_resource path="res://battle/units/models/Teeth.material" type="Material" id=7]
+[ext_resource path="res://battle/units/models/goblin.escn" type="PackedScene" id=8]
+
+
+[node name="goblin" instance=ExtResource( 8 )]
+
+[node name="Armature" parent="." index="0"]
+bones/35/bound_children = [ NodePath("HandR001BoneAttachment") ]
+
+[node name="Goblin" parent="Armature" index="1"]
+material/0 = ExtResource( 2 )
+material/1 = ExtResource( 3 )
+material/2 = ExtResource( 7 )
+material/3 = ExtResource( 6 )
+
+[node name="HandR001BoneAttachment" parent="Armature" index="2"]
+transform = Transform( -0.000844404, 0.0378862, -0.999282, -0.999752, -0.0223053, 1.05053e-06, -0.0222891, 0.999034, 0.0378965, -0.332322, 0.572547, 0.493395 )
+
+[node name="Spear" parent="Armature/HandR001BoneAttachment" index="0"]
+material/0 = ExtResource( 1 )
+material/1 = ExtResource( 4 )
+material/2 = ExtResource( 5 )
