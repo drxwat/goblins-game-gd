@@ -9,11 +9,10 @@
 [ext_resource path="res://battle/units/models/Teeth.material" type="Material" id=7]
 [ext_resource path="res://battle/units/models/goblin.escn" type="PackedScene" id=8]
 
-
 [node name="goblin" instance=ExtResource( 8 )]
 
-[node name="Armature" parent="." index="0"]
-bones/35/bound_children = [ NodePath("HandR001BoneAttachment") ]
+[node name="AnimationPlayer" parent="Armature" index="0"]
+autoplay = "Spear_Idle"
 
 [node name="Goblin" parent="Armature" index="1"]
 material/0 = ExtResource( 2 )
@@ -22,7 +21,7 @@ material/2 = ExtResource( 7 )
 material/3 = ExtResource( 6 )
 
 [node name="HandR001BoneAttachment" parent="Armature" index="2"]
-transform = Transform( -0.000844404, 0.0378862, -0.999282, -0.999752, -0.0223053, 1.05053e-06, -0.0222891, 0.999034, 0.0378965, -0.332322, 0.572547, 0.493395 )
+transform = Transform( -0.303224, 0.478698, -0.823957, -0.543923, -0.796916, -0.262818, -0.782434, 0.368477, 0.50202, -0.205345, 0.620044, 0.362564 )
 
 [node name="Spear" parent="Armature/HandR001BoneAttachment" index="0"]
 material/0 = ExtResource( 1 )
