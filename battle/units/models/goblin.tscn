@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://battle/units/models/Metal.material" type="Material" id=1]
 [ext_resource path="res://battle/units/models/Skin.material" type="Material" id=2]
@@ -9,7 +9,28 @@
 [ext_resource path="res://battle/units/models/Teeth.material" type="Material" id=7]
 [ext_resource path="res://battle/units/models/goblin.escn" type="PackedScene" id=8]
 
+[sub_resource type="AnimationNodeAnimation" id=1]
+animation = "Spear_Idle"
+
+[sub_resource type="AnimationNodeBlend2" id=2]
+
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "Spear_Walk"
+
+[sub_resource type="AnimationNodeBlendTree" id=4]
+nodes/Idle/node = SubResource( 1 )
+nodes/Idle/position = Vector2( 280, 80 )
+nodes/Locomotion/node = SubResource( 2 )
+nodes/Locomotion/position = Vector2( 560, 160 )
+nodes/Walk/node = SubResource( 3 )
+nodes/Walk/position = Vector2( 280, 220 )
+nodes/output/position = Vector2( 860, 100 )
+node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "Idle", "Locomotion", 1, "Walk" ]
+
 [node name="goblin" instance=ExtResource( 8 )]
+
+[node name="Armature" parent="." index="0"]
+bones/35/bound_children = [ NodePath("HandR001BoneAttachment") ]
 
 [node name="AnimationPlayer" parent="Armature" index="0"]
 autoplay = "Spear_Idle"
@@ -21,9 +42,17 @@ material/2 = ExtResource( 7 )
 material/3 = ExtResource( 6 )
 
 [node name="HandR001BoneAttachment" parent="Armature" index="2"]
-transform = Transform( -0.303224, 0.478698, -0.823957, -0.543923, -0.796916, -0.262818, -0.782434, 0.368477, 0.50202, -0.205345, 0.620044, 0.362564 )
+transform = Transform( -0.303224, 0.478698, -0.823957, -0.543895, -0.796929, -0.262836, -0.782454, 0.368448, 0.502011, -0.205327, 0.620012, 0.362555 )
 
 [node name="Spear" parent="Armature/HandR001BoneAttachment" index="0"]
 material/0 = ExtResource( 1 )
 material/1 = ExtResource( 4 )
 material/2 = ExtResource( 5 )
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="1"]
+tree_root = SubResource( 4 )
+anim_player = NodePath("../Armature/AnimationPlayer")
+active = true
+parameters/Locomotion/blend_amount = 0.0
+
+[node name="Tween" type="Tween" parent="." index="2"]
