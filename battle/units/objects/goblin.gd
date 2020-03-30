@@ -22,6 +22,7 @@ func _physics_process(delta):
 			_idle = false
 		if not _idle and _path.size() == 1:
 			_play_slowdown_animation()
+			_idle = true
 		# Move Unit 
 		move_along_path(delta)
 	else:
@@ -33,7 +34,8 @@ func move_along_path(delta) -> void:
 	var move_vector: Vector3 = _path[0] - global_transform.origin
 	if move_vector.length() < 0.1:
 		_path.remove(0)
-	else:
+	else:	
+		_rotate_unit(move_vector)
 		move_and_slide(move_vector.normalized() * SPEED * delta, Vector3(0, 1, 0))
 
 
@@ -50,3 +52,12 @@ func _play_slowdown_animation():
 	tween.interpolate_property(animation_tree, LOCOMOTION_ANIMATION, 
 		1, 0, ANIMATION_TRANSITION, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
 	tween.start()
+
+func _rotate_unit(move_direction):
+	var angle = atan2(move_direction.x, move_direction.z)
+	var new_rotation = get_rotation()
+	new_rotation.y = angle
+	tween.interpolate_property($".", "rotation",
+		get_rotation(), new_rotation, ANIMATION_TRANSITION, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+	tween.start()
+#	set_rotation(new_rotation)
