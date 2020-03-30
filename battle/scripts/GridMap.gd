@@ -28,6 +28,7 @@ func _init_terrain_grid(astar):
 			Vector3(cell.x + 1, cell.y,  cell.z),
 			Vector3(cell.x, cell.y, cell.z + 1),
 			Vector3(cell.x + 1, cell.y, cell.z + 1),
+			Vector3(cell.x - 1, cell.y, cell.z + 1),
 			]
 		
 		for neghbour in neighbours:
