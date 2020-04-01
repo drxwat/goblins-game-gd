@@ -13,9 +13,15 @@ _global_script_classes=[ {
 "class": "Constants",
 "language": "GDScript",
 "path": "res://scripts/constantst.gd"
+}, {
+"base": "KinematicBody",
+"class": "Goblin3d",
+"language": "GDScript",
+"path": "res://battle/units/objects/Goblin3d.gd"
 } ]
 _global_script_class_icons={
-"Constants": ""
+"Constants": "",
+"Goblin3d": ""
 }
 
 [application]

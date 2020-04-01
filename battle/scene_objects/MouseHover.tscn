@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_transparent = true
+flags_unshaded = true
+albedo_color = Color( 1, 1, 1, 0.141176 )
+
+[sub_resource type="PlaneMesh" id=2]
+material = SubResource( 1 )
+
+[node name="MouseHover" type="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.55868, 0.0182199, 0 )
+mesh = SubResource( 2 )
+material/0 = null

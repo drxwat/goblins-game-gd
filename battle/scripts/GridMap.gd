@@ -12,6 +12,11 @@ func get_map_path(from: Vector3, to: Vector3) -> PoolVector3Array:
 			astar.get_closest_point(to)
 			)
 
+
+func get_map_cell_center(point: Vector3):
+	return astar.get_point_position(astar.get_closest_point(point));
+	 
+
 func _init_terrain_grid(astar):
 	var ground_cells = get_used_cells()
 	var indexes_map = {}
@@ -39,3 +44,5 @@ func _init_terrain_grid(astar):
 					indexes_map[map_to_world(cell.x, cell.y, cell.z)], 
 					indexes_map[map_to_world(neghbour.x, neghbour.y, neghbour.z)]
 					)
+
+
