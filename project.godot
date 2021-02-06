@@ -18,17 +18,23 @@ _global_script_classes=[ {
 "class": "Goblin3d",
 "language": "GDScript",
 "path": "res://battle/units/objects/Goblin3d.gd"
+}, {
+"base": "",
+"class": "Trader",
+"language": "GDScript",
+"path": "res://scripts/units/trader.gd"
 } ]
 _global_script_class_icons={
 "Constants": "",
-"Goblin3d": ""
+"Goblin3d": "",
+"Trader": ""
 }
 
 [application]
 
 config/name="Godot-goblins"
 run/main_scene="res://global_map.tscn"
-config/icon="res://icon.png"
+config/icon="res://icon-goblin.png"
 
 [display]
 

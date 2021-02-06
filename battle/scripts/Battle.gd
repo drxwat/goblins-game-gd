@@ -5,7 +5,7 @@ const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 onready var camera := $Camera
 onready var goblin := $Goblin3d
-onready var gridMap := $GridMap
+onready var gridMap := $Terrain
 onready var mouseHover := $MouseHover
 
 # Called when the node enters the scene tree for the first time.
