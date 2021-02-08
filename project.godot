@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Camera",
+"class": "CameraController",
+"language": "GDScript",
+"path": "res://battle/camera/CameraController.gd"
+}, {
 "base": "Node",
 "class": "Constants",
 "language": "GDScript",
@@ -25,6 +30,7 @@ _global_script_classes=[ {
 "path": "res://scripts/units/trader.gd"
 } ]
 _global_script_class_icons={
+"CameraController": "",
 "Constants": "",
 "Goblin3d": "",
 "Trader": ""
@@ -1094,6 +1100,14 @@ scene={
 "nodes/root_scale": 1.0,
 "nodes/root_type": "Spatial",
 "nodes/storage": 0
+}
+
+[input]
+
+ToggleCameraAction={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":3,"pressed":false,"doubleclick":false,"script":null)
+ ]
 }
 
 [rendering]
