@@ -5,17 +5,21 @@ onready var astar := AStar.new()
 func _ready():
 	_init_terrain_grid(astar)
 
-
 func get_map_path(from: Vector3, to: Vector3) -> PoolVector3Array:
 	return astar.get_point_path(
 			astar.get_closest_point(from), 
 			astar.get_closest_point(to)
 			)
 
-
-func get_map_cell_center(point: Vector3):
+func get_map_cell_center(point: Vector3) -> Vector3:
 	return astar.get_point_position(astar.get_closest_point(point));
 	 
+
+func set_obstacles(obstacles_map: GridMap):
+	for cell in obstacles_map.get_used_cells():
+		var point_id = astar.get_closest_point(obstacles_map.map_to_world(cell.x, cell.y, cell.z))
+		astar.set_point_disabled(point_id)
+
 
 func _init_terrain_grid(astar):
 	var ground_cells = get_used_cells()

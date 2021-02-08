@@ -10,7 +10,7 @@ onready var mouseHover := $MouseHover
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	$Terrain.set_obstacles($Forest)
 
 
 func _input(event: InputEvent):
@@ -40,10 +40,8 @@ func _move_unit(unit: Goblin3d, pos: Vector3):
 	var path = gridMap.get_map_path(unit.global_transform.origin, pos)
 	unit.set_path(path)
 
-
 func _move_mouse_hover(pos: Vector3):
 	mouseHover.translation = gridMap.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
-
 
 func _get_mouse_projected_position(screen_position: Vector2):
 	var from = camera.project_ray_origin(screen_position)
