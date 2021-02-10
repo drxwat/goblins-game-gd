@@ -18,11 +18,11 @@ export (WEAPON) var left_hand
 
 func _ready():
 	pass
-#	if weapon_meta.has(right_hand):
-#		var w_meta = weapon_meta.get(right_hand)
-#		var w_mesh = w_meta.mesh_scene.instance()
-#		w_mesh.scale = w_meta.scale
-#		w_mesh.translation = w_meta.translation
-#		w_mesh.rotation_degrees = w_meta.rotation_degrees
-#		$Gfx/Armature/Skeleton/RightHandAttachment.add_child(w_mesh)
+	if weapon_meta.has(right_hand):
+		var w_meta = weapon_meta.get(right_hand)
+		var w_mesh = w_meta.mesh_scene.instance()
+		w_mesh.scale = w_meta.scale
+		w_mesh.translation = w_meta.translation
+		w_mesh.rotation_degrees = w_meta.rotation_degrees
+		$Gfx/Armature/Skeleton/RightHandAttachment.add_child(w_mesh)
 

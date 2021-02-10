@@ -12,7 +12,7 @@ _global_script_classes=[ {
 "base": "KinematicBody",
 "class": "BattleUnit",
 "language": "GDScript",
-"path": "res://battle/units/unit/BattleUnit.gd"
+"path": "res://battle/units/battle-unit/BattleUnit.gd"
 }, {
 "base": "Camera",
 "class": "CameraController",
@@ -24,11 +24,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/constantst.gd"
 }, {
-"base": "KinematicBody",
-"class": "Goblin3d",
-"language": "GDScript",
-"path": "res://battle/units/objects/Goblin3d.gd"
-}, {
 "base": "",
 "class": "Trader",
 "language": "GDScript",
@@ -38,7 +33,6 @@ _global_script_class_icons={
 "BattleUnit": "",
 "CameraController": "",
 "Constants": "",
-"Goblin3d": "",
 "Trader": ""
 }
 

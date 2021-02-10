@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://battle/units/unit/BattleUnit.gd" type="Script" id=1]
+[ext_resource path="res://battle/units/battle-unit/BattleUnit.gd" type="Script" id=1]
 
 [node name="BattleUnit" type="KinematicBody"]
 script = ExtResource( 1 )
