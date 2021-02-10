@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "KinematicBody",
+"class": "BattleUnit",
+"language": "GDScript",
+"path": "res://battle/units/unit/BattleUnit.gd"
+}, {
 "base": "Camera",
 "class": "CameraController",
 "language": "GDScript",
@@ -30,6 +35,7 @@ _global_script_classes=[ {
 "path": "res://scripts/units/trader.gd"
 } ]
 _global_script_class_icons={
+"BattleUnit": "",
 "CameraController": "",
 "Constants": "",
 "Goblin3d": "",
@@ -41,13 +47,6 @@ _global_script_class_icons={
 config/name="Godot-goblins"
 run/main_scene="res://global_map.tscn"
 config/icon="res://icon-goblin.png"
-
-[display]
-
-window/size/width=1920
-window/size/height=1080
-window/size/borderless=true
-window/size/fullscreen=true
 
 [importer_defaults]
 

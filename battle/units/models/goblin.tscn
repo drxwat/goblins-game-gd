@@ -18,6 +18,7 @@ animation = "Spear_Idle"
 animation = "Spear_Walk"
 
 [sub_resource type="AnimationNodeBlendTree" id=4]
+graph_offset = Vector2( 0, 63.5 )
 nodes/Idle/node = SubResource( 1 )
 nodes/Idle/position = Vector2( 280, 80 )
 nodes/Locomotion/node = SubResource( 2 )
@@ -29,9 +30,6 @@ node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "Idle", "Locomo
 
 [node name="goblin" instance=ExtResource( 8 )]
 
-[node name="Armature" parent="." index="0"]
-bones/35/bound_children = [ NodePath("HandR001BoneAttachment") ]
-
 [node name="AnimationPlayer" parent="Armature" index="0"]
 autoplay = "Spear_Idle"
 
@@ -42,7 +40,7 @@ material/2 = ExtResource( 7 )
 material/3 = ExtResource( 6 )
 
 [node name="HandR001BoneAttachment" parent="Armature" index="2"]
-transform = Transform( -0.303224, 0.478698, -0.823957, -0.543895, -0.796929, -0.262836, -0.782454, 0.368448, 0.502011, -0.205327, 0.620012, 0.362555 )
+transform = Transform( -0.303224, 0.478698, -0.823957, -0.518357, -0.808406, -0.278902, -0.799601, 0.342534, 0.493265, -0.189043, 0.591473, 0.354978 )
 
 [node name="Spear" parent="Armature/HandR001BoneAttachment" index="0"]
 material/0 = ExtResource( 1 )
