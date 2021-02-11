@@ -5,6 +5,25 @@ const SCENE_OBJ_PATH = "res://scene_objects/"
 
 const ENEMY_SCENE_PATH = SCENE_OBJ_PATH + "Enemy.tscn"
 
-enum UNIT_TYPES { 
-	Goblin 
+enum RACE { GOBLIN }
+
+enum STATS { STR, AGI, HP, AP, MP }
+
+enum WEAPON { NONE, AXE, SWORD, BOW, SHIELD }
+
+const RACE_META = {
+	RACE.GOBLIN: {
+		"STATS": {
+			STATS.STR: 3,
+			STATS.AGI: 5,
+			STATS.HP: 12,
+			STATS.AP: 3,
+			STATS.MP: 3,
+		}
+	}
 }
+
+enum BATTLE_TEAM {
+	TEAM1, TEAM2
+}
+

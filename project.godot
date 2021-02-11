@@ -50,8 +50,8 @@ config/icon="res://icon-goblin.png"
 
 [autoload]
 
-BattleConstants="*res://battle/scripts/BattleConstants.gd"
 GlobalConstants="*res://scripts/GlobalСonstants.gd"
+BattleConstants="*res://battle/scripts/BattleConstants.gd"
 
 [importer_defaults]
 

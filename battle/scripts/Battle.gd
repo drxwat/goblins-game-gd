@@ -5,12 +5,25 @@ const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 onready var camera := $Camera
 onready var goblin := $BattleManager/BattleGoblin
-onready var gridMap := $Terrain
-onready var mouseHover := $MouseHover
+onready var terrain := $Terrain
+onready var mouse_hover := $MouseHover
+onready var battle_manager := $BattleManager
+
+var team1_units = [
+	{ "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	{ "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	{ "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+]
+
+var team2_units = [
+	{ "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	{ "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+]
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	$Terrain.set_obstacles($Forest)
+	battle_manager.initialize_battle(team1_units, team2_units, Vector3(1, 0, 9), Vector3(1, 0 ,1))
 
 func _input(event: InputEvent):
 	_handle_mouse_click(event)
@@ -34,11 +47,11 @@ func _handle_mouse_move(event: InputEvent):
 		_move_mouse_hover(m_position)
 
 func _move_unit(unit: BattleUnit, pos: Vector3):
-	var path = gridMap.get_map_path(unit.global_transform.origin, pos)
+	var path = terrain.get_map_path(unit.global_transform.origin, pos)
 	unit.set_path(path)
 
 func _move_mouse_hover(pos: Vector3):
-	mouseHover.translation = gridMap.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
+	mouse_hover.translation = terrain.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
 
 func _get_mouse_projected_position(screen_position: Vector2):
 	var from = camera.project_ray_origin(screen_position)

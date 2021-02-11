@@ -1,7 +1,5 @@
 extends Node
 
-enum WEAPON { NONE, AXE, SWORD, BOW, SHIELD }
-
-enum BATTLE_TEAM {
-	TEAM1, TEAM2
+var RACES_SCENES = {
+	GlobalConstants.RACE.GOBLIN: preload("res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn")
 }
