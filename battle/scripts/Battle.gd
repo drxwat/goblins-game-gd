@@ -4,20 +4,17 @@ const RAY_LENGTH = 1000
 const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 onready var camera := $Camera
-onready var goblin := $BattleGoblin
+onready var goblin := $BattleManager/BattleGoblin
 onready var gridMap := $Terrain
 onready var mouseHover := $MouseHover
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	print(goblin)
 	$Terrain.set_obstacles($Forest)
-
 
 func _input(event: InputEvent):
 	_handle_mouse_click(event)
 	_handle_mouse_move(event)
-
 
 func _handle_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
@@ -28,7 +25,6 @@ func _handle_mouse_click(event: InputEvent):
 	var m_position = _get_mouse_projected_position(event.position)
 	if m_position:
 		_move_unit(goblin, m_position)
-
 
 func _handle_mouse_move(event: InputEvent):
 	if not event is InputEventMouseMotion:

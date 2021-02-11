@@ -1,4 +1,4 @@
-extends "./enemy.gd"
+extends Enemy
 
 class_name Trader
 

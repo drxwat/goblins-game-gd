@@ -4,9 +4,9 @@
 [ext_resource path="res://trader_icon.png" type="Texture" id=2]
 [ext_resource path="res://scripts/units/trader.gd" type="Script" id=3]
 
+
 [node name="Trader" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
-base_speed = 800.0
 
 [node name="Sprite" parent="." index="0"]
 texture = ExtResource( 2 )

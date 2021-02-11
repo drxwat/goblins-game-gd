@@ -1,4 +1,5 @@
-extends "./unit.gd"
+extends Unit
+class_name Enemy
 
 enum Behavior { IDLE, PATROL, FOLLOW, FLEE }
 
@@ -18,14 +19,14 @@ var _guard_area: CollisionShape2D
 
 
 func _on_ready():
-	_guard_area = get_node("GuardArea/CollisionShape2D")
+	_guard_area = $GuardArea/CollisionShape2D
 	_guard_area.shape.radius = guard_radius
 	
 	if _aim_node_path:
 		_aim = get_node(_aim_node_path)
 		
-	_sprite = get_node("Sprite")
-	_tween = get_node("Tween")
+	_sprite = $Sprite
+	_tween = $Tween
 	_apply_visibility()
 	._on_ready()
 

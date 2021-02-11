@@ -19,21 +19,27 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://battle/camera/CameraController.gd"
 }, {
-"base": "Node",
-"class": "Constants",
+"base": "Unit",
+"class": "Enemy",
 "language": "GDScript",
-"path": "res://scripts/constantst.gd"
+"path": "res://scripts/units/enemy.gd"
 }, {
-"base": "",
+"base": "Enemy",
 "class": "Trader",
 "language": "GDScript",
 "path": "res://scripts/units/trader.gd"
+}, {
+"base": "Node2D",
+"class": "Unit",
+"language": "GDScript",
+"path": "res://scripts/units/unit.gd"
 } ]
 _global_script_class_icons={
 "BattleUnit": "",
 "CameraController": "",
-"Constants": "",
-"Trader": ""
+"Enemy": "",
+"Trader": "",
+"Unit": ""
 }
 
 [application]
@@ -41,6 +47,11 @@ _global_script_class_icons={
 config/name="Godot-goblins"
 run/main_scene="res://global_map.tscn"
 config/icon="res://icon-goblin.png"
+
+[autoload]
+
+BattleConstants="*res://battle/scripts/BattleConstants.gd"
+GlobalConstants="*res://scripts/GlobalСonstants.gd"
 
 [importer_defaults]
 

@@ -1,11 +1,9 @@
 extends BattleUnit
 
-enum WEAPON { NONE, AXE, SWORD, BOW, SHIELD }
-
 var axe_scene: PackedScene = preload("res://battle/units/weapon/scene_objects/Axe.tscn")
 
 var weapon_meta = {
-	WEAPON.AXE: {
+	BattleConstants.WEAPON.AXE: {
 		"translation": Vector3(-9.284, 4.313, 11.601),
 		"rotation_degrees": Vector3(-48.407, 8.681, -63.369),
 		"scale": Vector3(2 ,2 ,2),
@@ -13,8 +11,9 @@ var weapon_meta = {
 	}
 }
 
-export(WEAPON) var right_hand
-export (WEAPON) var left_hand
+export(BattleConstants.WEAPON) var right_hand
+export (BattleConstants.WEAPON) var left_hand
+export (BattleConstants.BATTLE_TEAM) var team
 
 func _ready():
 	pass

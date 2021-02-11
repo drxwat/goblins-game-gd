@@ -1,2 +1,2 @@
-extends "./unit.gd"
+extends Unit
 

@@ -113,8 +113,7 @@ position = Vector2( -2411.31, -1126.79 )
 _aim_node_path = NodePath("../../Player")
 
 [node name="Trader" parent="Units" instance=ExtResource( 6 )]
-position = Vector2( -387.139, -114.562 )
-base_speed = 500.0
+position = Vector2( -632.74, -253.707 )
 _aim_node_path = NodePath("../../Player")
 
 [node name="Player" parent="." instance=ExtResource( 4 )]

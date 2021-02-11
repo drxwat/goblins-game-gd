@@ -3,6 +3,7 @@
 # Implements movement to target
 #
 extends Node2D
+class_name Unit
 
 export (float) var base_speed  := 800.0
 
@@ -16,7 +17,7 @@ var _path_line: Line2D
 
 
 func _ready():
-	if Constants.DEBUG_PATH:
+	if GlobalConstants.DEBUG_PATH:
 		var root = get_tree().get_root()
 		_path_line = Line2D.new()
 		_path_line.width = 5
@@ -65,7 +66,7 @@ func set_target(value: Vector2):
 		else:
 			path[-1] = _target
 	
-	if Constants.DEBUG_PATH:
+	if GlobalConstants.DEBUG_PATH:
 		var path_line_points = PoolVector2Array()
 		path_line_points.append(global_position)
 		path_line_points.append_array(path)
