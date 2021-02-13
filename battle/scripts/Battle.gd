@@ -4,7 +4,6 @@ const RAY_LENGTH = 1000
 const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 onready var camera := $Camera
-onready var goblin := $BattleGoblin
 onready var terrain := $Terrain
 onready var mouse_hover := $MouseHover
 
@@ -23,6 +22,8 @@ var team2_spawn_point = Vector3(1, 0, 1)
 
 var team1 := {}
 var team2 := {}
+var selected_unit = null
+var is_action_in_progress := false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -46,26 +47,53 @@ func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, rotate = f
 		var unit_meta = units_meta.get(unit_id)
 		var team_unit_meta = unit_meta.duplicate()
 		var unit = _produce_unit(team_unit_meta)
-		_spawn_unit(unit, $Units, spawn_point, PI if rotate else 0)
-		terrain.occupy_point_with_unit(spawn_point, unit_id)
+		_spawn_unit(unit_id, unit, $Units, spawn_point, PI if rotate else 0)
 		team_unit_meta["UNIT"] = unit
 		team[unit_id] = team_unit_meta
 		spawn_point = terrain.get_neighbor_walkable_point(spawn_point)
 	return team
 
-func _input(event: InputEvent):
-	_handle_mouse_click(event)
-	_handle_mouse_move(event)
+#
+# MOUSE INPUT
+#
 
-func _handle_mouse_click(event: InputEvent):
+func _input(event: InputEvent):
+	if is_action_in_progress:
+		return true
+	_handle_left_mouse_click(event)
+	_handle_right_mouse_click(event)
+	_handle_mouse_move(event)
+	
+func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
 		return
 	if event.button_index != BUTTON_LEFT or not event.pressed:
 		return
+	var m_position = _get_mouse_projected_position(event.position)
+	if !m_position:
+		return
+	var hover_obj = terrain.get_terrain_object(m_position)
+	if hover_obj["TYPE"] != BattleConstants.TERRAIN_OBJECTS.UNIT and selected_unit:
+		_deselect_unit(selected_unit)
+		return
+	if hover_obj["TYPE"] == BattleConstants.TERRAIN_OBJECTS.UNIT:
+		var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
+		if !selected_unit:
+			_select_unit(unit_meta["UNIT"])
+		elif selected_unit != unit_meta["UNIT"]:
+			_deselect_unit(selected_unit)
+			_select_unit(unit_meta["UNIT"])
+
+func _handle_right_mouse_click(event: InputEvent):
+	if not event is InputEventMouseButton:
+		return
+	if event.button_index != BUTTON_RIGHT or not event.pressed:
+		return
 	
 	var m_position = _get_mouse_projected_position(event.position)
-	if m_position:
-		_move_unit(goblin, m_position)
+	if m_position and selected_unit:
+		terrain.free_point_from_unit(selected_unit.global_transform.origin)
+		_move_unit(selected_unit, m_position)
 
 func _handle_mouse_move(event: InputEvent):
 	if not event is InputEventMouseMotion:
@@ -74,10 +102,6 @@ func _handle_mouse_move(event: InputEvent):
 	if m_position:
 		_move_mouse_hover(m_position)
 		_color_mouse_hover(m_position)
-
-func _move_unit(unit: BattleUnit, pos: Vector3):
-	var path = terrain.get_map_path(unit.global_transform.origin, pos)
-	unit.set_path(path)
 
 func _move_mouse_hover(pos: Vector3):
 	mouse_hover.translation = terrain.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
@@ -106,13 +130,44 @@ func _get_mouse_projected_position(screen_position: Vector2):
 		return null
 	return result.position
 
+#
+# UNIT API
+#
+
+func _select_unit(unit: BattleUnit):
+	selected_unit = unit
+	unit.set_selected(true)
+	
+func _deselect_unit(unit: BattleUnit):
+	selected_unit = null
+	unit.set_selected(false)
+
+func _move_unit(unit: BattleUnit, pos: Vector3):
+	var path = terrain.get_map_path(unit.global_transform.origin, pos)
+	if path.size() > 1:
+		is_action_in_progress = true
+		unit.set_path(path)
+
 func _produce_unit(unit_meta) -> BattleUnit:
 	var unit_scene = BattleConstants.RACES_SCENES[unit_meta["RACE"]]
 	var unit = unit_scene.instance()
 	unit.right_hand = unit_meta["WEAPON"]
 	return unit
 	
-func _spawn_unit(unit: BattleUnit, parent_node: Node, pos: Vector3, rot: float):
+func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3, rot: float):
 	unit.translation = pos
 	unit.rotate_y(rot)
 	parent_node.add_child(unit)
+	unit.connect("on_move_end", self, "_handle_unit_move_end", [unit_id])
+	terrain.occupy_point_with_unit(pos, unit_id)
+
+func _get_unit_meta_by_id(id: int):
+	if team1.has(id):
+		return team1.get(id)
+	return team2.get(id, null)
+	
+func _handle_unit_move_end(unit_id: int):
+	var unit_meta = _get_unit_meta_by_id(unit_id)
+	terrain.occupy_point_with_unit(unit_meta["UNIT"].translation, unit_id)
+	is_action_in_progress = false
+	

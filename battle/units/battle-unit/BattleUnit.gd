@@ -1,6 +1,8 @@
 extends KinematicBody
 class_name BattleUnit
 
+signal on_move_end
+
 const SPEED  := 300
 const LOCOMOTION_ANIMATION = "parameters/Locomotion/blend_amount"
 const ANIMATION_TRANSITION = 0.4
@@ -38,6 +40,7 @@ func _physics_process(delta):
 	if _path.empty() and not _idle:
 		_play_slowdown_animation()
 		_idle = true
+		emit_signal("on_move_end")
 
 
 func _move_along_path(delta) -> void:
