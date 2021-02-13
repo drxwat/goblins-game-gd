@@ -8,7 +8,7 @@
 radius = 0.4
 height = 0.6
 
-[node name="BattleGoblin" instance=ExtResource( 2 )]
+[node name="GoblinBattleUnit" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
 
 [node name="CollisionShape" parent="." index="0"]

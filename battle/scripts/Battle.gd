@@ -47,6 +47,7 @@ func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, rotate = f
 		var team_unit_meta = unit_meta.duplicate()
 		var unit = _produce_unit(team_unit_meta)
 		_spawn_unit(unit, $Units, spawn_point, PI if rotate else 0)
+		terrain.occupy_point_with_unit(spawn_point, unit_id)
 		team_unit_meta["UNIT"] = unit
 		team[unit_id] = team_unit_meta
 		spawn_point = terrain.get_neighbor_walkable_point(spawn_point)
@@ -72,6 +73,7 @@ func _handle_mouse_move(event: InputEvent):
 	var m_position = _get_mouse_projected_position(event.position)
 	if m_position:
 		_move_mouse_hover(m_position)
+		_color_mouse_hover(m_position)
 
 func _move_unit(unit: BattleUnit, pos: Vector3):
 	var path = terrain.get_map_path(unit.global_transform.origin, pos)
@@ -79,6 +81,20 @@ func _move_unit(unit: BattleUnit, pos: Vector3):
 
 func _move_mouse_hover(pos: Vector3):
 	mouse_hover.translation = terrain.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
+
+func _color_mouse_hover(pos: Vector3):
+	var hover_obj = terrain.get_terrain_object(pos)
+	match hover_obj["TYPE"]:
+		BattleConstants.TERRAIN_OBJECTS.FREE:
+			mouse_hover.hover_neutral()
+		BattleConstants.TERRAIN_OBJECTS.OBSTACLE:
+			mouse_hover.hover_obstacle()
+		BattleConstants.TERRAIN_OBJECTS.UNIT:
+			if team1.has(hover_obj["ID"]):
+				mouse_hover.hover_ally()
+			else:
+				mouse_hover.hover_enemy()
+			
 
 func _get_mouse_projected_position(screen_position: Vector2):
 	var from = camera.project_ray_origin(screen_position)
