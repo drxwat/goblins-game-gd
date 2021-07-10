@@ -1,11 +1,27 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://battle/units/goblin/portrait.png" type="Texture" id=1]
 [ext_resource path="res://fonst/20219.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://battle/UI/images/hearts.png" type="Texture" id=3]
 [ext_resource path="res://battle/UI/images/walking-boot.png" type="Texture" id=4]
+[ext_resource path="res://battle/UI/BattleUI.gd" type="Script" id=5]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.482353, 0.482353, 0.482353, 0.203922 )
+border_width_left = 2
+border_width_top = 2
+border_color = Color( 0.8, 0.8, 0.8, 0.835294 )
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="DynamicFont" id=2]
 size = 32
 font_data = ExtResource( 2 )
 
@@ -14,6 +30,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
+script = ExtResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -43,89 +60,94 @@ margin_bottom = 560.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/Units"]
-margin_right = 984.0
-margin_bottom = 560.0
-size_flags_horizontal = 3
-size_flags_vertical = 3
-custom_constants/margin_right = 25
-custom_constants/margin_top = 25
-custom_constants/margin_left = 25
-custom_constants/margin_bottom = 50
+[node name="LeftUnit" type="PanelContainer" parent="MarginContainer/VBoxContainer/Units"]
+margin_right = 124.0
+margin_bottom = 188.0
+size_flags_horizontal = 0
+size_flags_vertical = 2
+custom_styles/panel = SubResource( 1 )
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Units/MarginContainer"]
-margin_left = 25.0
-margin_top = 25.0
-margin_right = 147.0
-margin_bottom = 211.0
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/Units/LeftUnit"]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 124.0
+margin_bottom = 188.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
 custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="Portrait" type="Control" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer"]
-margin_right = 100.0
+[node name="Portrait" type="CenterContainer" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer"]
+margin_right = 122.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
-size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="Sprite" type="Sprite" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer/Portrait"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/Portrait"]
+margin_left = 11.0
+margin_right = 111.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="Sprite" type="Sprite" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/Portrait/Control"]
 position = Vector2( 50, 50 )
 texture = ExtResource( 1 )
 flip_h = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer"]
 margin_top = 110.0
 margin_right = 122.0
 margin_bottom = 143.0
 size_flags_vertical = 0
 custom_constants/separation = 15
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/HBoxContainer"]
 margin_right = 32.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="Sprite" type="Sprite" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer/HBoxContainer/Control"]
+[node name="Sprite" type="Sprite" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/HBoxContainer/Control"]
 position = Vector2( 16, 16 )
 texture = ExtResource( 3 )
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/HBoxContainer"]
 margin_left = 47.0
 margin_right = 122.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "10/10"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer2" type="HBoxContainer" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer"]
 margin_top = 153.0
 margin_right = 122.0
 margin_bottom = 186.0
 custom_constants/separation = 15
 
-[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Control2" type="Control" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/HBoxContainer2"]
 margin_right = 32.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="Sprite" type="Sprite" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer/HBoxContainer2/Control2"]
+[node name="Sprite" type="Sprite" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/HBoxContainer2/Control2"]
 position = Vector2( 16, 16 )
 texture = ExtResource( 4 )
 
-[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Units/MarginContainer/VBoxContainer/HBoxContainer2"]
+[node name="Label2" type="Label" parent="MarginContainer/VBoxContainer/Units/LeftUnit/VBoxContainer/HBoxContainer2"]
 margin_left = 47.0
 margin_right = 122.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 2 )
 text = "3/3"
 __meta__ = {
 "_edit_use_anchors_": false

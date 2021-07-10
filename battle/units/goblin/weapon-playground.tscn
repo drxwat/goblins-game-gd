@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://battle/units/goblin/model/goblin-generic.glb" type="PackedScene" id=1]
+[ext_resource path="res://battle/units/weapon/scene_objects/Mace.tscn" type="PackedScene" id=2]
+
+[node name="goblin-generic" instance=ExtResource( 1 )]
+
+[node name="Skeleton" parent="Armature" index="0"]
+bones/30/bound_children = [ NodePath("BoneAttachment") ]
+
+[node name="BoneAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="4"]
+transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.234627, -0.226973, 0.972389, -0.054241, -34.0632, 4.23172, -36.0197 )
+bone_name = "mixamorig_right_hand"
+
+[node name="Mace00_mesh" parent="Armature/Skeleton/BoneAttachment" index="0" instance=ExtResource( 2 )]
+transform = Transform( 0.567189, 1.87066, -0.423009, -1.91318, 0.520982, -0.261361, -0.134269, 0.478767, 1.9372, -4.21638, 10.4414, 2.72012 )

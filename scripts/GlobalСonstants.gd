@@ -9,7 +9,7 @@ enum RACE { GOBLIN }
 
 enum STATS { STR, AGI, HP, AP, MP }
 
-enum WEAPON { NONE, AXE, SWORD, BOW, SHIELD }
+enum WEAPON { NONE, AXE, MACE, SWORD, BOW, SHIELD }
 
 const RACE_META = {
 	RACE.GOBLIN: {

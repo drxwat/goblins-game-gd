@@ -2,7 +2,7 @@ extends Node2D
 
 
 onready var player: Node2D = get_node("Player")
-onready var tile_map: TileMap = get_node("TileMap")
+onready var tile_map: Node2D = get_node("TileMap")
 onready var units_parent = get_node("Units");
 
 onready var enemy_class := load(GlobalConstants.ENEMY_SCENE_PATH)

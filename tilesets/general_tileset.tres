@@ -16,6 +16,10 @@
 0/tile_mode = 0
 0/occluder_offset = Vector2( 0, 0 )
 0/navigation_offset = Vector2( 0, 0 )
+0/shape_offset = Vector2( 0, 0 )
+0/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+0/shape_one_way = false
+0/shape_one_way_margin = 0.0
 0/shapes = [  ]
 0/z_index = 0
 4/name = "bush-1.png 4"
@@ -26,6 +30,10 @@
 4/tile_mode = 0
 4/occluder_offset = Vector2( 0, -192 )
 4/navigation_offset = Vector2( 0, 0 )
+4/shape_offset = Vector2( 0, 0 )
+4/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+4/shape_one_way = false
+4/shape_one_way_margin = 0.0
 4/shapes = [  ]
 4/z_index = 0
 5/name = "bush-2.png 5"
@@ -36,6 +44,10 @@
 5/tile_mode = 0
 5/occluder_offset = Vector2( 0, -192 )
 5/navigation_offset = Vector2( 0, 0 )
+5/shape_offset = Vector2( 0, 0 )
+5/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+5/shape_one_way = false
+5/shape_one_way_margin = 0.0
 5/shapes = [  ]
 5/z_index = 0
 9/name = "big-tree-light.png 9"
@@ -46,6 +58,10 @@
 9/tile_mode = 0
 9/occluder_offset = Vector2( 0, -192 )
 9/navigation_offset = Vector2( 0, 0 )
+9/shape_offset = Vector2( 0, 0 )
+9/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+9/shape_one_way = false
+9/shape_one_way_margin = 0.0
 9/shapes = [  ]
 9/z_index = 0
 10/name = "big-tree-dark.png 10"
@@ -56,6 +72,10 @@
 10/tile_mode = 0
 10/occluder_offset = Vector2( 0, -192 )
 10/navigation_offset = Vector2( 0, 0 )
+10/shape_offset = Vector2( 0, 0 )
+10/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+10/shape_one_way = false
+10/shape_one_way_margin = 0.0
 10/shapes = [  ]
 10/z_index = 0
 11/name = "big-tree-yello.png 11"
@@ -66,5 +86,9 @@
 11/tile_mode = 0
 11/occluder_offset = Vector2( 0, 0 )
 11/navigation_offset = Vector2( 0, 0 )
+11/shape_offset = Vector2( 0, 0 )
+11/shape_transform = Transform2D( 1, 0, 0, 1, 0, 0 )
+11/shape_one_way = false
+11/shape_one_way_margin = 0.0
 11/shapes = [  ]
 11/z_index = 0

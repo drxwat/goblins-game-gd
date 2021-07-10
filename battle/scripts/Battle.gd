@@ -3,20 +3,29 @@ extends Spatial
 const RAY_LENGTH = 1000
 const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
+const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
+
 onready var camera := $Camera
 onready var terrain := $Terrain
 onready var mouse_hover := $MouseHover
+onready var trace_path := $TracePath
+
 
 var team1_units_meta = {
 	1: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
-	2: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	2: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.MACE },
 	3: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	4: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.MACE },
+	5: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	6: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.MACE },
+	7: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
 }
-var team1_spawn_point = Vector3(1, 0, 9)
+var team1_spawn_point = Vector3(1, 0, 19)
 
 var team2_units_meta = {
-	4: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
-	5: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	41: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	51: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
+	52: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.MACE },
 }
 var team2_spawn_point = Vector3(1, 0, 1)
 
@@ -25,6 +34,8 @@ var team2 := {}
 var selected_unit = null
 var is_action_in_progress := false
 
+var current_hover_cell = Vector3.ZERO
+var trace_path_points := []
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	terrain.set_obstacles($Forest)
@@ -47,6 +58,7 @@ func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, rotate = f
 		var unit_meta = units_meta.get(unit_id)
 		var team_unit_meta = unit_meta.duplicate()
 		var unit = _produce_unit(team_unit_meta)
+		unit.battle_id = unit_id
 		_spawn_unit(unit_id, unit, $Units, spawn_point, PI if rotate else 0)
 		team_unit_meta["UNIT"] = unit
 		team[unit_id] = team_unit_meta
@@ -92,7 +104,7 @@ func _handle_right_mouse_click(event: InputEvent):
 	
 	var m_position = _get_mouse_projected_position(event.position)
 	if m_position and selected_unit:
-		terrain.free_point_from_unit(selected_unit.global_transform.origin)
+#		terrain.free_point_from_unit(selected_unit.global_transform.origin)
 		_move_unit(selected_unit, m_position)
 
 func _handle_mouse_move(event: InputEvent):
@@ -100,8 +112,28 @@ func _handle_mouse_move(event: InputEvent):
 		return
 	var m_position = _get_mouse_projected_position(event.position)
 	if m_position:
+		var hover_cell = terrain.get_map_cell_center(m_position)
+		if hover_cell == current_hover_cell:
+			return
+		current_hover_cell = hover_cell
 		_move_mouse_hover(m_position)
 		_color_mouse_hover(m_position)
+		if selected_unit != null:
+			_draw_trace_path(selected_unit.global_transform.origin, m_position)
+			
+func _draw_trace_path(from: Vector3, to: Vector3):
+	_clear_trace_path()
+	var path_points = terrain.get_map_path(from, to)
+	for point in path_points:
+		var dot = path_dot_scene.instance()
+		dot.translation = point
+		trace_path.add_child(dot)
+		trace_path_points.append(dot)
+
+func _clear_trace_path():
+	for path_point in trace_path_points:
+		path_point.queue_free()
+	trace_path_points.clear()
 
 func _move_mouse_hover(pos: Vector3):
 	mouse_hover.translation = terrain.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
@@ -135,10 +167,12 @@ func _get_mouse_projected_position(screen_position: Vector2):
 #
 
 func _select_unit(unit: BattleUnit):
+	terrain.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
 	
 func _deselect_unit(unit: BattleUnit):
+	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	selected_unit = null
 	unit.set_selected(false)
 

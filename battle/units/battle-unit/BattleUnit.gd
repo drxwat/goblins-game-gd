@@ -11,6 +11,7 @@ const ROTATION_TRANSITION = 0.1
 var _path: PoolVector3Array
 var _idle = true
 var _is_selected := false setget set_selected
+var battle_id: int # available only after battle spawn
 
 onready var animation_tree := $Gfx/AnimationTree
 onready var tween = $Gfx/Tween
@@ -43,6 +44,10 @@ func _physics_process(delta):
 		emit_signal("on_move_end")
 
 
+func set_path(path: PoolVector3Array) -> void:
+	_path = path
+	
+
 func _move_along_path(delta) -> void:
 	var move_vector: Vector3 = _path[0] - global_transform.origin
 	if move_vector.length() < 0.1:
@@ -50,10 +55,6 @@ func _move_along_path(delta) -> void:
 	else:	
 		_rotate_unit(move_vector)
 		move_and_slide(move_vector.normalized() * SPEED * delta, Vector3(0, 1, 0))
-
-
-func set_path(path: PoolVector3Array) -> void:
-	_path = path
 
 func set_selected(value: bool):
 	_is_selected = value
