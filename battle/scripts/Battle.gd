@@ -124,15 +124,18 @@ func _handle_mouse_move(event: InputEvent):
 func _draw_trace_path(from: Vector3, to: Vector3):
 	_clear_trace_path()
 	var path_points = terrain.get_map_path(from, to)
+	path_points.remove(0)
 	for point in path_points:
 		var dot = path_dot_scene.instance()
 		dot.translation = point
 		trace_path.add_child(dot)
-		trace_path_points.append(dot)
+		trace_path_points.append(weakref(dot))
 
 func _clear_trace_path():
 	for path_point in trace_path_points:
-		path_point.queue_free()
+		var path_point_ref = path_point.get_ref()
+		if path_point_ref:
+			path_point_ref.queue_free()
 	trace_path_points.clear()
 
 func _move_mouse_hover(pos: Vector3):
@@ -175,6 +178,7 @@ func _deselect_unit(unit: BattleUnit):
 	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	selected_unit = null
 	unit.set_selected(false)
+	_clear_trace_path()
 
 func _move_unit(unit: BattleUnit, pos: Vector3):
 	var path = terrain.get_map_path(unit.global_transform.origin, pos)
@@ -202,6 +206,6 @@ func _get_unit_meta_by_id(id: int):
 	
 func _handle_unit_move_end(unit_id: int):
 	var unit_meta = _get_unit_meta_by_id(unit_id)
-	terrain.occupy_point_with_unit(unit_meta["UNIT"].translation, unit_id)
+#	terrain.occupy_point_with_unit(unit_meta["UNIT"].translation, unit_id)
 	is_action_in_progress = false
 	

@@ -13,6 +13,7 @@ bottom_radius = 0.6
 height = 0.001
 
 [node name="BattleUnit" type="KinematicBody"]
+collision_layer = 2
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]

@@ -1115,6 +1115,10 @@ ToggleCameraAction={
  ]
 }
 
+[layer_names]
+
+3d_physics/layer_2="units"
+
 [rendering]
 
 environment/default_environment="res://default_env.tres"
