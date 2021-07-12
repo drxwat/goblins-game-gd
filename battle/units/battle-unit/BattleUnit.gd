@@ -2,9 +2,14 @@ extends KinematicBody
 class_name BattleUnit
 
 signal on_move_end
+signal on_attack_end
+signal on_dead
 
 const SPEED  := 300
+const MAX_HP := 20
 const LOCOMOTION_ANIMATION = "parameters/Locomotion/blend_amount"
+const MELE_ATTACK_ANIMATION = "parameters/Slash/active"
+const MELE_ATTACK_ANIMATION_NAME = "slash"
 const ANIMATION_TRANSITION = 0.4
 const ROTATION_TRANSITION = 0.1
 
@@ -12,6 +17,8 @@ var _path: PoolVector3Array
 var _idle = true
 var _is_selected := false setget set_selected
 var battle_id: int # available only after battle spawn
+var hp := MAX_HP
+var is_dead := false
 
 onready var animation_tree := $Gfx/AnimationTree
 onready var tween = $Gfx/Tween
@@ -32,6 +39,8 @@ func _ready():
 
 
 func _physics_process(delta):
+	if is_dead:
+		return
 	if not _path.empty():
 		# Start Blended Animation
 		if _idle:
@@ -43,10 +52,33 @@ func _physics_process(delta):
 		_idle = true
 		emit_signal("on_move_end")
 
-
 func set_path(path: PoolVector3Array) -> void:
 	_path = path
 	
+func attack(unit: BattleUnit):
+	unit.take_damage(calculate_damage(self, unit))
+
+func mele_attack(unit: BattleUnit):
+	animation_tree[MELE_ATTACK_ANIMATION] = true
+	attack(unit)
+
+func range_attack(unit: BattleUnit):
+	pass
+
+func take_damage(damage: int):
+	hp -= damage
+	if hp <= 0:
+		die()
+
+func die():
+	is_dead = true
+
+func calculate_damage(attacker: BattleUnit, victim: BattleUnit):
+	return 3
+
+func handle_animation_finish(animation_name: String):
+	if animation_name == MELE_ATTACK_ANIMATION:
+		emit_signal("on_attack_end")
 
 func _move_along_path(delta) -> void:
 	var move_vector: Vector3 = _path[0] - global_transform.origin

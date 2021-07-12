@@ -8,22 +8,22 @@ animation = "idle-loop"
 
 [sub_resource type="AnimationNodeBlend2" id=3]
 
-[sub_resource type="AnimationNodeOneShot" id=4]
-
 [sub_resource type="AnimationNodeAnimation" id=5]
 animation = "run-loop"
 
+[sub_resource type="AnimationNodeOneShot" id=4]
+
 [resource]
-graph_offset = Vector2( 0, -84 )
+graph_offset = Vector2( -47.5, 146.83 )
 nodes/Attack/node = SubResource( 1 )
 nodes/Attack/position = Vector2( 220, 140 )
 nodes/Idle/node = SubResource( 2 )
 nodes/Idle/position = Vector2( 220, -40 )
 nodes/Locomotion/node = SubResource( 3 )
 nodes/Locomotion/position = Vector2( 660, 200 )
-nodes/OneShot/node = SubResource( 4 )
-nodes/OneShot/position = Vector2( 420, 40 )
 nodes/Run/node = SubResource( 5 )
 nodes/Run/position = Vector2( 420, 300 )
+nodes/Slash/node = SubResource( 4 )
+nodes/Slash/position = Vector2( 420, 40 )
 nodes/output/position = Vector2( 920, 220 )
-node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "OneShot", "Locomotion", 1, "Run", "OneShot", 0, "Idle", "OneShot", 1, "Attack" ]
+node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "Slash", "Locomotion", 1, "Run", "Slash", 0, "Idle", "Slash", 1, "Attack" ]

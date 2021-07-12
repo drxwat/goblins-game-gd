@@ -6,11 +6,11 @@
 [node name="goblin-generic" instance=ExtResource( 1 )]
 
 [node name="RightHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="4"]
-transform = Transform( 0.176882, 0.0445839, 0.983221, 0.971193, 0.154159, -0.181708, -0.159674, 0.987039, -0.0160313, -34.5116, 4.04697, -36.2621 )
+transform = Transform( 0.214947, 0.155717, 0.964131, 0.953059, 0.182115, -0.241892, -0.213249, 0.970868, -0.109263, -32.5591, 4.37872, -37.3464 )
 bone_name = "mixamorig_right_hand"
 
 [node name="LeftHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="5"]
-transform = Transform( 0.93722, -0.120768, -0.327159, -0.162128, 0.679692, -0.715355, 0.30876, 0.723487, 0.617441, 14.3549, 44.9574, -37.8859 )
+transform = Transform( 0.938991, -0.170374, -0.298777, -0.141683, 0.599948, -0.787393, 0.313402, 0.781687, 0.539207, 15.7423, 46.2098, -40.5807 )
 bone_name = "mixamorig_left_hand"
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2"]
@@ -18,6 +18,6 @@ tree_root = ExtResource( 2 )
 anim_player = NodePath("../AnimationPlayer")
 active = true
 parameters/Locomotion/blend_amount = 0.0
-parameters/OneShot/active = false
+parameters/Slash/active = false
 
 [node name="Tween" type="Tween" parent="." index="3"]

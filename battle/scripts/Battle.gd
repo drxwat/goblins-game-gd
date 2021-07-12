@@ -205,6 +205,8 @@ func _deselect_unit(unit: BattleUnit):
 
 func _move_unit(unit: BattleUnit, pos: Vector3):
 	var path = terrain.get_map_path(unit.global_transform.origin, pos)
+	if hovered_enemy:
+		path.resize(path.size() - 1)
 	if path.size() > 1:
 		is_action_in_progress = true
 		unit.set_path(path)
@@ -233,6 +235,8 @@ func _get_unit_meta_by_id(id: int):
 	
 func _handle_unit_move_end(unit_id: int):
 	var unit_meta = _get_unit_meta_by_id(unit_id)
+	if hovered_enemy:
+		unit_meta["UNIT"].mele_attack(hovered_enemy)
 #	terrain.occupy_point_with_unit(unit_meta["UNIT"].translation, unit_id)
 	is_action_in_progress = false
 	
