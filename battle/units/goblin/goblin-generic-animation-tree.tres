@@ -26,4 +26,4 @@ nodes/OneShot/position = Vector2( 420, 40 )
 nodes/Run/node = SubResource( 5 )
 nodes/Run/position = Vector2( 420, 300 )
 nodes/output/position = Vector2( 920, 220 )
-node_connections = [ "output", 0, "Locomotion", "OneShot", 0, "Idle", "OneShot", 1, "Attack", "Locomotion", 0, "OneShot", "Locomotion", 1, "Run" ]
+node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "OneShot", "Locomotion", 1, "Run", "OneShot", 0, "Idle", "OneShot", 1, "Attack" ]

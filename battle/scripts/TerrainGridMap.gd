@@ -26,13 +26,19 @@ func set_obstacles(obstacles_map: GridMap):
 		var point_id = astar.get_closest_point(obstacles_map.map_to_world(cell.x, cell.y, cell.z))
 		astar.set_point_disabled(point_id)
 		_register_terrain_object(cell, BattleConstants.TERRAIN_OBJECTS.OBSTACLE, 0)
-		
-func occupy_point_with_unit(point: Vector3, unit_id: int):
+
+func register_unit(point: Vector3, unit_id: int):
 	_register_terrain_object(world_to_map(point), BattleConstants.TERRAIN_OBJECTS.UNIT, unit_id)
+
+func unregister_unit(point: Vector3):
+	_unregister_terrain_object(point)
+
+func occupy_point_with_unit(point: Vector3, unit_id: int):
+#	_register_terrain_object(world_to_map(point), BattleConstants.TERRAIN_OBJECTS.UNIT, unit_id)
 	astar.set_point_disabled(astar.get_closest_point(point))
 	
 func free_point_from_unit(point: Vector3):
-	_unregister_terrain_object(world_to_map(point))
+#	_unregister_terrain_object(world_to_map(point))
 	astar.set_point_disabled(astar.get_closest_point(point, true), false)
 
 func is_point_walkable(point: Vector3) -> bool:

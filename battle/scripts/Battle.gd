@@ -36,6 +36,7 @@ var is_action_in_progress := false
 
 var current_hover_cell = Vector3.ZERO
 var trace_path_points := []
+var hovered_enemy: BattleUnit = null
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	terrain.set_obstacles($Forest)
@@ -43,12 +44,12 @@ func _ready():
 		push_error("Team1 spawn point %s is not walkable" % team1_spawn_point)
 	if !terrain.is_point_walkable(team2_spawn_point):
 		push_error("Team2 spawn point %s is not walkable" % team2_spawn_point)
-	team1 = _init_team(team1_units_meta, team1_spawn_point, true)
-	team2 = _init_team(team2_units_meta, team2_spawn_point)
+	team1 = _init_team(team1_units_meta, team1_spawn_point)
+	team2 = _init_team(team2_units_meta, team2_spawn_point, true)
 #	battle_manager.initialize_battle(team1_units, team2_units, Vector3(1, 0, 9), Vector3(1, 0 ,1))
 
 # Creates and spawns units of the team
-func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, rotate = false) -> Dictionary:
+func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, enemy = false) -> Dictionary:
 	var team := {}
 	var spawn_point = initial_spawn_point
 	for unit_id in units_meta.keys():
@@ -59,7 +60,7 @@ func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, rotate = f
 		var team_unit_meta = unit_meta.duplicate()
 		var unit = _produce_unit(team_unit_meta)
 		unit.battle_id = unit_id
-		_spawn_unit(unit_id, unit, $Units, spawn_point, PI if rotate else 0)
+		_spawn_unit(unit_id, unit, $Units, spawn_point, PI if not enemy else 0)
 		team_unit_meta["UNIT"] = unit
 		team[unit_id] = team_unit_meta
 		spawn_point = terrain.get_neighbor_walkable_point(spawn_point)
@@ -85,6 +86,8 @@ func _handle_left_mouse_click(event: InputEvent):
 	if !m_position:
 		return
 	var hover_obj = terrain.get_terrain_object(m_position)
+	if not _is_ally(hover_obj["ID"]):
+		return
 	if hover_obj["TYPE"] != BattleConstants.TERRAIN_OBJECTS.UNIT and selected_unit:
 		_deselect_unit(selected_unit)
 		return
@@ -115,6 +118,17 @@ func _handle_mouse_move(event: InputEvent):
 		var hover_cell = terrain.get_map_cell_center(m_position)
 		if hover_cell == current_hover_cell:
 			return
+		var hover_obj = terrain.get_terrain_object(m_position)
+		if hover_obj["TYPE"] == BattleConstants.TERRAIN_OBJECTS.UNIT and not _is_ally(hover_obj["ID"]):
+			print(hover_obj)
+			var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
+			var unit = unit_meta["UNIT"]
+			print(unit)
+			if unit != hovered_enemy:
+				_occupy_enemy_unit_point()
+			_free_enemy_unit_point(unit)
+		elif hovered_enemy:
+			_occupy_enemy_unit_point()
 		current_hover_cell = hover_cell
 		_move_mouse_hover(m_position)
 		_color_mouse_hover(m_position)
@@ -141,6 +155,15 @@ func _clear_trace_path():
 func _move_mouse_hover(pos: Vector3):
 	mouse_hover.translation = terrain.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
 
+func _free_enemy_unit_point(unit: BattleUnit):
+	hovered_enemy = unit
+	terrain.free_point_from_unit(unit.global_transform.origin)
+
+func _occupy_enemy_unit_point():
+	if hovered_enemy:
+		terrain.occupy_point_with_unit(hovered_enemy.global_transform.origin, hovered_enemy.battle_id)
+		hovered_enemy = null
+
 func _color_mouse_hover(pos: Vector3):
 	var hover_obj = terrain.get_terrain_object(pos)
 	match hover_obj["TYPE"]:
@@ -149,7 +172,7 @@ func _color_mouse_hover(pos: Vector3):
 		BattleConstants.TERRAIN_OBJECTS.OBSTACLE:
 			mouse_hover.hover_obstacle()
 		BattleConstants.TERRAIN_OBJECTS.UNIT:
-			if team1.has(hover_obj["ID"]):
+			if _is_ally(hover_obj["ID"]):
 				mouse_hover.hover_ally()
 			else:
 				mouse_hover.hover_enemy()
@@ -197,10 +220,14 @@ func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3
 	unit.rotate_y(rot)
 	parent_node.add_child(unit)
 	unit.connect("on_move_end", self, "_handle_unit_move_end", [unit_id])
+	terrain.register_unit(pos, unit_id)
 	terrain.occupy_point_with_unit(pos, unit_id)
 
+func _is_ally(id: int):
+	return team1.has(id)
+
 func _get_unit_meta_by_id(id: int):
-	if team1.has(id):
+	if _is_ally(id):
 		return team1.get(id)
 	return team2.get(id, null)
 	
