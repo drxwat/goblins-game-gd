@@ -1,4 +1,4 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://battle/units/goblin/goblin-gfx.tscn" type="PackedScene" id=1]
 [ext_resource path="res://battle/units/battle-unit/BattleUnit.tscn" type="PackedScene" id=2]
@@ -7,6 +7,8 @@
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.4
 height = 0.6
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
 
 [node name="GoblinBattleUnit" instance=ExtResource( 2 )]
 script = ExtResource( 3 )
@@ -17,3 +19,14 @@ shape = SubResource( 1 )
 
 [node name="Gfx" parent="." index="1" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.230514 )
+
+[node name="RightHandAttachment" parent="Gfx/Armature/Skeleton" index="4"]
+transform = Transform( -0.804578, -0.429086, 0.410535, 0.546711, -0.265286, 0.794185, -0.231864, 0.863428, 0.448029, -31.0712, -17.6208, -36.576 )
+
+[node name="LeftHandAttachment" parent="Gfx/Armature/Skeleton" index="5"]
+transform = Transform( 0.81822, -0.0714628, -0.570446, -0.451271, 0.53492, -0.714294, 0.356188, 0.841875, 0.405433, 7.54494, 65.6448, -36.1624 )
+
+[node name="AnimationTree" parent="Gfx" index="2"]
+parameters/Actions/playback = SubResource( 2 )
+
+[editable path="Gfx"]

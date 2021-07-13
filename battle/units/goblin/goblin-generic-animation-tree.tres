@@ -1,29 +1,56 @@
-[gd_resource type="AnimationNodeBlendTree" load_steps=6 format=2]
+[gd_resource type="AnimationNodeBlendTree" load_steps=11 format=2]
 
 [sub_resource type="AnimationNodeAnimation" id=1]
-animation = "slash"
+animation = "bow-shot"
 
 [sub_resource type="AnimationNodeAnimation" id=2]
 animation = "idle-loop"
 
-[sub_resource type="AnimationNodeBlend2" id=3]
+[sub_resource type="AnimationNodeAnimation" id=3]
+animation = "react"
 
-[sub_resource type="AnimationNodeAnimation" id=5]
+[sub_resource type="AnimationNodeAnimation" id=4]
+animation = "slash"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=5]
+switch_mode = 2
+auto_advance = true
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=6]
+switch_mode = 2
+auto_advance = true
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id=7]
+switch_mode = 2
+auto_advance = true
+xfade_time = 0.2
+
+[sub_resource type="AnimationNodeStateMachine" id=8]
+states/bow-shot/node = SubResource( 1 )
+states/bow-shot/position = Vector2( -254.617, -9.388 )
+states/idle-loop/node = SubResource( 2 )
+states/idle-loop/position = Vector2( -435.617, 77 )
+states/react/node = SubResource( 3 )
+states/react/position = Vector2( -254.617, 77 )
+states/slash/node = SubResource( 4 )
+states/slash/position = Vector2( -281.617, 182 )
+transitions = [ "slash", "idle-loop", SubResource( 5 ), "bow-shot", "idle-loop", SubResource( 6 ), "react", "idle-loop", SubResource( 7 ) ]
+graph_offset = Vector2( -729.617, -26.844 )
+
+[sub_resource type="AnimationNodeBlend2" id=9]
+
+[sub_resource type="AnimationNodeAnimation" id=10]
 animation = "run-loop"
 
-[sub_resource type="AnimationNodeOneShot" id=4]
-
 [resource]
-graph_offset = Vector2( -47.5, 146.83 )
-nodes/Attack/node = SubResource( 1 )
-nodes/Attack/position = Vector2( 220, 140 )
-nodes/Idle/node = SubResource( 2 )
-nodes/Idle/position = Vector2( 220, -40 )
-nodes/Locomotion/node = SubResource( 3 )
-nodes/Locomotion/position = Vector2( 660, 200 )
-nodes/Run/node = SubResource( 5 )
-nodes/Run/position = Vector2( 420, 300 )
-nodes/Slash/node = SubResource( 4 )
-nodes/Slash/position = Vector2( 420, 40 )
+graph_offset = Vector2( -139.866, 46.2379 )
+nodes/Actions/node = SubResource( 8 )
+nodes/Actions/position = Vector2( 400, 60 )
+nodes/Locomotion/node = SubResource( 9 )
+nodes/Locomotion/position = Vector2( 660, 220 )
+nodes/Run/node = SubResource( 10 )
+nodes/Run/position = Vector2( 360, 380 )
 nodes/output/position = Vector2( 920, 220 )
-node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "Slash", "Locomotion", 1, "Run", "Slash", 0, "Idle", "Slash", 1, "Attack" ]
+node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "Actions", "Locomotion", 1, "Run" ]
