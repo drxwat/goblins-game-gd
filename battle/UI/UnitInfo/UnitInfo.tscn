@@ -1,0 +1,132 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://battle/UI/images/walking-boot.png" type="Texture" id=1]
+[ext_resource path="res://battle/UI/images/hearts.png" type="Texture" id=2]
+[ext_resource path="res://fonst/20219.ttf" type="DynamicFontData" id=3]
+[ext_resource path="res://battle/UI/UnitInfo/UnitInfo.gd" type="Script" id=4]
+
+[sub_resource type="StyleBoxFlat" id=1]
+bg_color = Color( 0.482353, 0.482353, 0.482353, 0.203922 )
+border_width_left = 2
+border_width_top = 2
+border_color = Color( 0.8, 0.8, 0.8, 0.835294 )
+border_blend = true
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+expand_margin_left = 5.0
+expand_margin_right = 5.0
+expand_margin_top = 5.0
+expand_margin_bottom = 5.0
+
+[sub_resource type="DynamicFont" id=2]
+size = 32
+font_data = ExtResource( 3 )
+
+[node name="UnitInfo" type="PanelContainer"]
+margin_right = 124.0
+margin_bottom = 188.0
+size_flags_horizontal = 0
+size_flags_vertical = 2
+custom_styles/panel = SubResource( 1 )
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+margin_right = 124.0
+margin_bottom = 188.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+custom_constants/separation = 10
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Portrait" type="CenterContainer" parent="VBoxContainer"]
+margin_right = 122.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+size_flags_vertical = 0
+
+[node name="Control" type="Control" parent="VBoxContainer/Portrait"]
+margin_left = 11.0
+margin_right = 111.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 100, 100 )
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Portrait/Control"]
+margin_right = 100.0
+margin_bottom = 100.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 110.0
+margin_right = 122.0
+margin_bottom = 143.0
+size_flags_vertical = 0
+custom_constants/separation = 15
+
+[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthPoints" type="Label" parent="VBoxContainer/HBoxContainer"]
+margin_left = 47.0
+margin_right = 122.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "10/10"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 153.0
+margin_right = 122.0
+margin_bottom = 186.0
+custom_constants/separation = 15
+
+[node name="Control2" type="Control" parent="VBoxContainer/HBoxContainer2"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/Control2"]
+margin_right = 40.0
+margin_bottom = 40.0
+texture = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MovePoints" type="Label" parent="VBoxContainer/HBoxContainer2"]
+margin_left = 47.0
+margin_right = 122.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "3/3"
+__meta__ = {
+"_edit_use_anchors_": false
+}

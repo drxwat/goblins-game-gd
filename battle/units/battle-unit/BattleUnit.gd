@@ -10,12 +10,13 @@ class_name BattleUnit
 #
 
 signal on_move_end
+signal on_move_step
 signal on_attack_end
 signal on_take_damage_end
 signal on_dead
 
 const SPEED  := 300
-const MAX_HP := 20
+
 const LOCOMOTION_ANIMATION = "parameters/Locomotion/blend_amount"
 const ACTIONS_ANIMATION = "parameters/Actions/playback"
 const MELE_ATTACK_ANIMATION_NAME = "slash"
@@ -26,14 +27,24 @@ const ROTATION_TRANSITION = 0.1
 onready var animation_tree := $Gfx/AnimationTree
 onready var tween = $Gfx/Tween
 
+
+# STATS INITIAL
+var max_hp := 20
+var max_move_points := 6
+
+# STATS
+var hp := max_hp
+var move_points := max_move_points
+
 var _path: PoolVector3Array
 var _idle = true
 var _is_selected := false setget set_selected
 var battle_id: int # available only after battle spawn
-var hp := MAX_HP
+
 var is_dead := false
 var current_animation
 var actions_state_machine
+
 
 export(GlobalConstants.WEAPON) var right_hand = GlobalConstants.WEAPON.NONE
 export (GlobalConstants.WEAPON) var left_hand = GlobalConstants.WEAPON.NONE
@@ -64,6 +75,9 @@ func _physics_process(delta):
 		_play_slowdown_animation()
 		_idle = true
 		emit_signal("on_move_end")
+
+func next_turn_update(): # APPLY EFFECTS, REGENT, POISON etc
+	move_points = max_move_points
 
 func set_path(path: PoolVector3Array) -> void:
 	_path = path

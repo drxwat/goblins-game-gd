@@ -9,6 +9,7 @@ onready var camera := $Camera
 onready var terrain := $Terrain
 onready var mouse_hover := $MouseHover
 onready var trace_path := $TracePath
+onready var battleUI: = $BattleUI
 
 
 var team1_units_meta = {
@@ -37,6 +38,10 @@ var is_action_in_progress := false
 var current_hover_cell = Vector3.ZERO
 var trace_path_points := []
 var hovered_enemy: BattleUnit = null
+
+var turn_number := 1
+var is_enemy_turn := false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	terrain.set_obstacles($Forest)
@@ -67,6 +72,19 @@ func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, enemy = fa
 	return team
 
 #
+# Turn Managment
+#
+
+func handle_next_turn():
+	# TODO iterate over all unit and call next_turn_update
+	pass
+
+func _ai_turn():
+	# TODO: make AI turn
+	turn_number += 1 # TODO: display turn number
+	is_enemy_turn = false
+	battleUI.enable_next_turn_button()
+#
 # MOUSE INPUT
 #
 
@@ -86,10 +104,11 @@ func _handle_left_mouse_click(event: InputEvent):
 	if !m_position:
 		return
 	var hover_obj = terrain.get_terrain_object(m_position)
-	if not _is_ally(hover_obj["ID"]):
-		return
 	if hover_obj["TYPE"] != BattleConstants.TERRAIN_OBJECTS.UNIT and selected_unit:
+		print("DESELECT")
 		_deselect_unit(selected_unit)
+		return
+	if not _is_ally(hover_obj["ID"]):
 		return
 	if hover_obj["TYPE"] == BattleConstants.TERRAIN_OBJECTS.UNIT:
 		var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
@@ -120,21 +139,21 @@ func _handle_mouse_move(event: InputEvent):
 			return
 		var hover_obj = terrain.get_terrain_object(m_position)
 		if hover_obj["TYPE"] == BattleConstants.TERRAIN_OBJECTS.UNIT and not _is_ally(hover_obj["ID"]):
-			print(hover_obj)
 			var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
 			var unit = unit_meta["UNIT"]
-			print(unit)
 			if unit != hovered_enemy:
+				battleUI.display_enemy_info(unit)
 				_occupy_enemy_unit_point()
 			_free_enemy_unit_point(unit)
 		elif hovered_enemy:
 			_occupy_enemy_unit_point()
+			battleUI.hide_enemy_info()
 		current_hover_cell = hover_cell
 		_move_mouse_hover(m_position)
 		_color_mouse_hover(m_position)
 		if selected_unit != null:
 			_draw_trace_path(selected_unit.global_transform.origin, m_position)
-			
+
 func _draw_trace_path(from: Vector3, to: Vector3):
 	_clear_trace_path()
 	var path_points = terrain.get_map_path(from, to)
@@ -176,7 +195,6 @@ func _color_mouse_hover(pos: Vector3):
 				mouse_hover.hover_ally()
 			else:
 				mouse_hover.hover_enemy()
-			
 
 func _get_mouse_projected_position(screen_position: Vector2):
 	var from = camera.project_ray_origin(screen_position)
@@ -196,12 +214,14 @@ func _select_unit(unit: BattleUnit):
 	terrain.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
+	battleUI.display_unit_info(unit)
 	
 func _deselect_unit(unit: BattleUnit):
 	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
+	battleUI.hide_unit_info()
 
 func _move_unit(unit: BattleUnit, pos: Vector3):
 	var path = terrain.get_map_path(unit.global_transform.origin, pos)
@@ -239,4 +259,4 @@ func _handle_unit_move_end(unit_id: int):
 		unit_meta["UNIT"].mele_attack(hovered_enemy)
 #	terrain.occupy_point_with_unit(unit_meta["UNIT"].translation, unit_id)
 	is_action_in_progress = false
-	
+
