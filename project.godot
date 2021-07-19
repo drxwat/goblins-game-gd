@@ -24,6 +24,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://scripts/units/enemy.gd"
 }, {
+"base": "MeshInstance",
+"class": "PathDot",
+"language": "GDScript",
+"path": "res://battle/terrain/path_dot/PathDot.gd"
+}, {
 "base": "Enemy",
 "class": "Trader",
 "language": "GDScript",
@@ -38,6 +43,7 @@ _global_script_class_icons={
 "BattleUnit": "",
 "CameraController": "",
 "Enemy": "",
+"PathDot": "",
 "Trader": "",
 "Unit": ""
 }

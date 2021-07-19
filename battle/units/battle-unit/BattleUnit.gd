@@ -21,6 +21,7 @@ const LOCOMOTION_ANIMATION = "parameters/Locomotion/blend_amount"
 const ACTIONS_ANIMATION = "parameters/Actions/playback"
 const MELE_ATTACK_ANIMATION_NAME = "slash"
 const TAKE_DAMAGE_ANIMATION_NAME = "react"
+const DIE_ANIMATION_NAME = "death"
 const ANIMATION_TRANSITION = 0.4
 const ROTATION_TRANSITION = 0.1
 
@@ -30,7 +31,7 @@ onready var tween = $Gfx/Tween
 
 # STATS INITIAL
 var max_hp := 20
-var max_move_points := 6
+var max_move_points := 9
 
 # STATS
 var hp := max_hp
@@ -101,10 +102,12 @@ func take_damage(damage: int):
 	_play_action_animation(TAKE_DAMAGE_ANIMATION_NAME)
 
 func die():
+	_play_animation(DIE_ANIMATION_NAME)
+	emit_signal("on_dead")
 	is_dead = true
 
 func calculate_damage(attacker: BattleUnit, victim: BattleUnit):
-	return 3
+	return 21
 
 func set_selected(value: bool):
 	_is_selected = value

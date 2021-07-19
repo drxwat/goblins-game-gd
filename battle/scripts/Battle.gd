@@ -2,6 +2,7 @@ extends Spatial
 
 const RAY_LENGTH = 1000
 const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
+const MOVE_AREAS := 3.0
 
 const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
 
@@ -152,17 +153,34 @@ func _handle_mouse_move(event: InputEvent):
 		_move_mouse_hover(m_position)
 		_color_mouse_hover(m_position)
 		if selected_unit != null:
-			_draw_trace_path(selected_unit.global_transform.origin, m_position)
+			_draw_trace_path(selected_unit, selected_unit.global_transform.origin, m_position)
 
-func _draw_trace_path(from: Vector3, to: Vector3):
+func _draw_trace_path(unit: BattleUnit, from: Vector3, to: Vector3):
 	_clear_trace_path()
 	var path_points = terrain.get_map_path(from, to)
 	path_points.remove(0)
+
+	var i = 0
 	for point in path_points:
 		var dot = path_dot_scene.instance()
+		dot.set_path_color(_get_current_trace_path_color(unit, unit.max_move_points - unit.move_points + i + 1))
 		dot.translation = point
 		trace_path.add_child(dot)
 		trace_path_points.append(weakref(dot))
+		i += 1
+
+func _get_current_trace_path_color(unit: BattleUnit, spend_points):
+	var area_points = unit.max_move_points / MOVE_AREAS
+	if spend_points >= unit.max_move_points:
+		return PathDot.PathDotColor.WHITE
+	
+	if spend_points <= area_points:
+		return PathDot.PathDotColor.GREEN
+	elif spend_points <= area_points * 2:
+		return PathDot.PathDotColor.YELLOW
+	else:
+		return PathDot.PathDotColor.RED
+		
 
 func _clear_trace_path():
 	for path_point in trace_path_points:
@@ -236,12 +254,13 @@ func _produce_unit(unit_meta) -> BattleUnit:
 	var unit = unit_scene.instance()
 	unit.right_hand = unit_meta["WEAPON"]
 	return unit
-	
+
 func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3, rot: float):
 	unit.translation = pos
 	unit.rotate_y(rot)
 	parent_node.add_child(unit)
 	unit.connect("on_move_end", self, "_handle_unit_move_end", [unit_id])
+	unit.connect("on_dead", self, "_handle_unit_death", [unit_id])
 	terrain.register_unit(pos, unit_id)
 	terrain.occupy_point_with_unit(pos, unit_id)
 
@@ -257,6 +276,10 @@ func _handle_unit_move_end(unit_id: int):
 	var unit_meta = _get_unit_meta_by_id(unit_id)
 	if hovered_enemy:
 		unit_meta["UNIT"].mele_attack(hovered_enemy)
-#	terrain.occupy_point_with_unit(unit_meta["UNIT"].translation, unit_id)
 	is_action_in_progress = false
 
+func _handle_unit_death(unit_id: int):
+	var unit_meta = _get_unit_meta_by_id(unit_id)
+	var point = unit_meta["UNIT"].global_transform.origin
+	terrain.unregister_unit(point)
+	terrain.free_point_from_unit(point)
