@@ -59,7 +59,7 @@ margin_right = 111.0
 margin_bottom = 100.0
 rect_min_size = Vector2( 100, 100 )
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/Portrait/Control"]
+[node name="Portrait" type="TextureRect" parent="VBoxContainer/Portrait/Control"]
 margin_right = 100.0
 margin_bottom = 100.0
 __meta__ = {

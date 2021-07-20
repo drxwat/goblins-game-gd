@@ -40,6 +40,7 @@ size_flags_vertical = 3
 
 [node name="UnitInfo" parent="MarginContainer/VBoxContainer/Units" instance=ExtResource( 1 )]
 visible = false
+is_mirrored = true
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/Units"]
 margin_right = 984.0

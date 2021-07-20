@@ -31,7 +31,7 @@ func register_unit(point: Vector3, unit_id: int):
 	_register_terrain_object(world_to_map(point), BattleConstants.TERRAIN_OBJECTS.UNIT, unit_id)
 
 func unregister_unit(point: Vector3):
-	_unregister_terrain_object(point)
+	_unregister_terrain_object(world_to_map(point))
 
 func occupy_point_with_unit(point: Vector3, unit_id: int):
 	print('register')

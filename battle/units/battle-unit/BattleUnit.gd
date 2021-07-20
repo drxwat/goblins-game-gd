@@ -115,6 +115,10 @@ func set_selected(value: bool):
 		$Selection.show()
 	else:
 		$Selection.hide()
+		
+# Overwrite in child class in order to get battle UI portrait
+func get_portrait() -> Texture:
+	return null
 
 func _play_animation(animation_name):
 	actions_state_machine.start(animation_name)

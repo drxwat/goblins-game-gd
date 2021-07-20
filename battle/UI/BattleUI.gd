@@ -9,11 +9,13 @@ signal next_turn_pressed
 func display_unit_info(unit: BattleUnit):
 	unit_info.update_hp(unit.hp, unit.max_hp)
 	unit_info.update_move_points(unit.move_points, unit.max_move_points)
+	unit_info.set_portrait(unit.get_portrait())
 	unit_info.visible = true
 
 func display_enemy_info(unit: BattleUnit):
 	enemy_info.update_hp(unit.hp, unit.max_hp)
 	enemy_info.update_move_points(unit.move_points, unit.max_move_points)
+	enemy_info.set_portrait(unit.get_portrait())
 	enemy_info.visible = true
 
 func hide_unit_info():

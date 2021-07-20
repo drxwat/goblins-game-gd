@@ -146,7 +146,7 @@ func _handle_mouse_move(event: InputEvent):
 				battleUI.display_enemy_info(unit)
 				_occupy_enemy_unit_point()
 			_free_enemy_unit_point(unit)
-		elif hovered_enemy:
+		elif hovered_enemy and not hovered_enemy.is_dead:
 			_occupy_enemy_unit_point()
 			battleUI.hide_enemy_info()
 		current_hover_cell = hover_cell
@@ -283,3 +283,6 @@ func _handle_unit_death(unit_id: int):
 	var point = unit_meta["UNIT"].global_transform.origin
 	terrain.unregister_unit(point)
 	terrain.free_point_from_unit(point)
+	if hovered_enemy == unit_meta["UNIT"]:
+		hovered_enemy = null
+		battleUI.hide_enemy_info()
