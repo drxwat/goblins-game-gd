@@ -81,6 +81,8 @@ func next_turn_update(): # APPLY EFFECTS, REGENT, POISON etc
 	move_points = max_move_points
 
 func set_path(path: PoolVector3Array) -> void:
+	if move_points < path.size():
+		path.resize(move_points)
 	_path = path
 	
 func attack(unit: BattleUnit):
@@ -142,6 +144,8 @@ func _check_animation_end():
 func _move_along_path(delta) -> void:
 	var move_vector: Vector3 = _path[0] - global_transform.origin
 	if move_vector.length() < 0.1:
+		move_points -= 1
+		emit_signal("on_move_step")
 		_path.remove(0)
 	else:	
 		_rotate_unit(move_vector)

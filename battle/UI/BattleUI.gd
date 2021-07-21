@@ -26,7 +26,8 @@ func hide_enemy_info():
 
 func on_next_turn_press():
 	emit_signal("next_turn_pressed")
-	next_turn_btn.disabled = true
+#	next_turn_btn.disabled = true
 
 func enable_next_turn_button():
-	next_turn_btn.disabled = false
+#	next_turn_btn.disabled = false
+	pass

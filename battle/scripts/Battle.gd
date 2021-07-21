@@ -76,15 +76,25 @@ func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, enemy = fa
 # Turn Managment
 #
 
-func handle_next_turn():
-	# TODO iterate over all unit and call next_turn_update
-	pass
+func end_turn():
+	is_enemy_turn = true
+	is_action_in_progress = true
+	ai_turn()
+	start_next_turn()
 
-func _ai_turn():
-	# TODO: make AI turn
-	turn_number += 1 # TODO: display turn number
+func ai_turn():
+	# TODO: make async AI turn
 	is_enemy_turn = false
+
+func start_next_turn():
+	is_action_in_progress = false
+	turn_number += 1 # TODO: display turn number
+	for unit_id in team1:
+		team1[unit_id].next_turn_update()
+	for unit_id in team2:
+		team2[unit_id].next_turn_update()
 	battleUI.enable_next_turn_button()
+
 #
 # MOUSE INPUT
 #
@@ -106,7 +116,6 @@ func _handle_left_mouse_click(event: InputEvent):
 		return
 	var hover_obj = terrain.get_terrain_object(m_position)
 	if hover_obj["TYPE"] != BattleConstants.TERRAIN_OBJECTS.UNIT and selected_unit:
-		print("DESELECT")
 		_deselect_unit(selected_unit)
 		return
 	if not _is_ally(hover_obj["ID"]):
@@ -171,7 +180,7 @@ func _draw_trace_path(unit: BattleUnit, from: Vector3, to: Vector3):
 
 func _get_current_trace_path_color(unit: BattleUnit, spend_points):
 	var area_points = unit.max_move_points / MOVE_AREAS
-	if spend_points >= unit.max_move_points:
+	if spend_points > unit.max_move_points:
 		return PathDot.PathDotColor.WHITE
 	
 	if spend_points <= area_points:
@@ -229,25 +238,29 @@ func _get_mouse_projected_position(screen_position: Vector2):
 #
 
 func _select_unit(unit: BattleUnit):
-	terrain.free_point_from_unit(unit.global_transform.origin)
+#	terrain.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
 	battleUI.display_unit_info(unit)
 	
 func _deselect_unit(unit: BattleUnit):
-	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
+#	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
 	battleUI.hide_unit_info()
 
 func _move_unit(unit: BattleUnit, pos: Vector3):
+	if unit.move_points <= 0:
+		return
 	var path = terrain.get_map_path(unit.global_transform.origin, pos)
 	if hovered_enemy:
 		path.resize(path.size() - 1)
 	if path.size() > 1:
 		is_action_in_progress = true
+		path.remove(0)
 		unit.set_path(path)
+		terrain.free_point_from_unit(unit.global_transform.origin)
 
 func _produce_unit(unit_meta) -> BattleUnit:
 	var unit_scene = BattleConstants.RACES_SCENES[unit_meta["RACE"]]
@@ -261,6 +274,7 @@ func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3
 	parent_node.add_child(unit)
 	unit.connect("on_move_end", self, "_handle_unit_move_end", [unit_id])
 	unit.connect("on_dead", self, "_handle_unit_death", [unit_id])
+	unit.connect("on_move_step", self, "_handle_unit_step", [unit_id])
 	terrain.register_unit(pos, unit_id)
 	terrain.occupy_point_with_unit(pos, unit_id)
 
@@ -274,8 +288,10 @@ func _get_unit_meta_by_id(id: int):
 	
 func _handle_unit_move_end(unit_id: int):
 	var unit_meta = _get_unit_meta_by_id(unit_id)
+	var unit = unit_meta["UNIT"]
+	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	if hovered_enemy:
-		unit_meta["UNIT"].mele_attack(hovered_enemy)
+		unit.mele_attack(hovered_enemy)
 	is_action_in_progress = false
 
 func _handle_unit_death(unit_id: int):
@@ -286,3 +302,8 @@ func _handle_unit_death(unit_id: int):
 	if hovered_enemy == unit_meta["UNIT"]:
 		hovered_enemy = null
 		battleUI.hide_enemy_info()
+
+func _handle_unit_step(unit_id: int):
+	var unit_meta = _get_unit_meta_by_id(unit_id)
+	if selected_unit == unit_meta["UNIT"]:
+		battleUI.display_unit_info(selected_unit)
