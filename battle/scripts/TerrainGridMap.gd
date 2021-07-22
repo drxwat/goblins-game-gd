@@ -1,5 +1,5 @@
 extends GridMap
-
+class_name TerrainGridMap
 
 onready var astar := AStar.new()
 

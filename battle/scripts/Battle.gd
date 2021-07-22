@@ -11,6 +11,7 @@ onready var terrain := $Terrain
 onready var mouse_hover := $MouseHover
 onready var trace_path := $TracePath
 onready var battleUI: = $BattleUI
+onready var battleAI: = BattleAI.new()
 
 
 var team1_units_meta = {
@@ -52,6 +53,7 @@ func _ready():
 		push_error("Team2 spawn point %s is not walkable" % team2_spawn_point)
 	team1 = _init_team(team1_units_meta, team1_spawn_point)
 	team2 = _init_team(team2_units_meta, team2_spawn_point, true)
+	battleAI.initAI(team1, team2, terrain)
 #	battle_manager.initialize_battle(team1_units, team2_units, Vector3(1, 0, 9), Vector3(1, 0 ,1))
 
 # Creates and spawns units of the team
@@ -80,11 +82,12 @@ func end_turn():
 	is_enemy_turn = true
 	is_action_in_progress = true
 	ai_turn()
-	start_next_turn()
+#	start_next_turn()
 
 func ai_turn():
+	battleAI.start_turn()
 	# TODO: make async AI turn
-	is_enemy_turn = false
+#	is_enemy_turn = false
 
 func start_next_turn():
 	is_action_in_progress = false
