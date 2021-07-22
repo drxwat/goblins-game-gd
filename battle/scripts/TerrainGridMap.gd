@@ -34,11 +34,9 @@ func unregister_unit(point: Vector3):
 	_unregister_terrain_object(world_to_map(point))
 
 func occupy_point_with_unit(point: Vector3, unit_id: int):
-	print('register ', point)
 	astar.set_point_disabled(astar.get_closest_point(point))
 	
 func free_point_from_unit(point: Vector3):
-	print('unregister ', point)
 	astar.set_point_disabled(astar.get_closest_point(point, true), false)
 
 func is_point_walkable(point: Vector3) -> bool:

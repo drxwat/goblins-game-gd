@@ -90,9 +90,9 @@ func start_next_turn():
 	is_action_in_progress = false
 	turn_number += 1 # TODO: display turn number
 	for unit_id in team1:
-		team1[unit_id].next_turn_update()
+		team1[unit_id]["UNIT"].next_turn_update()
 	for unit_id in team2:
-		team2[unit_id].next_turn_update()
+		team2[unit_id]["UNIT"].next_turn_update()
 	battleUI.enable_next_turn_button()
 
 #
@@ -261,6 +261,7 @@ func _move_unit(unit: BattleUnit, pos: Vector3):
 		path.remove(0)
 		unit.set_path(path)
 		terrain.free_point_from_unit(unit.global_transform.origin)
+		terrain.unregister_unit(unit.global_transform.origin)
 
 func _produce_unit(unit_meta) -> BattleUnit:
 	var unit_scene = BattleConstants.RACES_SCENES[unit_meta["RACE"]]
@@ -290,6 +291,7 @@ func _handle_unit_move_end(unit_id: int):
 	var unit_meta = _get_unit_meta_by_id(unit_id)
 	var unit = unit_meta["UNIT"]
 	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
+	terrain.register_unit(unit.global_transform.origin, unit.battle_id)
 	if hovered_enemy:
 		unit.mele_attack(hovered_enemy)
 	is_action_in_progress = false
