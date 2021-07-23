@@ -23,7 +23,12 @@ func start_turn():
 	make_next_unit_turn()
 	
 func make_next_unit_turn():
-	if turn_team.size() > 0:
+	var has_enemies = false
+	for unit_id in team1:
+		if not team1[unit_id]["UNIT"].is_dead:
+			has_enemies = true
+			break
+	if turn_team.size() > 0 and has_enemies:
 		var unit = turn_team.pop_front()
 		act_unit(unit)
 	else:
@@ -39,6 +44,8 @@ func act_unit(unit: BattleUnit):
 	var path = terrain.get_map_path(unit.global_transform.origin, enemy.global_transform.origin)
 	terrain.occupy_point_with_unit(enemy.global_transform.origin, enemy.battle_id)
 	if path.size() > 1:
+		terrain.free_point_from_unit(unit.global_transform.origin)
+		terrain.unregister_unit(unit.global_transform.origin)
 		unit.connect("on_move_end", self, "_handle_unit_move_end", [unit, enemy, is_attack])
 		path.remove(0)
 		path.resize(path.size() - 1)
@@ -52,6 +59,8 @@ func _handle_unit_attack_end(unit: BattleUnit, enemy: BattleUnit):
 
 func _handle_unit_move_end(unit: BattleUnit, enemy: BattleUnit, is_attack: bool = false):
 	unit.disconnect("on_move_end", self, "_handle_unit_move_end")
+	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
+	terrain.register_unit(unit.global_transform.origin, unit.battle_id)
 	if is_attack:
 		attack_enemy(unit, enemy)
 	else:
