@@ -76,6 +76,8 @@ func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, enemy = fa
 #
 
 func end_turn():
+	if selected_unit:
+		_deselect_unit(selected_unit)
 	is_enemy_turn = true
 	is_action_in_progress = true
 	ai_turn()
@@ -133,11 +135,9 @@ func _handle_right_mouse_click(event: InputEvent):
 		return
 	if event.button_index != BUTTON_RIGHT or not event.pressed:
 		return
-	
 	var m_position = _get_mouse_projected_position(event.position)
 	if m_position and selected_unit:
-#		terrain.free_point_from_unit(selected_unit.global_transform.origin)
-		_move_unit(selected_unit, m_position)
+		_move_and_attack_unit(selected_unit, m_position)
 
 func _handle_mouse_move(event: InputEvent):
 	if not event is InputEventMouseMotion:
@@ -238,19 +238,19 @@ func _get_mouse_projected_position(screen_position: Vector2):
 #
 
 func _select_unit(unit: BattleUnit):
-#	terrain.free_point_from_unit(unit.global_transform.origin)
+	terrain.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
 	battleUI.display_unit_info(unit)
 	
 func _deselect_unit(unit: BattleUnit):
-#	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
+	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
 	battleUI.hide_unit_info()
 
-func _move_unit(unit: BattleUnit, pos: Vector3):
+func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
 	if unit.move_points <= 0:
 		return
 	var path = terrain.get_map_path(unit.global_transform.origin, pos)
@@ -262,6 +262,8 @@ func _move_unit(unit: BattleUnit, pos: Vector3):
 		unit.set_path(path)
 		terrain.free_point_from_unit(unit.global_transform.origin)
 		terrain.unregister_unit(unit.global_transform.origin)
+	elif hovered_enemy:
+		unit.mele_attack(hovered_enemy)
 
 func _produce_unit(unit_meta) -> BattleUnit:
 	var unit_scene = BattleConstants.RACES_SCENES[unit_meta["RACE"]]
@@ -276,6 +278,7 @@ func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3
 	unit.connect("on_move_end", self, "_handle_unit_move_end", [unit_id])
 	unit.connect("on_dead", self, "_handle_unit_death", [unit_id])
 	unit.connect("on_move_step", self, "_handle_unit_step", [unit_id])
+	unit.connect("on_attack_end", self, "_handle_unit_attack_end", [unit_id])
 	terrain.register_unit(pos, unit_id)
 	terrain.occupy_point_with_unit(pos, unit_id)
 
@@ -290,10 +293,14 @@ func _get_unit_meta_by_id(id: int):
 func _handle_unit_move_end(unit_id: int):
 	var unit_meta = _get_unit_meta_by_id(unit_id)
 	var unit = unit_meta["UNIT"]
-	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
+#	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	terrain.register_unit(unit.global_transform.origin, unit.battle_id)
 	if hovered_enemy:
 		unit.mele_attack(hovered_enemy)
+	else:
+		is_action_in_progress = false
+	
+func _handle_unit_attack_end(unit_id: int):
 	is_action_in_progress = false
 
 func _handle_unit_death(unit_id: int):

@@ -47,7 +47,6 @@ func act_unit(unit: BattleUnit):
 		attack_enemy(unit, enemy)
 
 func _handle_unit_attack_end(unit: BattleUnit, enemy: BattleUnit):
-	print('attack end')
 	unit.disconnect("on_attack_end", self, "_handle_unit_attack_end")
 	make_next_unit_turn()
 
@@ -59,7 +58,6 @@ func _handle_unit_move_end(unit: BattleUnit, enemy: BattleUnit, is_attack: bool 
 		make_next_unit_turn()
 
 func attack_enemy(unit: BattleUnit, enemy: BattleUnit):
-	print('attack start')
 	unit.connect("on_attack_end", self, "_handle_unit_attack_end", [unit, enemy])
 	unit.mele_attack(enemy)
 
