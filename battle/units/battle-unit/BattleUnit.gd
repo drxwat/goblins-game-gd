@@ -151,7 +151,6 @@ func _move_along_path(delta) -> void:
 		_rotate_unit(move_vector)
 		move_and_slide(move_vector.normalized() * SPEED * delta, Vector3(0, 1, 0))
 
-
 func _play_acceleration_animation():
 	tween.interpolate_property(animation_tree, LOCOMOTION_ANIMATION, 
 		0, 1, ANIMATION_TRANSITION, Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
