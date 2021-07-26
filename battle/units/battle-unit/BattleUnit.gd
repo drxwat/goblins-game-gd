@@ -40,7 +40,8 @@ var move_points := max_move_points
 var _path: PoolVector3Array
 var _idle = true
 var _is_selected := false setget set_selected
-var battle_id: int # available only after battle spawn
+var global_unit : GlobalUnit # Unit Global Meta Info
+var battle_id: int setget , _get_unit_id
 
 var is_dead := false
 var current_animation
@@ -173,3 +174,5 @@ func _rotate_unit(move_direction):
 func _get_weapon_meta():
 	return {}
 	
+func _get_unit_id():
+	return global_unit.id

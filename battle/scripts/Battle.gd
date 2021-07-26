@@ -14,19 +14,19 @@ onready var battleUI: = $BattleUI
 onready var battleAI: = BattleAI.new()
 
 
-var team1_units_meta = {
-	1: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
-	2: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.MACE },
-	3: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
-	4: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.MACE },
-}
+var team1_units_meta = [
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
+]
+
 var team1_spawn_point = Vector3(1, 0, 19)
 
-var team2_units_meta = {
-	41: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
-	51: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.AXE },
-	52: { "RACE": GlobalConstants.RACE.GOBLIN, "WEAPON": GlobalConstants.WEAPON.MACE },
-}
+var team2_units_meta = [
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
+]
 var team2_spawn_point = Vector3(1, 0, 1)
 
 var team1 := {}
@@ -54,20 +54,18 @@ func _ready():
 #	battle_manager.initialize_battle(team1_units, team2_units, Vector3(1, 0, 9), Vector3(1, 0 ,1))
 
 # Creates and spawns units of the team
-func _init_team(units_meta: Dictionary, initial_spawn_point: Vector3, enemy = false) -> Dictionary:
+func _init_team(units_meta: Array, initial_spawn_point: Vector3, enemy = false) -> Dictionary:
 	var team := {}
 	var spawn_point = initial_spawn_point
-	for unit_id in units_meta.keys():
+	for global_unit in units_meta:
 		if spawn_point == null:
-			push_error("Team can't be spawned. Stoped at unit %s" % unit_id)
+			push_error("Team can't be spawned. Stoped at unit %s" % global_unit.id)
 			break
-		var unit_meta = units_meta.get(unit_id)
-		var team_unit_meta = unit_meta.duplicate()
-		var unit = _produce_unit(team_unit_meta)
-		unit.battle_id = unit_id
-		_spawn_unit(unit_id, unit, $Units, spawn_point, PI if not enemy else 0)
-		team_unit_meta["UNIT"] = unit
-		team[unit_id] = team_unit_meta
+#		var unit_meta = units_meta.get(unit_id)
+#		var team_unit_meta = unit_meta.duplicate()
+		var unit = _produce_unit(global_unit)
+		_spawn_unit(unit.battle_id, unit, $Units, spawn_point, PI if not enemy else 0)
+		team[unit.battle_id] = unit
 		spawn_point = terrain.get_neighbor_walkable_point(spawn_point)
 	return team
 
@@ -88,9 +86,9 @@ func start_next_turn():
 	is_action_in_progress = false
 	turn_number += 1 # TODO: display turn number
 	for unit_id in team1:
-		team1[unit_id]["UNIT"].next_turn_update()
+		team1[unit_id].next_turn_update()
 	for unit_id in team2:
-		team2[unit_id]["UNIT"].next_turn_update()
+		team2[unit_id].next_turn_update()
 	battleUI.enable_next_turn_button()
 
 #
@@ -121,10 +119,10 @@ func _handle_left_mouse_click(event: InputEvent):
 	if hover_obj["TYPE"] == BattleConstants.TERRAIN_OBJECTS.UNIT:
 		var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
 		if !selected_unit:
-			_select_unit(unit_meta["UNIT"])
-		elif selected_unit != unit_meta["UNIT"]:
+			_select_unit(unit_meta)
+		elif selected_unit != unit_meta:
 			_deselect_unit(selected_unit)
-			_select_unit(unit_meta["UNIT"])
+			_select_unit(unit_meta)
 
 func _handle_right_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
@@ -146,7 +144,7 @@ func _handle_mouse_move(event: InputEvent):
 		var hover_obj = terrain.get_terrain_object(m_position)
 		if hover_obj["TYPE"] == BattleConstants.TERRAIN_OBJECTS.UNIT and not _is_ally(hover_obj["ID"]):
 			var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
-			var unit = unit_meta["UNIT"]
+			var unit = unit_meta
 			if unit != hovered_enemy:
 				battleUI.display_enemy_info(unit)
 				_occupy_enemy_unit_point()
@@ -261,10 +259,11 @@ func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
 	elif hovered_enemy:
 		unit.mele_attack(hovered_enemy)
 
-func _produce_unit(unit_meta) -> BattleUnit:
-	var unit_scene = BattleConstants.RACES_SCENES[unit_meta["RACE"]]
+func _produce_unit(global_unit: GlobalUnit) -> BattleUnit:
+	var unit_scene = BattleConstants.RACES_SCENES[global_unit.race]
 	var unit = unit_scene.instance()
-	unit.right_hand = unit_meta["WEAPON"]
+	unit.global_unit = global_unit
+	unit.right_hand = global_unit.weapon # TODO: Initialize weapon inside BattleUnit
 	return unit
 
 func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3, rot: float):
@@ -287,8 +286,7 @@ func _get_unit_meta_by_id(id: int):
 	return team2.get(id, null)
 	
 func _handle_unit_move_end(unit_id: int):
-	var unit_meta = _get_unit_meta_by_id(unit_id)
-	var unit = unit_meta["UNIT"]
+	var unit = _get_unit_meta_by_id(unit_id)
 #	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	terrain.register_unit(unit.global_transform.origin, unit.battle_id)
 	if hovered_enemy:
@@ -300,15 +298,15 @@ func _handle_unit_attack_end(unit_id: int):
 	is_action_in_progress = false
 
 func _handle_unit_death(unit_id: int):
-	var unit_meta = _get_unit_meta_by_id(unit_id)
-	var point = unit_meta["UNIT"].global_transform.origin
+	var unit = _get_unit_meta_by_id(unit_id)
+	var point = unit.global_transform.origin
 	terrain.unregister_unit(point)
 	terrain.free_point_from_unit(point)
-	if hovered_enemy == unit_meta["UNIT"]:
+	if hovered_enemy == unit:
 		hovered_enemy = null
 		battleUI.hide_enemy_info()
 
 func _handle_unit_step(unit_id: int):
-	var unit_meta = _get_unit_meta_by_id(unit_id)
-	if selected_unit == unit_meta["UNIT"]:
+	var unit = _get_unit_meta_by_id(unit_id)
+	if selected_unit == unit:
 		battleUI.display_unit_info(selected_unit)

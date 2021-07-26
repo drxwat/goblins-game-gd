@@ -16,7 +16,7 @@ func initAI(_team1: Dictionary, _team2: Dictionary, _terrain: TerrainGridMap):
 
 func start_turn():
 	for unit_id in team2:
-		var unit = team2[unit_id]["UNIT"]
+		var unit = team2[unit_id]
 		if unit.is_dead or unit.move_points <= 0:
 			continue
 		turn_team.push_back(unit)
@@ -25,7 +25,7 @@ func start_turn():
 func make_next_unit_turn():
 	var has_enemies = false
 	for unit_id in team1:
-		if not team1[unit_id]["UNIT"].is_dead:
+		if not team1[unit_id].is_dead:
 			has_enemies = true
 			break
 	if turn_team.size() > 0 and has_enemies:
@@ -73,7 +73,7 @@ func attack_enemy(unit: BattleUnit, enemy: BattleUnit):
 func find_ememy(unit: BattleUnit):
 	var enemies = []
 	for unit_id in team1:
-		var enemy = team1[unit_id]["UNIT"]
+		var enemy = team1[unit_id]
 		if enemy.is_dead:
 			continue
 		terrain.free_point_from_unit(enemy.global_transform.origin)
