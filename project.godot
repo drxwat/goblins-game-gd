@@ -77,6 +77,10 @@ config/icon="res://icon-goblin.png"
 GlobalConstants="*res://scripts/GlobalСonstants.gd"
 BattleConstants="*res://battle/scripts/BattleConstants.gd"
 
+[display]
+
+window/size/fullscreen=true
+
 [importer_defaults]
 
 scene={

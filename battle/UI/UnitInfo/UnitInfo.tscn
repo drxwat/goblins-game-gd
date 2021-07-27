@@ -1,96 +1,260 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=13 format=2]
 
-[ext_resource path="res://battle/UI/images/walking-boot.png" type="Texture" id=1]
-[ext_resource path="res://battle/UI/images/hearts.png" type="Texture" id=2]
+[ext_resource path="res://assets/UI/#2 - Transparent Icons & Drop Shadow.png" type="Texture" id=1]
+[ext_resource path="res://battle/units/goblin/portrait.png" type="Texture" id=2]
 [ext_resource path="res://fonst/20219.ttf" type="DynamicFontData" id=3]
 [ext_resource path="res://battle/UI/UnitInfo/UnitInfo.gd" type="Script" id=4]
+[ext_resource path="res://assets/UI/wooden-ui-frame.png" type="Texture" id=5]
 
-[sub_resource type="StyleBoxFlat" id=1]
-bg_color = Color( 0.482353, 0.482353, 0.482353, 0.203922 )
-border_width_left = 2
-border_width_top = 2
-border_color = Color( 0.8, 0.8, 0.8, 0.835294 )
-border_blend = true
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-expand_margin_left = 5.0
-expand_margin_right = 5.0
-expand_margin_top = 5.0
-expand_margin_bottom = 5.0
+[sub_resource type="StyleBoxEmpty" id=8]
+
+[sub_resource type="StyleBoxEmpty" id=7]
+
+[sub_resource type="AtlasTexture" id=5]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 128, 160, 32, 32 )
 
 [sub_resource type="DynamicFont" id=2]
 size = 32
 font_data = ExtResource( 3 )
 
-[node name="UnitInfo" type="PanelContainer"]
+[sub_resource type="AtlasTexture" id=6]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 128, 192, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=3]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 192, 0, 32, 32 )
+
+[sub_resource type="AtlasTexture" id=4]
+flags = 4
+atlas = ExtResource( 1 )
+region = Rect2( 64, 256, 32, 32 )
+
+[node name="UnitInfo" type="VBoxContainer"]
 margin_right = 124.0
 margin_bottom = 188.0
 size_flags_horizontal = 0
 size_flags_vertical = 2
-custom_styles/panel = SubResource( 1 )
 script = ExtResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
-margin_left = 2.0
-margin_top = 2.0
-margin_right = 124.0
-margin_bottom = 188.0
+[node name="UnitPortrait" type="PanelContainer" parent="."]
+margin_right = 260.0
+margin_bottom = 136.0
+custom_styles/panel = SubResource( 8 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="UnitPortrait"]
+margin_right = 260.0
+margin_bottom = 136.0
+texture = ExtResource( 5 )
+patch_margin_left = 21
+patch_margin_top = 21
+patch_margin_right = 21
+patch_margin_bottom = 21
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UnitPortrait"]
+margin_right = 260.0
+margin_bottom = 136.0
+
+[node name="MarginContainer" type="MarginContainer" parent="UnitPortrait/VBoxContainer"]
+margin_right = 260.0
+margin_bottom = 136.0
+custom_constants/margin_right = 24
+custom_constants/margin_top = 8
+custom_constants/margin_left = 24
+custom_constants/margin_bottom = 8
+
+[node name="CenterContainer" type="CenterContainer" parent="UnitPortrait/VBoxContainer/MarginContainer"]
+margin_left = 24.0
+margin_top = 8.0
+margin_right = 236.0
+margin_bottom = 128.0
+
+[node name="TextureRect" type="TextureRect" parent="UnitPortrait/VBoxContainer/MarginContainer/CenterContainer"]
+margin_left = 46.0
+margin_right = 166.0
+margin_bottom = 120.0
+rect_min_size = Vector2( 120, 120 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+texture = ExtResource( 2 )
+expand = true
+
+[node name="UnitMetrics" type="PanelContainer" parent="."]
+margin_top = 140.0
+margin_right = 260.0
+margin_bottom = 335.0
+custom_styles/panel = SubResource( 7 )
+
+[node name="NinePatchRect" type="NinePatchRect" parent="UnitMetrics"]
+margin_right = 260.0
+margin_bottom = 195.0
+texture = ExtResource( 5 )
+patch_margin_left = 21
+patch_margin_top = 21
+patch_margin_right = 21
+patch_margin_bottom = 21
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UnitMetrics"]
+margin_right = 200.0
+margin_bottom = 195.0
 size_flags_horizontal = 0
 size_flags_vertical = 0
-custom_constants/separation = 10
+custom_constants/separation = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="Portrait" type="CenterContainer" parent="VBoxContainer"]
-margin_right = 122.0
-margin_bottom = 100.0
+[node name="MarginContainer" type="MarginContainer" parent="UnitMetrics/VBoxContainer"]
+visible = false
+margin_right = 154.0
+margin_bottom = 136.0
 rect_min_size = Vector2( 100, 100 )
 size_flags_vertical = 0
+custom_constants/margin_right = 16
+custom_constants/margin_top = 16
+custom_constants/margin_left = 16
+custom_constants/margin_bottom = 0
 
-[node name="Control" type="Control" parent="VBoxContainer/Portrait"]
-margin_left = 11.0
-margin_right = 111.0
-margin_bottom = 100.0
-rect_min_size = Vector2( 100, 100 )
+[node name="Control" type="Control" parent="UnitMetrics/VBoxContainer/MarginContainer"]
+margin_left = 16.0
+margin_top = 16.0
+margin_right = 138.0
+margin_bottom = 136.0
+rect_min_size = Vector2( 120, 120 )
 
-[node name="Portrait" type="TextureRect" parent="VBoxContainer/Portrait/Control"]
-margin_right = 100.0
-margin_bottom = 100.0
+[node name="Portrait" type="TextureRect" parent="UnitMetrics/VBoxContainer/MarginContainer/Control"]
+margin_right = 120.0
+margin_bottom = 120.0
+texture = ExtResource( 2 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 110.0
-margin_right = 122.0
-margin_bottom = 143.0
+[node name="MarginContainer4" type="MarginContainer" parent="UnitMetrics/VBoxContainer"]
+margin_right = 200.0
+margin_bottom = 57.0
+custom_constants/margin_right = 24
+custom_constants/margin_top = 24
+custom_constants/margin_left = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UnitMetrics/VBoxContainer/MarginContainer4"]
+margin_left = 24.0
+margin_top = 24.0
+margin_right = 176.0
+margin_bottom = 57.0
 size_flags_vertical = 0
 custom_constants/separation = 15
 
-[node name="Control" type="Control" parent="VBoxContainer/HBoxContainer"]
+[node name="Control" type="Control" parent="UnitMetrics/VBoxContainer/MarginContainer4/HBoxContainer"]
 margin_right = 32.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer/Control"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 2 )
+[node name="TextureRect" type="TextureRect" parent="UnitMetrics/VBoxContainer/MarginContainer4/HBoxContainer/Control"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+texture = SubResource( 5 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HealthPoints" type="Label" parent="VBoxContainer/HBoxContainer"]
+[node name="Label" type="Label" parent="UnitMetrics/VBoxContainer/MarginContainer4/HBoxContainer"]
 margin_left = 47.0
-margin_right = 122.0
+margin_right = 152.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "78/9/5"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer5" type="MarginContainer" parent="UnitMetrics/VBoxContainer"]
+margin_top = 62.0
+margin_right = 200.0
+margin_bottom = 95.0
+custom_constants/margin_right = 24
+custom_constants/margin_top = 0
+custom_constants/margin_left = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UnitMetrics/VBoxContainer/MarginContainer5"]
+margin_left = 24.0
+margin_right = 176.0
+margin_bottom = 33.0
+size_flags_vertical = 0
+custom_constants/separation = 15
+
+[node name="Control" type="Control" parent="UnitMetrics/VBoxContainer/MarginContainer5/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="UnitMetrics/VBoxContainer/MarginContainer5/HBoxContainer/Control"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+texture = SubResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="UnitMetrics/VBoxContainer/MarginContainer5/HBoxContainer"]
+margin_left = 47.0
+margin_right = 152.0
+margin_bottom = 33.0
+size_flags_horizontal = 3
+custom_fonts/font = SubResource( 2 )
+text = "56/6/14"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="MarginContainer2" type="MarginContainer" parent="UnitMetrics/VBoxContainer"]
+margin_top = 100.0
+margin_right = 200.0
+margin_bottom = 133.0
+custom_constants/margin_right = 24
+custom_constants/margin_top = 0
+custom_constants/margin_left = 24
+
+[node name="HBoxContainer" type="HBoxContainer" parent="UnitMetrics/VBoxContainer/MarginContainer2"]
+margin_left = 24.0
+margin_right = 176.0
+margin_bottom = 33.0
+size_flags_vertical = 0
+custom_constants/separation = 15
+
+[node name="Control" type="Control" parent="UnitMetrics/VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+size_flags_horizontal = 0
+size_flags_vertical = 0
+
+[node name="TextureRect" type="TextureRect" parent="UnitMetrics/VBoxContainer/MarginContainer2/HBoxContainer/Control"]
+margin_right = 32.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 32, 32 )
+texture = SubResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealthPoints" type="Label" parent="UnitMetrics/VBoxContainer/MarginContainer2/HBoxContainer"]
+margin_left = 47.0
+margin_right = 152.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 2 )
@@ -99,30 +263,39 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="VBoxContainer"]
-margin_top = 153.0
-margin_right = 122.0
-margin_bottom = 186.0
+[node name="MarginContainer3" type="MarginContainer" parent="UnitMetrics/VBoxContainer"]
+margin_top = 138.0
+margin_right = 200.0
+margin_bottom = 195.0
+custom_constants/margin_right = 24
+custom_constants/margin_top = 0
+custom_constants/margin_left = 24
+custom_constants/margin_bottom = 24
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="UnitMetrics/VBoxContainer/MarginContainer3"]
+margin_left = 24.0
+margin_right = 176.0
+margin_bottom = 33.0
 custom_constants/separation = 15
 
-[node name="Control2" type="Control" parent="VBoxContainer/HBoxContainer2"]
+[node name="Control2" type="Control" parent="UnitMetrics/VBoxContainer/MarginContainer3/HBoxContainer2"]
 margin_right = 32.0
 margin_bottom = 32.0
 rect_min_size = Vector2( 32, 32 )
 size_flags_horizontal = 0
 size_flags_vertical = 0
 
-[node name="TextureRect" type="TextureRect" parent="VBoxContainer/HBoxContainer2/Control2"]
-margin_right = 40.0
-margin_bottom = 40.0
-texture = ExtResource( 1 )
+[node name="TextureRect" type="TextureRect" parent="UnitMetrics/VBoxContainer/MarginContainer3/HBoxContainer2/Control2"]
+margin_right = 32.0
+margin_bottom = 32.0
+texture = SubResource( 4 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="MovePoints" type="Label" parent="VBoxContainer/HBoxContainer2"]
+[node name="MovePoints" type="Label" parent="UnitMetrics/VBoxContainer/MarginContainer3/HBoxContainer2"]
 margin_left = 47.0
-margin_right = 122.0
+margin_right = 152.0
 margin_bottom = 33.0
 size_flags_horizontal = 3
 custom_fonts/font = SubResource( 2 )

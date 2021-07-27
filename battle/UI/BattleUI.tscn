@@ -39,18 +39,19 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="UnitInfo" parent="MarginContainer/VBoxContainer/Units" instance=ExtResource( 1 )]
-visible = false
-is_mirrored = true
+margin_right = 200.0
+margin_bottom = 335.0
 
 [node name="Spacer" type="Control" parent="MarginContainer/VBoxContainer/Units"]
-margin_right = 984.0
+margin_left = 204.0
+margin_right = 780.0
 margin_bottom = 536.0
 size_flags_horizontal = 3
 
 [node name="EnemyInfo" parent="MarginContainer/VBoxContainer/Units" instance=ExtResource( 1 )]
-visible = false
-margin_left = 860.0
+margin_left = 784.0
 margin_right = 984.0
+margin_bottom = 335.0
 
 [node name="Actions" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 margin_top = 540.0
