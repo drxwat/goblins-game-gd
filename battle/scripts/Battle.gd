@@ -287,12 +287,13 @@ func _get_unit_meta_by_id(id: int):
 	
 func _handle_unit_move_end(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
-#	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	terrain.register_unit(unit.global_transform.origin, unit.battle_id)
 	if hovered_enemy:
-		unit.mele_attack(hovered_enemy)
-	else:
-		is_action_in_progress = false
+		var path = terrain.get_map_path(unit.global_transform.origin, hovered_enemy.global_transform.origin)
+		if path.size() <= 2:
+			unit.mele_attack(hovered_enemy)
+			return
+	is_action_in_progress = false
 	
 func _handle_unit_attack_end(unit_id: int):
 	is_action_in_progress = false
