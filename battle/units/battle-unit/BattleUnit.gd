@@ -27,6 +27,7 @@ const ROTATION_TRANSITION = 0.1
 
 onready var animation_tree := $Gfx/AnimationTree
 onready var tween = $Gfx/Tween
+onready var camera_container := $CameraContainer
 
 
 # STATS INITIAL
@@ -110,7 +111,7 @@ func die():
 	is_dead = true
 
 func calculate_damage(attacker: BattleUnit, victim: BattleUnit):
-	return 21
+	return 5
 
 func set_selected(value: bool):
 	_is_selected = value
@@ -122,6 +123,9 @@ func set_selected(value: bool):
 # Overwrite in child class in order to get battle UI portrait
 func get_portrait() -> Texture:
 	return null
+
+func get_camera_transform() -> Vector3:
+	return camera_container.global_transform
 
 func _play_animation(animation_name):
 	actions_state_machine.start(animation_name)

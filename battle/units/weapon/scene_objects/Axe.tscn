@@ -19,5 +19,6 @@ surfaces/0 = {
 
 [node name="Axe00_mesh" type="MeshInstance"]
 transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0, 0, -1.71662 )
+layers = 524289
 mesh = SubResource( 1 )
 material/0 = null

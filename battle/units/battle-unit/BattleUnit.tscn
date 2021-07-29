@@ -27,4 +27,6 @@ material/0 = null
 wait_time = 0.5
 one_shot = true
 
+[node name="CameraContainer" type="Spatial" parent="."]
+
 [connection signal="timeout" from="AnimationPoller" to="." method="_check_animation_end"]

@@ -19,5 +19,6 @@ surfaces/0 = {
 
 [node name="Mace00_mesh" type="MeshInstance"]
 transform = Transform( 0.02, 0, 0, 0, 0.02, 0, 0, 0, 0.02, 0.0149153, -0.0158822, -0.43669 )
+layers = 524289
 mesh = SubResource( 1 )
 material/0 = null

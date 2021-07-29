@@ -51,7 +51,11 @@ func _ready():
 	team2 = _init_team(team2_units_meta, team2_spawn_point, true)
 	battleAI.initAI(team1, team2, terrain)
 	battleAI.connect("ai_turn_end", self, "start_next_turn")
-#	battle_manager.initialize_battle(team1_units, team2_units, Vector3(1, 0, 9), Vector3(1, 0 ,1))
+	
+	var units = []
+	for unit_id in team1:
+		units.push_back(team1[unit_id])
+	battleUI.set_team_units(units)
 
 # Creates and spawns units of the team
 func _init_team(units_meta: Array, initial_spawn_point: Vector3, enemy = false) -> Dictionary:
@@ -146,12 +150,12 @@ func _handle_mouse_move(event: InputEvent):
 			var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
 			var unit = unit_meta
 			if unit != hovered_enemy:
-				battleUI.display_enemy_info(unit)
+#				battleUI.display_enemy_info(unit)
 				_occupy_enemy_unit_point()
 			_free_enemy_unit_point(unit)
 		elif hovered_enemy and not hovered_enemy.is_dead:
 			_occupy_enemy_unit_point()
-			battleUI.hide_enemy_info()
+#			battleUI.hide_enemy_info()
 		current_hover_cell = hover_cell
 		_move_mouse_hover(m_position)
 		_color_mouse_hover(m_position)
@@ -235,14 +239,14 @@ func _select_unit(unit: BattleUnit):
 	terrain.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
-	battleUI.display_unit_info(unit)
+#	battleUI.display_unit_info(unit)
 	
 func _deselect_unit(unit: BattleUnit):
 	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
-	battleUI.hide_unit_info()
+#	battleUI.hide_unit_info()
 
 func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
 	if unit.move_points <= 0:
@@ -305,9 +309,9 @@ func _handle_unit_death(unit_id: int):
 	terrain.free_point_from_unit(point)
 	if hovered_enemy == unit:
 		hovered_enemy = null
-		battleUI.hide_enemy_info()
+#		battleUI.hide_enemy_info()
 
 func _handle_unit_step(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
-	if selected_unit == unit:
-		battleUI.display_unit_info(selected_unit)
+#	if selected_unit == unit:
+#		battleUI.display_unit_info(selected_unit)
