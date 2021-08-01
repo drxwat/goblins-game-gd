@@ -9,6 +9,8 @@ export(float,0.0,1.0) var joy_dead_zone = 0.05
 var horizontal : float = 0.0
 var vertical : float = 0.0
 
+var is_keyboard_control : bool = true
+
 #USED TO STORE MOUSE WHEEL INERTIA TO ENABLE SMOOTH STOPPING
 var mouse_wheel : float  = 0.0
 
@@ -179,14 +181,38 @@ func _input(event):
 				right_stick_needs_reset = false
 #			print("Axis: %s -> %s" % [event.axis,event.axis_value])
 	###################PC
+
+func handle_keyboard():
+	var vertical_keyboard = 0
+	var horizontal_keyboard = 0
+	var move_directions = {
+		KEY_W: Vector2(0, -1),
+		KEY_S: Vector2(0, 1),
+		KEY_A: Vector2(-1, 0),
+		KEY_D: Vector2(1, 0),
+	}
+
+	for key in move_directions:
+		if Input.is_key_pressed(key):
+			var dir = move_directions[key]
+			horizontal_keyboard += dir.x
+			vertical_keyboard += dir.y
+			is_keyboard_control = true
+
+	if is_keyboard_control:
+		horizontal = horizontal_keyboard
+		vertical = vertical_keyboard
+		if Vector2(horizontal, vertical) == Vector2.ZERO:
+			is_keyboard_control = false
 				
 func _process(delta):
 	#PC######
+	handle_keyboard()
+
 	if Input.is_action_just_pressed("ToggleCameraAction"):
 		emit_signal("on_change_action",CameraController.CAMERA_ACTIONS.ROTATING_VIEW)
 	elif Input.is_action_just_released("ToggleCameraAction"):
 		emit_signal("on_change_action",CameraController.CAMERA_ACTIONS.MOVING)
-	
 	
 	match(current_action):
 		CameraController.CAMERA_ACTIONS.MOVING:

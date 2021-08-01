@@ -3,6 +3,7 @@ class_name CameraController
 
 enum CAMERA_ACTIONS{
 	MOVING,
+	FOCUS,
 	ROTATING_VIEW,
 }
 
@@ -21,10 +22,18 @@ export(float, 1,3) var zoom_sensibility = 2.5
 
 export(float, 1,3) var rotation_sensibility = 2.3
 
+export(float, 0.0, 30.0) var focus_duration = 0.8
+export(float, 1.0, 100.0) var focus_speed = 30
+
+onready var camera_input = $CameraInput
+
 var pitch : float
 var yaw : float
 var current_action = CAMERA_ACTIONS.MOVING
 var velocity : Vector2
+
+var focus_target : Vector2
+var focus_tween : Tween
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
@@ -37,6 +46,9 @@ func change_action(action):
 	match(current_action):
 		CAMERA_ACTIONS.MOVING:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
+		CAMERA_ACTIONS.FOCUS:
+			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 		CAMERA_ACTIONS.ROTATING_VIEW:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
@@ -50,9 +62,36 @@ func _process(delta):
 			
 			if velocity != Vector2.ZERO:
 				move(velocity)
+		CAMERA_ACTIONS.FOCUS:
+			if focus_tween != null:
+				return
+
+			focus_tween = Tween.new()
+			add_child(focus_tween)
+			var focus_target_3d = Vector3(focus_target.x, self.global_transform.origin.y, focus_target.y)
+			var src_position = self.global_transform.origin
+			var focus_duration = src_position.distance_to(focus_target_3d) / focus_speed
+			focus_tween.interpolate_property(self, "global_transform:origin",
+				src_position, focus_target_3d, focus_duration,
+				Tween.TRANS_QUAD, Tween.EASE_IN_OUT)
+			focus_tween.start()
+			yield(focus_tween, "tween_completed")
+			remove_child(focus_tween)
+			focus_tween.queue_free()
+
+			camera_input.change_action(CAMERA_ACTIONS.MOVING)
+			change_action(CAMERA_ACTIONS.MOVING)
+			focus_tween = null
 
 func change_velocity(_velocity : Vector2):
 	velocity = _velocity
+
+func focus_to(position : Vector2):
+	focus_target = position
+	# works only for ∠ 45
+	focus_target.y += self.transform.origin.y
+	camera_input.change_action(CAMERA_ACTIONS.FOCUS)
+	change_action(CAMERA_ACTIONS.FOCUS)
 	
 func move(_velocity : Vector2):
 	#Move along cameras X axis
