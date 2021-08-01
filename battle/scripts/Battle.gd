@@ -56,6 +56,12 @@ func _ready():
 	for unit_id in team1:
 		units.push_back(team1[unit_id])
 	battleUI.set_team_units(units)
+	battleUI.connect("focus_unit", self, "on_focus_unit")
+
+func on_focus_unit(unit: BattleUnit):
+	var target3d = unit.global_transform.origin
+	var target2d = Vector2(target3d.x, target3d.z)
+	camera.focus_to(target2d)
 
 # Creates and spawns units of the team
 func _init_team(units_meta: Array, initial_spawn_point: Vector3, enemy = false) -> Dictionary:

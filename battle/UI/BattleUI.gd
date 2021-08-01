@@ -9,12 +9,17 @@ onready var next_turn_btn := $MarginContainer/VBoxContainer/Actions/NextTurn
 onready var units_container := $MarginContainer/VBoxContainer/Units
 
 signal next_turn_pressed
+signal focus_unit(unit)
 
 func set_team_units(units: Array):
 	for unit in units:
 		var user_avatar = user_avatar_scene.instance()
 		user_avatar.set_unit(unit)
+		user_avatar.connect("avatar_click", self, "on_avatar_click")
 		units_container.add_child(user_avatar)
+
+func on_avatar_click(unit: BattleUnit):
+	emit_signal("focus_unit", unit)
 
 func display_unit_info(unit: BattleUnit):
 	pass

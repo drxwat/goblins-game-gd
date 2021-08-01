@@ -8,10 +8,11 @@ transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0
 script = ExtResource( 1 )
 edge_size = 0.317
 
-[node name="Node" type="Node" parent="."]
+[node name="CameraInput" type="Node" parent="."]
 script = ExtResource( 2 )
 screen_edge_size = 0.001
-[connection signal="on_change_action" from="Node" to="." method="change_action"]
-[connection signal="on_change_velocity" from="Node" to="." method="change_velocity"]
-[connection signal="on_rotate_view" from="Node" to="." method="rotate_view"]
-[connection signal="on_zoom" from="Node" to="." method="zoom"]
+
+[connection signal="on_change_action" from="CameraInput" to="." method="change_action"]
+[connection signal="on_change_velocity" from="CameraInput" to="." method="change_velocity"]
+[connection signal="on_rotate_view" from="CameraInput" to="." method="rotate_view"]
+[connection signal="on_zoom" from="CameraInput" to="." method="zoom"]
