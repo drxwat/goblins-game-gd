@@ -59,9 +59,7 @@ func _ready():
 	battleUI.connect("focus_unit", self, "on_focus_unit")
 
 func on_focus_unit(unit: BattleUnit):
-	var target3d = unit.global_transform.origin
-	var target2d = Vector2(target3d.x, target3d.z)
-	camera.focus_to(target2d)
+	unit_focus(unit)
 
 # Creates and spawns units of the team
 func _init_team(units_meta: Array, initial_spawn_point: Vector3, enemy = false) -> Dictionary:
@@ -111,6 +109,32 @@ func _input(event: InputEvent):
 	_handle_left_mouse_click(event)
 	_handle_right_mouse_click(event)
 	_handle_mouse_move(event)
+	_handle_keyboard(event)
+
+func _handle_keyboard(event: InputEvent):
+	if not event is InputEventKey:
+		return
+	if not event.pressed:
+		return
+	if event.scancode == KEY_TAB:
+		_select_next_unit()
+
+func _select_next_unit():
+	if selected_unit == null:
+		_select_unit(team1.values()[0])
+	else:
+		var val_team = team1.values()
+		var selected_index = val_team.find(selected_unit)
+		var next_index = (selected_index + 1) % val_team.size()
+		_deselect_unit(selected_unit)
+		_select_unit(val_team[next_index])
+
+	unit_focus(selected_unit)
+
+func unit_focus(unit: BattleUnit):
+	var target3d = unit.global_transform.origin
+	var target2d = Vector2(target3d.x, target3d.z)
+	camera.focus_to(target2d)
 	
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
