@@ -95,6 +95,7 @@ func start_next_turn():
 	turn_number += 1 # TODO: display turn number
 	for unit_id in team1:
 		team1[unit_id].next_turn_update()
+		battleUI.update_unit_info(team1[unit_id])
 	for unit_id in team2:
 		team2[unit_id].next_turn_update()
 	battleUI.enable_next_turn_button()
@@ -269,14 +270,12 @@ func _select_unit(unit: BattleUnit):
 	terrain.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
-#	battleUI.display_unit_info(unit)
 	
 func _deselect_unit(unit: BattleUnit):
 	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
-#	battleUI.hide_unit_info()
 
 func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
 	if unit.move_points <= 0:
@@ -306,8 +305,9 @@ func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3
 	parent_node.add_child(unit)
 	unit.connect("on_move_end", self, "_handle_unit_move_end", [unit_id])
 	unit.connect("on_dead", self, "_handle_unit_death", [unit_id])
-	unit.connect("on_move_step", self, "_handle_unit_step", [unit_id])
+	unit.connect("on_move_step", self, "_update_unit_ui_info", [unit_id])
 	unit.connect("on_attack_end", self, "_handle_unit_attack_end", [unit_id])
+	unit.connect("on_take_damage_end", self, "_update_unit_ui_info", [unit_id])
 	terrain.register_unit(pos, unit_id)
 	terrain.occupy_point_with_unit(pos, unit_id)
 
@@ -328,7 +328,7 @@ func _handle_unit_move_end(unit_id: int):
 			unit.mele_attack(hovered_enemy)
 			return
 	is_action_in_progress = false
-	
+
 func _handle_unit_attack_end(unit_id: int):
 	is_action_in_progress = false
 
@@ -337,11 +337,14 @@ func _handle_unit_death(unit_id: int):
 	var point = unit.global_transform.origin
 	terrain.unregister_unit(point)
 	terrain.free_point_from_unit(point)
+	if _is_ally(unit_id):
+		battleUI.remove_unit_avatar(unit)
 	if hovered_enemy == unit:
 		hovered_enemy = null
-#		battleUI.hide_enemy_info()
 
-func _handle_unit_step(unit_id: int):
+
+func _update_unit_ui_info(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
-#	if selected_unit == unit:
-#		battleUI.display_unit_info(selected_unit)
+	if _is_ally(unit_id):
+		battleUI.update_unit_info(unit)
+

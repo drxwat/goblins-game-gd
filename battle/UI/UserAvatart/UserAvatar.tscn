@@ -67,10 +67,10 @@ far = 3.2
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.956642, -2.93373 )
 
 [node name="HPBar" type="TextureProgress" parent="."]
-margin_left = 2.5
+margin_left = 1.30945
 margin_top = 109.457
-margin_right = 127.5
-margin_bottom = 124.457
+margin_right = 126.309
+margin_bottom = 129.457
 rect_min_size = Vector2( 125, 15 )
 value = 55.0
 texture_under = ExtResource( 7 )
@@ -79,13 +79,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureProgress" type="TextureProgress" parent="."]
-margin_left = 6.64059
-margin_top = 110.636
-margin_right = 129.641
-margin_bottom = 113.636
+[node name="MovePointsBar" type="TextureProgress" parent="."]
+margin_left = 4.94056
+margin_top = 122.249
+margin_right = 127.941
+margin_bottom = 125.249
 rect_min_size = Vector2( 123, 3 )
-max_value = 25.0
+max_value = 15.0
 value = 9.0
 texture_progress = ExtResource( 8 )
 __meta__ = {

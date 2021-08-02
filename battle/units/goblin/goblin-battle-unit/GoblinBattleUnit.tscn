@@ -30,7 +30,7 @@ transform = Transform( 0.932757, -0.11389, -0.342043, -0.178537, 0.678327, -0.71
 parameters/Actions/playback = SubResource( 2 )
 
 [node name="CameraContainer" parent="." index="4"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.051, 1, 1.145 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 1.145 )
 
 [node name="Camera" type="Camera" parent="CameraContainer" index="0"]
 projection = 1

@@ -2,9 +2,8 @@ extends Control
 tool 
 
 var user_avatar_scene := preload("res://battle/UI/UserAvatart/UserAvatar.tscn")
+var units_avatarts = Dictionary()
 
-#onready var unit_info := $MarginContainer/VBoxContainer/Units/UnitInfo
-#onready var enemy_info := $MarginContainer/VBoxContainer/Units/EnemyInfo
 onready var next_turn_btn := $MarginContainer/VBoxContainer/Actions/NextTurn
 onready var units_container := $MarginContainer/VBoxContainer/Units
 
@@ -17,27 +16,23 @@ func set_team_units(units: Array):
 		user_avatar.set_unit(unit)
 		user_avatar.connect("avatar_click", self, "on_avatar_click")
 		units_container.add_child(user_avatar)
+		user_avatar.initialize(unit.max_hp, unit.max_move_points)
+		units_avatarts[unit] = user_avatar
 
 func on_avatar_click(unit: BattleUnit):
 	emit_signal("focus_unit", unit)
 
-func display_unit_info(unit: BattleUnit):
-	pass
-#	unit_info.update_hp(unit.hp, unit.max_hp)
-#	unit_info.update_move_points(unit.move_points, unit.max_move_points)
-#	unit_info.set_portrait(unit.get_portrait())
-#	unit_info.visible = true
+func update_unit_info(unit: BattleUnit):
+	var avatar = units_avatarts[unit]
+	avatar.update_hp(unit.hp)
+	avatar.update_move_points(unit.move_points)
+	
+func remove_unit_avatar(unit: BattleUnit):
+	var avatar = units_avatarts[unit]
+	units_container.remove_child(avatar)
 
 func display_enemy_info(unit: BattleUnit):
 	pass
-#	enemy_info.update_hp(unit.hp, unit.max_hp)
-#	enemy_info.update_move_points(unit.move_points, unit.max_move_points)
-#	enemy_info.set_portrait(unit.get_portrait())
-#	enemy_info.visible = true
-
-func hide_unit_info():
-	pass
-#	unit_info.visible = false
 
 func hide_enemy_info():
 	pass

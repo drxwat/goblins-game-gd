@@ -31,17 +31,17 @@ onready var camera_container := $CameraContainer
 
 
 # STATS INITIAL
-var max_hp := 20
-var max_move_points := 9
+var max_hp: int 
+var max_move_points: int
 
 # STATS
-var hp := max_hp
-var move_points := max_move_points
+var hp: int setget set_hp, get_hp
+var move_points: int
 
 var _path: PoolVector3Array
 var _idle = true
 var _is_selected := false setget set_selected
-var global_unit : GlobalUnit # Unit Global Meta Info
+var global_unit : GlobalUnit setget set_global_unit # Unit Global Meta Info
 var battle_id: int setget , _get_unit_id
 
 var is_dead := false
@@ -99,8 +99,8 @@ func range_attack(unit: BattleUnit):
 	pass
 
 func take_damage(damage: int):
-	hp -= damage
-	if hp <= 0:
+	self.hp -= damage
+	if self.hp <= 0:
 		die()
 		return
 	_play_action_animation(TAKE_DAMAGE_ANIMATION_NAME)
@@ -123,6 +123,24 @@ func set_selected(value: bool):
 # Overwrite in child class in order to get battle UI portrait
 func get_portrait() -> Texture:
 	return null
+	
+### STATS API ###
+
+func set_global_unit(_global_unit: GlobalUnit):
+	global_unit = _global_unit
+	max_hp = global_unit.get_max_hp()
+	hp = global_unit.get_hp()
+	max_move_points = global_unit.get_max_move_points()
+	move_points = max_move_points
+
+func get_hp():
+	return global_unit.get_hp()
+	
+func set_hp(value: int):
+	global_unit.set_hp(value)
+
+### STATS API END ###
+	
 
 func get_camera_transform() -> Vector3:
 	return camera_container.global_transform
@@ -180,3 +198,4 @@ func _get_weapon_meta():
 	
 func _get_unit_id():
 	return global_unit.id
+	
