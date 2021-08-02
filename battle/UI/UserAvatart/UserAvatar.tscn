@@ -1,20 +1,23 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://battle/UI/UserAvatart/UserAvatar.gd" type="Script" id=1]
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/UI/avatart-bg.png" type="Texture" id=3]
 [ext_resource path="res://assets/UI/avatar-mask.png" type="Texture" id=4]
 [ext_resource path="res://shaders/canvas_mask.shader" type="Shader" id=5]
+[ext_resource path="res://assets/UI/hp-progress.png" type="Texture" id=6]
+[ext_resource path="res://assets/UI/hp-progress-under.png" type="Texture" id=7]
+[ext_resource path="res://assets/UI/action-points-bar.png" type="Texture" id=8]
 
-[sub_resource type="ShaderMaterial" id=3]
+[sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 5 )
 shader_param/mask_texture = ExtResource( 4 )
 
-[sub_resource type="ProceduralSky" id=4]
+[sub_resource type="ProceduralSky" id=2]
 
-[sub_resource type="Environment" id=5]
+[sub_resource type="Environment" id=3]
 background_mode = 2
-background_sky = SubResource( 4 )
+background_sky = SubResource( 2 )
 
 [node name="UserAvatar" type="Control"]
 anchor_right = 1.0
@@ -36,7 +39,7 @@ __meta__ = {
 }
 
 [node name="ViewportContainer" type="ViewportContainer" parent="."]
-material = SubResource( 3 )
+material = SubResource( 1 )
 margin_left = 0.54538
 margin_top = -12.8535
 margin_right = 300.545
@@ -54,7 +57,7 @@ render_target_update_mode = 3
 
 [node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
 cull_mask = 524288
-environment = SubResource( 5 )
+environment = SubResource( 3 )
 projection = 1
 current = true
 near = 0.01
@@ -62,3 +65,29 @@ far = 3.2
 
 [node name="GoblinBattleUnit" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.956642, -2.93373 )
+
+[node name="HPBar" type="TextureProgress" parent="."]
+margin_left = 2.5
+margin_top = 109.457
+margin_right = 127.5
+margin_bottom = 124.457
+rect_min_size = Vector2( 125, 15 )
+value = 55.0
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureProgress" type="TextureProgress" parent="."]
+margin_left = 6.64059
+margin_top = 110.636
+margin_right = 129.641
+margin_bottom = 113.636
+rect_min_size = Vector2( 123, 3 )
+max_value = 25.0
+value = 9.0
+texture_progress = ExtResource( 8 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
