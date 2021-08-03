@@ -2,7 +2,6 @@ extends Spatial
 
 const RAY_LENGTH = 1000
 const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
-const MOVE_AREAS := 3.0
 
 const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
 
@@ -24,8 +23,8 @@ var team1_spawn_point = Vector3(1, 0, 19)
 
 var team2_units_meta = [
 	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
+#	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
+#	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
 ]
 var team2_spawn_point = Vector3(1, 0, 1)
 
@@ -208,7 +207,7 @@ func _draw_trace_path(unit: BattleUnit, from: Vector3, to: Vector3):
 		i += 1
 
 func _get_current_trace_path_color(unit: BattleUnit, spend_points):
-	var area_points = unit.max_move_points / MOVE_AREAS
+	var area_points = unit.max_move_points / GlobalConstants.MOVE_AREAS
 	if spend_points > unit.max_move_points:
 		return PathDot.PathDotColor.WHITE
 	
@@ -306,7 +305,8 @@ func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3
 	unit.connect("on_move_end", self, "_handle_unit_move_end", [unit_id])
 	unit.connect("on_dead", self, "_handle_unit_death", [unit_id])
 	unit.connect("on_move_step", self, "_update_unit_ui_info", [unit_id])
-	unit.connect("on_attack_end", self, "_handle_unit_attack_end", [unit_id])
+#	unit.connect("on_attack_end", self, "_handle_unit_attack_end", [unit_id])
+	unit.connect("on_turn_end", self, "_handle_unit_attack_end", [unit_id])
 	unit.connect("on_take_damage_end", self, "_update_unit_ui_info", [unit_id])
 	terrain.register_unit(pos, unit_id)
 	terrain.occupy_point_with_unit(pos, unit_id)
@@ -330,6 +330,7 @@ func _handle_unit_move_end(unit_id: int):
 	is_action_in_progress = false
 
 func _handle_unit_attack_end(unit_id: int):
+	_update_unit_ui_info(unit_id)
 	is_action_in_progress = false
 
 func _handle_unit_death(unit_id: int):

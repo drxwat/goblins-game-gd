@@ -37,7 +37,6 @@ func make_next_unit_turn():
 
 func act_unit(unit: BattleUnit):
 	var enemy_search_restult = find_ememy(unit)
-	print(enemy_search_restult)
 	var enemy = enemy_search_restult[0]
 	var is_attack = enemy_search_restult[1]
 	terrain.free_point_from_unit(enemy.global_transform.origin)

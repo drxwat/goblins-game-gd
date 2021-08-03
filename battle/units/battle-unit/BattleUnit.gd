@@ -14,6 +14,7 @@ signal on_move_step
 signal on_attack_end
 signal on_take_damage_end
 signal on_dead
+signal on_turn_end
 
 const SPEED  := 300
 
@@ -25,9 +26,15 @@ const DIE_ANIMATION_NAME = "death"
 const ANIMATION_TRANSITION = 0.4
 const ROTATION_TRANSITION = 0.1
 
+const BASE_HIT_CHANCE = 0.75
+const HIT_CHACE_MULTIPLIER = 0.05
+const MIN_HIT_CHANCE = 0.15
+const MAX_HIT_CHANCE = 0.95
+
 onready var animation_tree := $Gfx/AnimationTree
 onready var tween = $Gfx/Tween
 
+var rng = RandomNumberGenerator.new()
 
 # STATS INITIAL
 var max_hp: int 
@@ -53,6 +60,7 @@ export (GlobalConstants.WEAPON) var left_hand = GlobalConstants.WEAPON.NONE
 export (GlobalConstants.BATTLE_TEAM) var team
 
 func _ready():
+	rng.randomize()
 	var weapon_meta = _get_weapon_meta()
 	if right_hand != GlobalConstants.WEAPON.NONE and weapon_meta.has(right_hand):
 		var w_meta = weapon_meta.get(right_hand)
@@ -87,29 +95,43 @@ func set_path(path: PoolVector3Array) -> void:
 	_path = path
 	
 func attack(unit: BattleUnit):
-	unit.take_damage(calculate_damage(self, unit))
+	unit.take_damage(self, calculate_damage(unit))
 
 func mele_attack(unit: BattleUnit):
-	_play_action_animation(MELE_ATTACK_ANIMATION_NAME)
-	yield(get_tree().create_timer(0.6), "timeout") # TODO: Configure delays for all attack animations 
-	attack(unit)
+	_rotate_unit(global_transform.origin.direction_to(unit.global_transform.origin))
+	var actions_amount = floor(move_points / (max_move_points / GlobalConstants.MOVE_AREAS))
+	for i in range(actions_amount + 1):	
+		_play_action_animation(MELE_ATTACK_ANIMATION_NAME)
+		yield(self, "on_attack_end")
+		attack(unit)
+		yield(unit, "on_take_damage_end")
+	move_points = 0
+	emit_signal("on_turn_end")
 
 func range_attack(unit: BattleUnit):
 	pass
 
-func take_damage(damage: int):
+func take_damage(from: BattleUnit, damage: int):
+	_rotate_unit(global_transform.origin.direction_to(from.global_transform.origin))
 	self.hp -= damage
 	if self.hp <= 0:
-		die()
+		call_deferred("die")
 		return
 	_play_action_animation(TAKE_DAMAGE_ANIMATION_NAME)
 
 func die():
+	emit_signal("on_take_damage_end")
 	_play_animation(DIE_ANIMATION_NAME)
 	emit_signal("on_dead")
 	is_dead = true
 
-func calculate_damage(attacker: BattleUnit, victim: BattleUnit):
+func is_hits_target(victim: BattleUnit) -> bool:
+	var attach_def_diff = global_unit.get_attack() - victim.global_unit.get_defence()
+	var raw_hit_cance = BASE_HIT_CHANCE + (attach_def_diff * HIT_CHACE_MULTIPLIER)
+	var hit_chance = clamp(raw_hit_cance, MIN_HIT_CHANCE, MAX_HIT_CHANCE)
+	return rng.randf() < hit_chance
+
+func calculate_damage(victim: BattleUnit):
 	return 5
 
 func set_selected(value: bool):
