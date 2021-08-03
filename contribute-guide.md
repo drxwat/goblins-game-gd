@@ -46,15 +46,15 @@ git commit -m "change description" # Делаем коммит описывая 
 git push # Отправляем наши изменения на github
 ```
 
-В интерфейсе github открываем оригинальный репозиторий и жмём `compare & pull request`
-```
-todo screenshot
-```
+В интерфейсе github открываем страницу с форком и жмём `open pull request`:
+
+![pull_request](github_resources/pull_request.png)
+
+![compare_changes](github_resources/compare_changes.png)
 
 Дожидаемся пока @drxwat примет изменения:
-```
-todo screenshot
-```
+
+![pull_request_conversations](github_resources/pull_request_conversations.png)
 
 В дальнейшем если в оригинальном репозитории появляются новые коммиты, необходимо синхронизировать форк. Для этого жмём `fetch & merge` на странице форка:
 
