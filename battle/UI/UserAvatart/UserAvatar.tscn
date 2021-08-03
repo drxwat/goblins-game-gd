@@ -1,18 +1,18 @@
 [gd_scene load_steps=15 format=2]
 
-[ext_resource path="res://shaders/canvas_mask.shader" type="Shader" id=1]
-[ext_resource path="res://fonst/20219.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://battle/UI/UserAvatart/UserAvatar.gd" type="Script" id=1]
+[ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/UI/avatart-bg.png" type="Texture" id=3]
-[ext_resource path="res://assets/UI/hp-progress.png" type="Texture" id=4]
-[ext_resource path="res://assets/UI/avatar-mask.png" type="Texture" id=5]
-[ext_resource path="res://assets/UI/hp-progress-under.png" type="Texture" id=6]
-[ext_resource path="res://assets/UI/action-points-bar.png" type="Texture" id=7]
-[ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=8]
-[ext_resource path="res://battle/UI/UnitAvatar/UnitAvatar.gd" type="Script" id=9]
+[ext_resource path="res://assets/UI/avatar-mask.png" type="Texture" id=4]
+[ext_resource path="res://shaders/canvas_mask.shader" type="Shader" id=5]
+[ext_resource path="res://assets/UI/hp-progress.png" type="Texture" id=6]
+[ext_resource path="res://assets/UI/hp-progress-under.png" type="Texture" id=7]
+[ext_resource path="res://assets/UI/action-points-bar.png" type="Texture" id=8]
+[ext_resource path="res://fonst/20219.ttf" type="DynamicFontData" id=9]
 
 [sub_resource type="ShaderMaterial" id=1]
-shader = ExtResource( 1 )
-shader_param/mask_texture = ExtResource( 5 )
+shader = ExtResource( 5 )
+shader_param/mask_texture = ExtResource( 4 )
 
 [sub_resource type="ProceduralSky" id=2]
 
@@ -24,7 +24,7 @@ background_sky = SubResource( 2 )
 size = 24
 use_mipmaps = true
 use_filter = true
-font_data = ExtResource( 2 )
+font_data = ExtResource( 9 )
 
 [sub_resource type="Animation" id=5]
 resource_name = "fade"
@@ -41,13 +41,13 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="UnitAvatar" type="Control"]
+[node name="UserAvatar" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -894.0
 margin_bottom = -460.0
 rect_min_size = Vector2( 130, 140 )
-script = ExtResource( 9 )
+script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -86,7 +86,7 @@ current = true
 near = 0.41
 far = 3.2
 
-[node name="GoblinBattleUnit" parent="." instance=ExtResource( 8 )]
+[node name="GoblinBattleUnit" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.956642, -2.93373 )
 
 [node name="HPBar" type="TextureProgress" parent="."]
@@ -96,8 +96,8 @@ margin_right = 126.309
 margin_bottom = 129.457
 rect_min_size = Vector2( 125, 15 )
 value = 55.0
-texture_under = ExtResource( 6 )
-texture_progress = ExtResource( 4 )
+texture_under = ExtResource( 7 )
+texture_progress = ExtResource( 6 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -110,7 +110,7 @@ margin_bottom = 125.249
 rect_min_size = Vector2( 123, 3 )
 max_value = 15.0
 value = 9.0
-texture_progress = ExtResource( 7 )
+texture_progress = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
