@@ -29,19 +29,19 @@ var team1_units_meta = [
 var team2_spawn_point = Vector3(1, 0, 1)
 var team2_units_meta = [
 	GlobalUnit.new(
-					GlobalConstants.RACE.GOBLIN,
-					GlobalConstants.WEAPON.AXE,
-					{}
+		GlobalConstants.RACE.GOBLIN,
+		GlobalConstants.WEAPON.AXE,
+		{}
 	),
 	GlobalUnit.new(
-				GlobalConstants.RACE.GOBLIN,
-				GlobalConstants.WEAPON.MACE,
-				{}
+		GlobalConstants.RACE.GOBLIN,
+		GlobalConstants.WEAPON.MACE,
+		{}
 	),
 	GlobalUnit.new(
-				GlobalConstants.RACE.GOBLIN,
-				GlobalConstants.WEAPON.AXE,
-				{}
+		GlobalConstants.RACE.GOBLIN,
+		GlobalConstants.WEAPON.AXE,
+		{}
 	)
 ]
 
