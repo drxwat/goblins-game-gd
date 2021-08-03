@@ -67,18 +67,23 @@ onready var battleAI: = BattleAI.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	terrain.set_obstacles($Forest)
+	
 	if !terrain.is_point_walkable(team1_spawn_point):
 		push_error("Team1 spawn point %s is not walkable" % team1_spawn_point)
+	
 	if !terrain.is_point_walkable(team2_spawn_point):
 		push_error("Team2 spawn point %s is not walkable" % team2_spawn_point)
+	
 	team1 = _init_team(team1_units_meta, team1_spawn_point)
 	team2 = _init_team(team2_units_meta, team2_spawn_point, true)
+	
 	battleAI.initAI(team1, team2, terrain)
 	battleAI.connect("ai_turn_end", self, "start_next_turn")
 	
 	var units = []
 	for unit_id in team1:
 		units.push_back(team1[unit_id])
+	
 	battleUI.set_team_units(units)
 	battleUI.connect("focus_unit", self, "on_focus_unit")
 
