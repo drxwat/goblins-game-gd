@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://battle/UI/UserAvatart/UserAvatar.gd" type="Script" id=1]
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/UI/hp-progress.png" type="Texture" id=6]
 [ext_resource path="res://assets/UI/hp-progress-under.png" type="Texture" id=7]
 [ext_resource path="res://assets/UI/action-points-bar.png" type="Texture" id=8]
+[ext_resource path="res://fonst/20219.ttf" type="DynamicFontData" id=9]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 5 )
@@ -19,7 +20,29 @@ shader_param/mask_texture = ExtResource( 4 )
 background_mode = 2
 background_sky = SubResource( 2 )
 
+[sub_resource type="DynamicFont" id=4]
+size = 24
+use_mipmaps = true
+use_filter = true
+font_data = ExtResource( 9 )
+
+[sub_resource type="Animation" id=5]
+resource_name = "fade"
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 1 ),
+"transitions": PoolRealArray( 0.5, 0.5 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
+}
+
 [node name="UserAvatar" type="Control"]
+modulate = Color( 1, 1, 1, 0 )
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -894.0
@@ -56,11 +79,12 @@ handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.145 )
 cull_mask = 524288
 environment = SubResource( 3 )
 projection = 1
 current = true
-near = 0.01
+near = 0.41
 far = 3.2
 
 [node name="GoblinBattleUnit" parent="." instance=ExtResource( 2 )]
@@ -91,3 +115,17 @@ texture_progress = ExtResource( 8 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="id" type="Label" parent="."]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -22.0
+margin_bottom = 25.0
+custom_fonts/font = SubResource( 4 )
+text = "ID"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="fade_anim" type="AnimationPlayer" parent="."]
+anims/fade = SubResource( 5 )
