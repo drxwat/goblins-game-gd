@@ -2,6 +2,9 @@
 .import/
 export_presets.cfg
 
+# Github resources
+github_resources/*.import
+
 # Imported translations (automatically generated from CSV files)
 *.translation
 
