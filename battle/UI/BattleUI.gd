@@ -11,14 +11,14 @@ signal next_turn_pressed
 signal focus_unit(unit)
 
 func set_team_units(units: Array):
-	var unit_id := 0
+#	var unit_id := 0
 	for unit in units:
-		unit_id += 1
+#		unit_id += 1
 		var user_avatar = user_avatar_scene.instance()
 		user_avatar.set_unit(unit)
 		user_avatar.connect("avatar_click", self, "on_avatar_click")
 		units_container.add_child(user_avatar)
-		user_avatar.initialize(unit.max_hp, unit.max_move_points,unit_id)
+		user_avatar.initialize(unit.max_hp, unit.max_move_points)
 		units_avatarts[unit] = user_avatar
 
 func on_avatar_click(unit: BattleUnit):
@@ -31,7 +31,7 @@ func update_unit_info(unit: BattleUnit):
 	
 func remove_unit_avatar(unit: BattleUnit):
 	var avatar = units_avatarts[unit]
-	avatar.delete_self()
+	units_container.remove_child(avatar)
 
 func display_enemy_info(unit: BattleUnit):
 	pass
