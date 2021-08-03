@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://battle/UI/UserAvatart/UserAvatar.gd" type="Script" id=1]
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=2]
@@ -14,20 +14,21 @@
 shader = ExtResource( 5 )
 shader_param/mask_texture = ExtResource( 4 )
 
-[sub_resource type="ProceduralSky" id=2]
+[sub_resource type="ProceduralSky" id=6]
 
-[sub_resource type="Environment" id=3]
+[sub_resource type="Environment" id=5]
 background_mode = 2
-background_sky = SubResource( 2 )
+background_sky = SubResource( 6 )
 
-[sub_resource type="DynamicFont" id=4]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
+
+[sub_resource type="DynamicFont" id=3]
 size = 24
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 9 )
 
-[sub_resource type="Animation" id=5]
-resource_name = "fade"
+[sub_resource type="Animation" id=4]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
@@ -41,12 +42,13 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="UserAvatar" type="Control"]
+[node name="UserAvatar" type="TextureButton"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -894.0
 margin_bottom = -460.0
 rect_min_size = Vector2( 130, 140 )
+expand = true
 script = ExtResource( 1 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -55,6 +57,7 @@ __meta__ = {
 [node name="TextureRect" type="TextureRect" parent="."]
 margin_right = 128.0
 margin_bottom = 128.0
+mouse_filter = 2
 texture = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
@@ -67,6 +70,7 @@ margin_top = -12.8535
 margin_right = 300.545
 margin_bottom = 287.147
 rect_scale = Vector2( 0.421, 0.464 )
+mouse_filter = 2
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -78,16 +82,22 @@ handle_input_locally = false
 render_target_update_mode = 3
 
 [node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.145 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.8 )
 cull_mask = 524288
-environment = SubResource( 3 )
+environment = SubResource( 5 )
 projection = 1
-current = true
-near = 0.41
-far = 3.2
 
-[node name="GoblinBattleUnit" parent="." instance=ExtResource( 2 )]
+[node name="GoblinBattleUnit" parent="ViewportContainer/Viewport" instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.956642, -2.93373 )
+
+[node name="RightHandAttachment" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx/Armature/Skeleton" index="4"]
+transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.234627, -0.226973, 0.972389, -0.054241, -34.0632, 4.23172, -36.0197 )
+
+[node name="LeftHandAttachment" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx/Armature/Skeleton" index="5"]
+transform = Transform( 0.932757, -0.11389, -0.342043, -0.178537, 0.678327, -0.712738, 0.313191, 0.725879, 0.612381, 14.7594, 44.6098, -37.8182 )
+
+[node name="AnimationTree" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx" index="2"]
+parameters/Actions/playback = SubResource( 2 )
 
 [node name="HPBar" type="TextureProgress" parent="."]
 margin_left = 1.30945
@@ -95,6 +105,7 @@ margin_top = 109.457
 margin_right = 126.309
 margin_bottom = 129.457
 rect_min_size = Vector2( 125, 15 )
+mouse_filter = 2
 value = 55.0
 texture_under = ExtResource( 7 )
 texture_progress = ExtResource( 6 )
@@ -108,6 +119,7 @@ margin_top = 122.249
 margin_right = 127.941
 margin_bottom = 125.249
 rect_min_size = Vector2( 123, 3 )
+mouse_filter = 2
 max_value = 15.0
 value = 9.0
 texture_progress = ExtResource( 8 )
@@ -120,11 +132,16 @@ anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -22.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 text = "ID"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="fade_anim" type="AnimationPlayer" parent="."]
-anims/fade = SubResource( 5 )
+anims/fade = SubResource( 4 )
+
+[connection signal="pressed" from="." to="." method="_on_UserAvatar_pressed"]
+
+[editable path="ViewportContainer/Viewport/GoblinBattleUnit"]
+[editable path="ViewportContainer/Viewport/GoblinBattleUnit/Gfx"]

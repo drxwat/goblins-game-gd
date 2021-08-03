@@ -27,7 +27,6 @@ const ROTATION_TRANSITION = 0.1
 
 onready var animation_tree := $Gfx/AnimationTree
 onready var tween = $Gfx/Tween
-onready var camera_container := $CameraContainer
 
 
 # STATS INITIAL
@@ -140,10 +139,6 @@ func set_hp(value: int):
 	global_unit.set_hp(value)
 
 ### STATS API END ###
-	
-
-func get_camera_transform() -> Vector3:
-	return camera_container.global_transform
 
 func _play_animation(animation_name):
 	actions_state_machine.start(animation_name)
