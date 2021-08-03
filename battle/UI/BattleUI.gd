@@ -1,7 +1,7 @@
 extends Control
 tool 
 
-var user_avatar_scene := preload("res://battle/UI/UserAvatart/UserAvatar.tscn")
+var unit_avatar_scene := preload("res://battle/UI/UnitAvatar/UnitAvatar.tscn")
 var units_avatarts = Dictionary()
 
 onready var next_turn_btn := $MarginContainer/VBoxContainer/Actions/NextTurn
@@ -14,12 +14,12 @@ func set_team_units(units: Array):
 #	var unit_id := 0
 	for unit in units:
 #		unit_id += 1
-		var user_avatar = user_avatar_scene.instance()
-		user_avatar.set_unit(unit)
-		user_avatar.connect("avatar_click", self, "on_avatar_click")
-		units_container.add_child(user_avatar)
-		user_avatar.initialize(unit.max_hp, unit.max_move_points)
-		units_avatarts[unit] = user_avatar
+		var unit_avatar = unit_avatar_scene.instance()
+		unit_avatar.set_unit(unit)
+		unit_avatar.connect("avatar_click", self, "on_avatar_click")
+		units_container.add_child(unit_avatar)
+		unit_avatar.initialize(unit.max_hp, unit.max_move_points)
+		units_avatarts[unit] = unit_avatar
 
 func on_avatar_click(unit: BattleUnit):
 	emit_signal("focus_unit", unit)
