@@ -42,6 +42,7 @@ var _idle = true
 var _is_selected := false setget set_selected
 var global_unit : GlobalUnit setget set_global_unit # Unit Global Meta Info
 var id: int setget , _get_unit_id
+var firstname = "" setget , _get_firstname
 
 var is_dead := false
 var current_animation
@@ -77,6 +78,9 @@ func _physics_process(delta):
 		_play_slowdown_animation()
 		_idle = true
 		emit_signal("on_move_end")
+
+func _get_firstname():
+	return global_unit.firstname
 
 func next_turn_update(): # APPLY EFFECTS, REGENT, POISON etc
 	move_points = max_move_points
@@ -131,6 +135,7 @@ func set_global_unit(_global_unit: GlobalUnit):
 	hp = global_unit.get_hp()
 	max_move_points = global_unit.get_max_move_points()
 	move_points = max_move_points
+
 
 func get_hp():
 	return global_unit.get_hp()

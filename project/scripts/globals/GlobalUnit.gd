@@ -4,6 +4,7 @@ class_name GlobalUnit
 var id: int
 var race: int
 var weapon: int
+var firstname = ""
 
 var unit_stats: Dictionary
 var unit_const_stats: Dictionary
@@ -17,6 +18,7 @@ func _init(_race: int, _weapon: int, _stats: Dictionary):
 	for stat_key in race_stats:
 		unit_stats[stat_key] = unit_stats.get(stat_key, 0.0) + race_stats[stat_key]
 	unit_const_stats = unit_stats.duplicate()
+	firstname = RaceNames.get_rnd_name(race)
 
 func get_battle_metrics():
 	return GlobalConstants.calculate_metrics(unit_stats)
