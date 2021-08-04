@@ -42,7 +42,7 @@ func act_unit(unit: BattleUnit):
 	var is_attack = enemy_search_restult[1]
 	terrain.free_point_from_unit(enemy.global_transform.origin)
 	var path = terrain.get_map_path(unit.global_transform.origin, enemy.global_transform.origin)
-	terrain.occupy_point_with_unit(enemy.global_transform.origin, enemy.battle_id)
+	terrain.occupy_point_with_unit(enemy.global_transform.origin, enemy.id)
 	if path.size() > 1:
 		terrain.free_point_from_unit(unit.global_transform.origin)
 		terrain.unregister_unit(unit.global_transform.origin)
@@ -59,8 +59,8 @@ func _handle_unit_attack_end(unit: BattleUnit, enemy: BattleUnit):
 
 func _handle_unit_move_end(unit: BattleUnit, enemy: BattleUnit, is_attack: bool = false):
 	unit.disconnect("on_move_end", self, "_handle_unit_move_end")
-	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
-	terrain.register_unit(unit.global_transform.origin, unit.battle_id)
+	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.id)
+	terrain.register_unit(unit.global_transform.origin, unit.id)
 	if is_attack:
 		attack_enemy(unit, enemy)
 	else:
@@ -78,7 +78,7 @@ func find_ememy(unit: BattleUnit):
 			continue
 		terrain.free_point_from_unit(enemy.global_transform.origin)
 		var path = terrain.get_map_path(unit.global_transform.origin, enemy.global_transform.origin)
-		terrain.occupy_point_with_unit(enemy.global_transform.origin, enemy.battle_id)
+		terrain.occupy_point_with_unit(enemy.global_transform.origin, enemy.id)
 		enemies.push_back([path.size() - 2, enemy])
 	enemies.sort_custom(MetaUnitTuppleSorter, "sort_ascending")
 	var close_enemies = []
