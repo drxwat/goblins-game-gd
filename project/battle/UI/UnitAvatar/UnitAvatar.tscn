@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://fonst/20219.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://shaders/canvas_mask.shader" type="Shader" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/UI/action-points-bar.png" type="Texture" id=7]
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=8]
 [ext_resource path="res://battle/UI/UnitAvatar/UnitAvatar.gd" type="Script" id=9]
+[ext_resource path="res://assets/UI/avatart-border.png" type="Texture" id=10]
 
 [sub_resource type="ShaderMaterial" id=1]
 shader = ExtResource( 2 )
@@ -42,23 +43,33 @@ tracks/0/keys = {
 "values": [ Color( 1, 1, 1, 0 ), Color( 1, 1, 1, 1 ) ]
 }
 
-[node name="UnitAvatar" type="TextureButton"]
+[node name="UnitAvatar" type="Control"]
 anchor_right = 1.0
 anchor_bottom = 1.0
 margin_right = -894.0
 margin_bottom = -460.0
 rect_min_size = Vector2( 130, 140 )
-expand = true
+mouse_filter = 2
 script = ExtResource( 9 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="AvatarBG" type="TextureButton" parent="."]
+self_modulate = Color( 0.133333, 0.12549, 0.203922, 1 )
+margin_right = 128.0
+margin_bottom = 128.0
+mouse_default_cursor_shape = 2
+texture_normal = ExtResource( 3 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AvatarBorder" type="TextureRect" parent="AvatarBG"]
 margin_right = 128.0
 margin_bottom = 128.0
 mouse_filter = 2
-texture = ExtResource( 3 )
+texture = ExtResource( 10 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -89,6 +100,10 @@ projection = 1
 
 [node name="GoblinBattleUnit" parent="ViewportContainer/Viewport" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.956642, -2.93373 )
+
+[node name="Skeleton" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx/Armature" index="0"]
+bones/10/bound_children = [ NodePath("LeftHandAttachment") ]
+bones/30/bound_children = [ NodePath("RightHandAttachment") ]
 
 [node name="RightHandAttachment" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx/Armature/Skeleton" index="4"]
 transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.234627, -0.226973, 0.972389, -0.054241, -34.0632, 4.23172, -36.0197 )
@@ -141,7 +156,7 @@ __meta__ = {
 [node name="fade_anim" type="AnimationPlayer" parent="."]
 anims/fade = SubResource( 6 )
 
-[connection signal="pressed" from="." to="." method="_on_UserAvatar_pressed"]
+[connection signal="pressed" from="AvatarBG" to="." method="_on_UserAvatar_pressed"]
 
 [editable path="ViewportContainer/Viewport/GoblinBattleUnit"]
 [editable path="ViewportContainer/Viewport/GoblinBattleUnit/Gfx"]

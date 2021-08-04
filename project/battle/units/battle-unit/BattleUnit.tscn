@@ -4,6 +4,7 @@
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
+flags_unshaded = true
 albedo_color = Color( 0.192157, 0.415686, 0.160784, 0.705882 )
 
 [sub_resource type="CylinderMesh" id=2]

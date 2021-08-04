@@ -72,8 +72,8 @@ func _init_team(units_meta: Array, initial_spawn_point: Vector3, enemy = false) 
 #		var unit_meta = units_meta.get(unit_id)
 #		var team_unit_meta = unit_meta.duplicate()
 		var unit = _produce_unit(global_unit)
-		_spawn_unit(unit.battle_id, unit, $Units, spawn_point, PI if not enemy else 0)
-		team[unit.battle_id] = unit
+		_spawn_unit(unit.id, unit, $Units, spawn_point, PI if not enemy else 0)
+		team[unit.id] = unit
 		spawn_point = terrain.get_neighbor_walkable_point(spawn_point)
 	return team
 
@@ -236,7 +236,7 @@ func _free_enemy_unit_point(unit: BattleUnit):
 
 func _occupy_enemy_unit_point():
 	if hovered_enemy:
-		terrain.occupy_point_with_unit(hovered_enemy.global_transform.origin, hovered_enemy.battle_id)
+		terrain.occupy_point_with_unit(hovered_enemy.global_transform.origin, hovered_enemy.id)
 		hovered_enemy = null
 
 func _color_mouse_hover(pos: Vector3):
@@ -272,7 +272,7 @@ func _select_unit(unit: BattleUnit):
 	unit.set_selected(true)
 	
 func _deselect_unit(unit: BattleUnit):
-	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.battle_id)
+	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
@@ -321,7 +321,7 @@ func _get_unit_meta_by_id(id: int):
 	
 func _handle_unit_move_end(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
-	terrain.register_unit(unit.global_transform.origin, unit.battle_id)
+	terrain.register_unit(unit.global_transform.origin, unit.id)
 	if hovered_enemy:
 		var path = terrain.get_map_path(unit.global_transform.origin, hovered_enemy.global_transform.origin)
 		if path.size() <= 2:
