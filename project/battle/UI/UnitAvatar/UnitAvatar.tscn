@@ -114,6 +114,9 @@ transform = Transform( 0.932757, -0.11389, -0.342043, -0.178537, 0.678327, -0.71
 [node name="AnimationTree" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx" index="2"]
 parameters/Actions/playback = SubResource( 4 )
 
+[node name="Selection" parent="ViewportContainer/Viewport/GoblinBattleUnit" index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
+
 [node name="HPBar" type="TextureProgress" parent="."]
 margin_left = 1.30945
 margin_top = 109.457

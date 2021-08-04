@@ -15,10 +15,9 @@ func set_team_units(units: Array):
 	for unit in units:
 #		unit_id += 1
 		var unit_avatar = unit_avatar_scene.instance()
-		unit_avatar.set_unit(unit)
 		unit_avatar.connect("avatar_click", self, "on_avatar_click")
 		units_container.add_child(unit_avatar)
-		unit_avatar.initialize(unit.max_hp, unit.max_move_points)
+		unit_avatar.set_unit(unit)
 		units_avatarts[unit] = unit_avatar
 
 func on_avatar_click(unit: BattleUnit):
