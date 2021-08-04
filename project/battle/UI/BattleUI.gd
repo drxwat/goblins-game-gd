@@ -10,7 +10,7 @@ onready var units_container := $MarginContainer/VBoxContainer/Units
 signal next_turn_pressed
 signal focus_unit(unit)
 
-func set_team_units(units: Array):
+func set_player_units(units: Array):
 #	var unit_id := 0
 	for unit in units:
 #		unit_id += 1

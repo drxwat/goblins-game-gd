@@ -32,3 +32,7 @@ enum BATTLE_TEAM {
 func get_new_id():
 	id_seq += 1
 	return id_seq
+
+
+func _init():
+	randomize()

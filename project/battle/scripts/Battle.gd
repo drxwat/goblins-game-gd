@@ -55,10 +55,15 @@ func _ready():
 	var units = []
 	for unit_id in team1:
 		units.push_back(team1[unit_id])
-	battleUI.set_team_units(units)
+	battleUI.set_player_units(units)
 	battleUI.connect("focus_unit", self, "on_focus_unit")
 
+
 func on_focus_unit(unit: BattleUnit):
+	var val_team = team1.values()
+	if selected_unit:
+		_deselect_unit(selected_unit)
+	_select_unit(unit)
 	unit_focus(unit)
 
 # Creates and spawns units of the team
@@ -121,7 +126,7 @@ func _handle_keyboard(event: InputEvent):
 		_select_next_unit()
 
 func _select_next_unit():
-	if selected_unit == null:
+	if selected_unit:
 		_select_unit(team1.values()[0])
 	else:
 		var val_team = team1.values()

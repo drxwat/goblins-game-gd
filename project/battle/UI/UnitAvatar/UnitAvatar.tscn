@@ -101,10 +101,6 @@ projection = 1
 [node name="GoblinBattleUnit" parent="ViewportContainer/Viewport" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.956642, -2.93373 )
 
-[node name="Skeleton" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx/Armature" index="0"]
-bones/10/bound_children = [ NodePath("LeftHandAttachment") ]
-bones/30/bound_children = [ NodePath("RightHandAttachment") ]
-
 [node name="RightHandAttachment" parent="ViewportContainer/Viewport/GoblinBattleUnit/Gfx/Armature/Skeleton" index="4"]
 transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.234627, -0.226973, 0.972389, -0.054241, -34.0632, 4.23172, -36.0197 )
 
