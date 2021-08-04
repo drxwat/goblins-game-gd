@@ -4,6 +4,7 @@
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
+flags_unshaded = true
 albedo_color = Color( 0.192157, 0.415686, 0.160784, 0.705882 )
 
 [sub_resource type="CylinderMesh" id=2]
@@ -19,6 +20,7 @@ script = ExtResource( 1 )
 [node name="CollisionShape" type="CollisionShape" parent="."]
 
 [node name="Selection" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.05, 0 )
 visible = false
 mesh = SubResource( 2 )
 material/0 = null

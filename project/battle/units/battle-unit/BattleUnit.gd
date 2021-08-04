@@ -48,7 +48,7 @@ var _path: PoolVector3Array
 var _idle = true
 var _is_selected := false setget set_selected
 var global_unit : GlobalUnit setget set_global_unit # Unit Global Meta Info
-var battle_id: int setget , _get_unit_id
+var id: int setget , _get_unit_id
 
 var is_dead := false
 var current_animation
