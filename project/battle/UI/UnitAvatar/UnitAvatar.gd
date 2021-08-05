@@ -7,6 +7,7 @@ onready var label_unit_id := $id
 onready var btn := $AvatarBG
 
 const DEFAULT_BG_COLOR = Color("#222034")
+const SELECT_BG_COLOR = Color("#2f258a")
 
 var unit: BattleUnit setget set_unit
 
