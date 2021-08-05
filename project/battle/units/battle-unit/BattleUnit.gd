@@ -15,7 +15,7 @@ signal on_attack_end
 signal on_take_damage_end
 signal on_dead
 signal on_turn_end
-signal on_couter_attack_end
+signal on_counter_attack_end
 
 const SPEED  := 300
 
@@ -113,7 +113,7 @@ func mele_attack(unit: BattleUnit, with_counter_attack = true):
 		if unit.is_dead:
 			break
 		if unit.has_counter_attack:
-			yield(unit, "on_couter_attack_end")
+			yield(unit, "on_counter_attack_end")
 	move_points = 0
 	emit_signal("on_turn_end")
 
@@ -123,7 +123,7 @@ func counter_attack(unit: BattleUnit):
 	yield(self, "on_attack_end")
 	attack(unit, false)
 	yield(unit, "on_take_damage_end")
-	emit_signal("on_couter_attack_end")
+	emit_signal("on_counter_attack_end")
 	
 	# MAKE MOVE_P penalty
 
