@@ -43,9 +43,15 @@ func get_attack():
 	
 func get_defence():
 	return get_stat_value(GlobalConstants.STATS.DEFENCE)
+
+func get_wapon_meta():
+	return GlobalConstants.WEAPON_META[weapon]
 	
-func get_damage():
-	return get_stat_value(GlobalConstants.STATS.DAMAGE)
+func get_damage_range():
+	var base_dmg = get_stat_value(GlobalConstants.STATS.DAMAGE)
+	var min_dmg = GlobalConstants.WEAPON_META[weapon]["MIN"]
+	var max_dmg = GlobalConstants.WEAPON_META[weapon]["MAX"]
+	return [base_dmg + min_dmg, base_dmg + max_dmg]
 	
 func get_max_move_points():
 	return get_stat_value(GlobalConstants.STATS.MOVE_POINTS)
