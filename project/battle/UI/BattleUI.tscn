@@ -32,24 +32,25 @@ margin_right = 1004.0
 margin_bottom = 580.0
 
 [node name="Units" type="VBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_bottom = 536.0
+margin_bottom = 506.0
 size_flags_horizontal = 2
 size_flags_vertical = 3
 
 [node name="Actions" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-margin_top = 540.0
+margin_top = 510.0
 margin_right = 984.0
 margin_bottom = 560.0
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/Actions"]
 margin_right = 897.0
-margin_bottom = 20.0
+margin_bottom = 50.0
 size_flags_horizontal = 3
 
 [node name="NextTurn" type="Button" parent="MarginContainer/VBoxContainer/Actions"]
 margin_left = 901.0
 margin_right = 984.0
-margin_bottom = 20.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 80, 50 )
 text = "NEXT TURN"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Actions/NextTurn" to="." method="on_next_turn_press"]
