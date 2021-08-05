@@ -2,13 +2,13 @@
 
 [ext_resource path="res://battle/scripts/TerrainGridMap.gd" type="Script" id=1]
 [ext_resource path="res://battle/scripts/Battle.gd" type="Script" id=2]
-[ext_resource path="res://battle/terrain/meshlib/trees.meshlib" type="MeshLibrary" id=3]
+[ext_resource path="res://assets/battle/terrain/meshlib/trees.meshlib" type="MeshLibrary" id=3]
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=4]
 [ext_resource path="res://battle/scene_objects/MouseHover/MouseHover.tscn" type="PackedScene" id=6]
-[ext_resource path="res://battle/terrain/meshlib/terrain.meshlib" type="MeshLibrary" id=7]
+[ext_resource path="res://assets/battle/terrain/meshlib/terrain.meshlib" type="MeshLibrary" id=7]
 [ext_resource path="res://battle/camera/RTS3DCamera.tscn" type="PackedScene" id=8]
-[ext_resource path="res://battle/terrain/meshlib/grass.meshlib" type="MeshLibrary" id=9]
-[ext_resource path="res://battle/images/wallpaperbetter.com_4096x2304.jpg" type="Texture" id=10]
+[ext_resource path="res://assets/battle/terrain/meshlib/grass.meshlib" type="MeshLibrary" id=9]
+[ext_resource path="res://assets/battle/images/wallpaperbetter.com_4096x2304.jpg" type="Texture" id=10]
 
 [sub_resource type="PanoramaSky" id=1]
 panorama = ExtResource( 10 )
