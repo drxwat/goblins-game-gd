@@ -38,5 +38,14 @@ func get_hp():
 func set_hp(value: int):
 	set_stat_value(GlobalConstants.STATS.HIT_POINTS, value)
 	
+func get_attack():
+	return get_stat_value(GlobalConstants.STATS.ATTACK)
+	
+func get_defence():
+	return get_stat_value(GlobalConstants.STATS.DEFENCE)
+	
+func get_damage():
+	return get_stat_value(GlobalConstants.STATS.DAMAGE)
+	
 func get_max_move_points():
 	return get_stat_value(GlobalConstants.STATS.MOVE_POINTS)
