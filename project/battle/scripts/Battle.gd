@@ -15,8 +15,8 @@ onready var battleAI: = BattleAI.new()
 
 var team1_units_meta = [
 	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
-#	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
-#	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
 ]
 
 var team1_spawn_point = Vector3(1, 0, 19)
@@ -140,7 +140,8 @@ func unit_focus(unit: BattleUnit):
 	var target3d = unit.global_transform.origin
 	var target2d = Vector2(target3d.x, target3d.z)
 	camera.focus_to(target2d)
-	
+
+
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
 		return
@@ -274,12 +275,14 @@ func _select_unit(unit: BattleUnit):
 	terrain.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
-	
+	battleUI.units_avatarts[unit].btn.self_modulate = battleUI.units_avatarts[unit].SELECT_BG_COLOR
+
 func _deselect_unit(unit: BattleUnit):
 	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
+	battleUI.units_avatarts[unit].btn.self_modulate = battleUI.units_avatarts[unit].DEFAULT_BG_COLOR
 
 func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
 	if unit.move_points <= 0:
