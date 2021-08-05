@@ -14,26 +14,26 @@
 shader = ExtResource( 2 )
 shader_param/mask_texture = ExtResource( 4 )
 
-[sub_resource type="ProceduralSky" id=3]
+[sub_resource type="ProceduralSky" id=2]
 
-[sub_resource type="Environment" id=4]
+[sub_resource type="Environment" id=3]
 background_mode = 2
-background_sky = SubResource( 3 )
+background_sky = SubResource( 2 )
 
-[sub_resource type="SpatialMaterial" id=7]
+[sub_resource type="SpatialMaterial" id=4]
 flags_transparent = true
 albedo_color = Color( 1, 1, 1, 0.109804 )
 
-[sub_resource type="CubeMesh" id=8]
-material = SubResource( 7 )
+[sub_resource type="CubeMesh" id=5]
+material = SubResource( 4 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=6]
 size = 24
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 1 )
 
-[sub_resource type="Animation" id=6]
+[sub_resource type="Animation" id=7]
 tracks/0/type = "value"
 tracks/0/path = NodePath(".:modulate")
 tracks/0/interp = 1
@@ -99,14 +99,14 @@ render_target_update_mode = 3
 [node name="Camera" type="Camera" parent="ViewportContainer/Viewport"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.8 )
 cull_mask = 524288
-environment = SubResource( 4 )
+environment = SubResource( 3 )
 projection = 1
 far = 1.0
 
 [node name="DEBUG" type="MeshInstance" parent="ViewportContainer/Viewport/Camera"]
 transform = Transform( 0.401691, 0, 0, 0, -0.0148386, -0.401417, 0, 0.401417, -0.0148386, 0.00235185, -0.00645989, -0.5668 )
 visible = false
-mesh = SubResource( 8 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="HPBar" type="TextureProgress" parent="."]
@@ -142,13 +142,13 @@ anchor_left = 1.0
 anchor_right = 1.0
 margin_left = -22.0
 margin_bottom = 25.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 6 )
 text = "ID"
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="fade_anim" type="AnimationPlayer" parent="."]
-anims/fade = SubResource( 6 )
+anims/fade = SubResource( 7 )
 
 [connection signal="pressed" from="AvatarBG" to="." method="_on_UserAvatar_pressed"]
