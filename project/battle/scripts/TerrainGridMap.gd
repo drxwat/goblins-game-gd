@@ -14,6 +14,15 @@ func get_map_path(from: Vector3, to: Vector3) -> PoolVector3Array:
 			astar.get_closest_point(to)
 			)
 
+func get_path_from_unit_to_unit(from_unit: BattleUnit, to_unit: BattleUnit) -> PoolVector3Array:
+	free_point_from_unit(from_unit.global_transform.origin)
+	free_point_from_unit(to_unit.global_transform.origin)
+	var path = get_map_path(from_unit.global_transform.origin, to_unit.global_transform.origin)
+	occupy_point_with_unit(from_unit.global_transform.origin, from_unit.id)
+	occupy_point_with_unit(to_unit.global_transform.origin, to_unit.id)
+	return path
+
+
 func get_map_cell_center(point: Vector3) -> Vector3:
 	return astar.get_point_position(astar.get_closest_point(point, true));
 	 

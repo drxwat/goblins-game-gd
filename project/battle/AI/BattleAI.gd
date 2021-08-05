@@ -39,10 +39,8 @@ func act_unit(unit: BattleUnit):
 	var enemy_search_restult = find_ememy(unit)
 	var enemy = enemy_search_restult[0]
 	var is_attack = enemy_search_restult[1]
-	terrain.free_point_from_unit(enemy.global_transform.origin)
-	var path = terrain.get_map_path(unit.global_transform.origin, enemy.global_transform.origin)
-	terrain.occupy_point_with_unit(enemy.global_transform.origin, enemy.id)
-	if path.size() > 1:
+	var path = terrain.get_path_from_unit_to_unit(unit, enemy)
+	if path.size() > 2:
 		terrain.free_point_from_unit(unit.global_transform.origin)
 		terrain.unregister_unit(unit.global_transform.origin)
 		unit.connect("on_move_end", self, "_handle_unit_move_end", [unit, enemy, is_attack])
@@ -53,7 +51,7 @@ func act_unit(unit: BattleUnit):
 		attack_enemy(unit, enemy)
 
 func _handle_unit_attack_end(unit: BattleUnit, enemy: BattleUnit):
-	unit.disconnect("on_attack_end", self, "_handle_unit_attack_end")
+	unit.disconnect("on_turn_end", self, "_handle_unit_attack_end")
 	make_next_unit_turn()
 
 func _handle_unit_move_end(unit: BattleUnit, enemy: BattleUnit, is_attack: bool = false):
@@ -66,7 +64,7 @@ func _handle_unit_move_end(unit: BattleUnit, enemy: BattleUnit, is_attack: bool 
 		make_next_unit_turn()
 
 func attack_enemy(unit: BattleUnit, enemy: BattleUnit):
-	unit.connect("on_attack_end", self, "_handle_unit_attack_end", [unit, enemy])
+	unit.connect("on_turn_end", self, "_handle_unit_attack_end", [unit, enemy])
 	unit.mele_attack(enemy)
 
 func find_ememy(unit: BattleUnit):
@@ -75,9 +73,7 @@ func find_ememy(unit: BattleUnit):
 		var enemy = team1[unit_id]
 		if enemy.is_dead:
 			continue
-		terrain.free_point_from_unit(enemy.global_transform.origin)
-		var path = terrain.get_map_path(unit.global_transform.origin, enemy.global_transform.origin)
-		terrain.occupy_point_with_unit(enemy.global_transform.origin, enemy.id)
+		var path = terrain.get_path_from_unit_to_unit(unit, enemy)
 		enemies.push_back([path.size() - 2, enemy])
 	enemies.sort_custom(MetaUnitTuppleSorter, "sort_ascending")
 	var close_enemies = []

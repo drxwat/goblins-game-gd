@@ -96,7 +96,8 @@ func _get_firstname():
 	return global_unit.firstname
 
 func next_turn_update(): # APPLY EFFECTS, REGENT, POISON etc
-	move_points = max_move_points # @TODO depends from COUNTER attacks
+	move_points = max_move_points
+	couter_attacks_made = 0
 
 func set_path(path: PoolVector3Array) -> void:
 	if move_points < path.size():
@@ -106,18 +107,21 @@ func set_path(path: PoolVector3Array) -> void:
 func attack(unit: BattleUnit, with_counter_attack: bool):
 	unit.take_damage(self, calculate_damage(unit), with_counter_attack)
 
-func mele_attack(unit: BattleUnit, with_counter_attack = true):
+func mele_attack(unit: BattleUnit):
 	_rotate_unit(global_transform.origin.direction_to(unit.global_transform.origin))
 	var actions_amount = floor(move_points / (max_move_points / GlobalConstants.MOVE_AREAS))
 	for i in range(clamp(actions_amount + 1, 1, GlobalConstants.MOVE_AREAS)):	
+		var with_counter_attack = unit.has_counter_attack
 		_play_action_animation(MELE_ATTACK_ANIMATION_NAME)
 		yield(self, "on_attack_end")
-		attack(unit, true)
+		attack(unit, unit.has_counter_attack)
 		yield(unit, "on_take_damage_end")
 		if unit.is_dead:
 			break
-		if unit.has_counter_attack:
+		if with_counter_attack:
 			yield(unit, "on_counter_attack_end")
+			if is_dead:
+				break
 	move_points = 0
 	emit_signal("on_turn_end")
 
@@ -127,12 +131,14 @@ func counter_attack(unit: BattleUnit):
 	yield(self, "on_attack_end")
 	attack(unit, false)
 	yield(unit, "on_take_damage_end")
+	var move_point_penalty = max_move_points / COUTER_ATTACK_MAX_MOVE_PENALTY_DEVIDER
+	move_points -= move_point_penalty
 	emit_signal("on_counter_attack_end")
 	
 	# MAKE MOVE_P penalty
 
 func get_has_counter_attack():
-	return couter_attacks_made < MAX_COUNTER_ATTACKS and move_points > 0
+	return couter_attacks_made < MAX_COUNTER_ATTACKS
 	
 func range_attack(unit: BattleUnit):
 	pass
@@ -162,7 +168,7 @@ func is_hits_target(victim: BattleUnit) -> bool:
 	return rng.randf() < hit_chance
 
 func calculate_damage(victim: BattleUnit):
-	return 5
+	return 2
 
 func set_selected(value: bool):
 	_is_selected = value
