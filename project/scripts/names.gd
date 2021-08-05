@@ -119,23 +119,23 @@ const collection = {
 }
 
 
-func get_name(_race, type=1, lenght=1) -> String:
+func get_name(_race, is_male=true, is_short=true) -> String:
 	var name : String
 	
 	match _race:
 		GlobalConstants.RACE.GOBLIN:
-			name = _get_rnd_goblin_name(type, lenght)
+			name = _get_rnd_goblin_name(is_male, is_short)
 		_:
 			name = "None"
 	
 	return name
 
 
-func _get_rnd_goblin_name(_type, _lenght) -> String:
-	return _goblin_name_generator_v1(_type, _lenght)
+func _get_rnd_goblin_name(_is_male, _is_short) -> String:
+	return _goblin_name_generator_v1(_is_male, _is_short)
 
 
-func _goblin_name_generator_v1(_type, _lenght) -> String:
+func _goblin_name_generator_v1(_is_male: bool, _is_short: bool) -> String:
 	var vowels = [
 		"a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "a", "e", "i",
 		"o", "u", "y", "ia", "io", "ee", "aa", "ui", "ie", "ea", "oi"
@@ -216,27 +216,25 @@ func _goblin_name_generator_v1(_type, _lenght) -> String:
 	
 	var name: String = ""
 	
-	match _type:
-		1: # Male
-			name += male_consonants_syllable_1[index_m_cons_syllable_1]
-			name += vowels[index_vowels_syllable_1]
-			
-			if _lenght == 2:
-				name += male_consonants_syllable_2[index_m_cons_syllable_2]
-				name += vowels[index_vowels_syllable_2]
-			
-			name += male_ending[index_m_ending]
-		2: # Female
-			name += female_consonants_syllable_1[index_f_cons_syllable_1]
-			name += vowels[index_vowels_syllable_1]
-			
-			if _lenght == 2:
-				name += female_consonants_syllable_2[index_f_cons_syllable_2]
-				name += vowels[index_vowels_syllable_2]
-			
-			name += female_consonants_ending[index_f_cons_ending]
-			name += female_vowels_ending[index_f_vowels_ending]
-		_: # Undefined
-			name += 'goblin'
+	if _is_male:
+		name += male_consonants_syllable_1[index_m_cons_syllable_1]
+		name += vowels[index_vowels_syllable_1]
+		
+		if not _is_short:
+			name += male_consonants_syllable_2[index_m_cons_syllable_2]
+			name += vowels[index_vowels_syllable_2]
+		
+		name += male_ending[index_m_ending]
+	else:
+		name += female_consonants_syllable_1[index_f_cons_syllable_1]
+		name += vowels[index_vowels_syllable_1]
+		
+		if not _is_short:
+			name += female_consonants_syllable_2[index_f_cons_syllable_2]
+			name += vowels[index_vowels_syllable_2]
+		
+		name += female_consonants_ending[index_f_cons_ending]
+		name += female_vowels_ending[index_f_vowels_ending]
+
 	
 	return name.capitalize()
