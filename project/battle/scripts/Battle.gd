@@ -15,15 +15,15 @@ onready var battleAI: = BattleAI.new()
 
 var team1_units_meta = [
 	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
+#	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
+#	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
 ]
 
 var team1_spawn_point = Vector3(1, 0, 19)
 
 var team2_units_meta = [
 	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
-#	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
 #	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
 ]
 var team2_spawn_point = Vector3(1, 0, 1)
@@ -88,6 +88,9 @@ func _init_team(units_meta: Array, initial_spawn_point: Vector3, enemy = false) 
 func end_turn():
 	if selected_unit:
 		_deselect_unit(selected_unit)
+	for unit_id in team1:
+		team1[unit_id].next_turn_update()
+		battleUI.update_unit_info(team1[unit_id])
 	is_action_in_progress = true
 	ai_turn()
 
@@ -97,9 +100,6 @@ func ai_turn():
 func start_next_turn():
 	is_action_in_progress = false
 	turn_number += 1 # TODO: display turn number
-	for unit_id in team1:
-		team1[unit_id].next_turn_update()
-		battleUI.update_unit_info(team1[unit_id])
 	for unit_id in team2:
 		team2[unit_id].next_turn_update()
 	battleUI.enable_next_turn_button()
@@ -313,6 +313,7 @@ func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3
 #	unit.connect("on_attack_end", self, "_handle_unit_attack_end", [unit_id])
 	unit.connect("on_turn_end", self, "_handle_unit_attack_end", [unit_id])
 	unit.connect("on_take_damage_end", self, "_update_unit_ui_info", [unit_id])
+	unit.connect("on_counter_attack_end", self, "_update_unit_ui_info", [unit_id])
 	terrain.register_unit(pos, unit_id)
 	terrain.occupy_point_with_unit(pos, unit_id)
 
