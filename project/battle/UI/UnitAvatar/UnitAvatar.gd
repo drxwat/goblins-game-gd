@@ -29,6 +29,7 @@ func set_unit(battle_unit: BattleUnit):
 	btn_shortcut.shortcut = InputEventKey.new()
 	btn_shortcut.shortcut.scancode = KEY_1 + get_index()
 	btn.shortcut = btn_shortcut
+	unit.get_node("RemoteTransform").remote_path = camera.get_path()
 
 
 func _on_UserAvatar_pressed():
