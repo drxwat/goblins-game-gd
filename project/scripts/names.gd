@@ -119,7 +119,7 @@ const collection = {
 }
 
 
-func get_name(_race, is_male=true, is_short=true) -> String:
+static func get_name(_race, is_male=true, is_short=true) -> String:
 	var name : String
 	
 	match _race:
@@ -131,11 +131,11 @@ func get_name(_race, is_male=true, is_short=true) -> String:
 	return name
 
 
-func _get_rnd_goblin_name(_is_male, _is_short) -> String:
+static func _get_rnd_goblin_name(_is_male, _is_short) -> String:
 	return _goblin_name_generator_v1(_is_male, _is_short)
 
 
-func _goblin_name_generator_v1(_is_male: bool, _is_short: bool) -> String:
+static func _goblin_name_generator_v1(_is_male: bool, _is_short: bool) -> String:
 	var vowels = [
 		"a", "e", "i", "o", "u", "a", "e", "i", "o", "u", "a", "e", "i",
 		"o", "u", "y", "ia", "io", "ee", "aa", "ui", "ie", "ea", "oi"
