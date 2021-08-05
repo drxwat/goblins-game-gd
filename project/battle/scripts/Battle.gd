@@ -125,7 +125,7 @@ func _handle_keyboard(event: InputEvent):
 		_select_next_unit()
 
 func _select_next_unit():
-	if selected_unit:
+	if selected_unit == null:
 		_select_unit(team1.values()[0])
 	else:
 		var val_team = team1.values()
