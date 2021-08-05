@@ -105,7 +105,8 @@ func set_path(path: PoolVector3Array) -> void:
 	_path = path
 	
 func attack(unit: BattleUnit, with_counter_attack: bool):
-	unit.take_damage(self, calculate_damage(unit), with_counter_attack)
+	var damage = calculate_damage(unit) if is_hits_target(unit) else 0
+	unit.take_damage(self, damage, with_counter_attack)
 
 func mele_attack(unit: BattleUnit):
 	_rotate_unit(global_transform.origin.direction_to(unit.global_transform.origin))
@@ -149,10 +150,17 @@ func take_damage(from: BattleUnit, damage: int, with_counter_attack = true):
 	if self.hp <= 0:
 		call_deferred("die")
 		return
-	_play_action_animation(TAKE_DAMAGE_ANIMATION_NAME)
+	if damage == 0: 
+		print("MISS") #TODO: PLAY MISS ANIMATION
+		call_deferred("_tmp_emit_take_dmg_end")
+	else:
+		_play_action_animation(TAKE_DAMAGE_ANIMATION_NAME)
 	if with_counter_attack:
 		yield(self, "on_take_damage_end")
 		counter_attack(from)
+
+func _tmp_emit_take_dmg_end():
+	emit_signal("on_take_damage_end")
 
 func die():
 	is_dead = true
@@ -168,7 +176,11 @@ func is_hits_target(victim: BattleUnit) -> bool:
 	return rng.randf() < hit_chance
 
 func calculate_damage(victim: BattleUnit):
+	# TODO: GET WEAPON RANGE AND CALCULATE DMG
 	return 2
+
+func get_attack_effects():
+	return []
 
 func set_selected(value: bool):
 	_is_selected = value

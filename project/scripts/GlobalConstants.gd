@@ -19,12 +19,55 @@ const RACE_META = {
 	RACE.GOBLIN: {
 		"STATS": {
 			STATS.ATTACK: 6.0,
-			STATS.DAMAGE: 5.0,
-			STATS.DAMAGE: 5.0,
+			STATS.DEFENCE: 5.0,
+			STATS.DAMAGE: 0.0,
 			STATS.HIT_POINTS: 15.0,
 			STATS.MOVE_POINTS: 6.0
 		}
 	}
+}
+
+enum EFFECTS {
+	CRIT,
+	STUN,
+	HIT_CHANCE,
+}
+
+const WEAPON_META = {
+	WEAPON.NONE: {
+		"MIN": 0,
+		"MAX": 0,
+		"EFFECTS": []
+	},
+	WEAPON.AXE: {
+		"MIN": 4,
+		"MAX": 8,
+		"EFFECTS": [
+			[EFFECTS.CRIT, 0.10]
+		]
+	},
+	WEAPON.MACE: {
+		"MIN": 4,
+		"MAX": 7,
+		"EFFECTS": [
+			[EFFECTS.STUN, 0.10]
+		]
+	},
+	WEAPON.SWORD: {
+		"MIN": 5,
+		"MAX": 7,
+		"EFFECTS": [
+			[EFFECTS.HIT_CHANCE, 0.10]
+		]
+	},
+	WEAPON.BOW: {
+		"MIN": 0,
+		"MAX": 0,
+		"IS_RANGE": true,
+		"EFFECTS": [
+			[EFFECTS.HIT_CHANCE, -0.10]
+		]
+	},
 }
 
 enum BATTLE_TEAM {
