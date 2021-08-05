@@ -2,7 +2,6 @@ extends BattleUnit
 
 var axe_scene: PackedScene = preload("res://battle/units/weapon/scene_objects/Axe.tscn")
 var mace_scene: PackedScene = preload("res://battle/units/weapon/scene_objects/Mace.tscn")
-var portrait: Texture = preload("res://battle/units/goblin/portrait.png")
 
 var weapon_meta = {
 	GlobalConstants.WEAPON.AXE: {
@@ -18,9 +17,6 @@ var weapon_meta = {
 		"mesh_scene": mace_scene
 	}
 }
-
-func get_portrait() -> Texture:
-	return portrait
 
 func _get_weapon_meta():
 	return weapon_meta
