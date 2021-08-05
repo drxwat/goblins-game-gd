@@ -22,7 +22,7 @@ func set_unit(battle_unit: BattleUnit):
 	unit = battle_unit
 	hp_bar.max_value = unit.max_hp
 	move_points_bar.value = unit.max_move_points
-	label_unit_id.text = "%s(%s)" % [unit.firstname, str(get_index() + 1)]
+	label_unit_id.text = "(%s) %s" % [str(get_index() + 1), unit.firstname]
 	name = "UnitAvatar_%s" % unit.id
 	var btn_shortcut = ShortCut.new()
 	btn_shortcut.shortcut = InputEventKey.new()
