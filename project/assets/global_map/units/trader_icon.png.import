@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/trader_icon.png-cb2c90e1f17e8e893225976d0b93d194.stex"
+path="res://.import/trader_icon.png-a9d55044726b5e561d5a42820452d5e3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://trader_icon.png"
-dest_files=[ "res://.import/trader_icon.png-cb2c90e1f17e8e893225976d0b93d194.stex" ]
+source_file="res://assets/global_map/units/trader_icon.png"
+dest_files=[ "res://.import/trader_icon.png-a9d55044726b5e561d5a42820452d5e3.stex" ]
 
 [params]
 

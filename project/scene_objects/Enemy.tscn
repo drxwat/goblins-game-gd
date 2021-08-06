@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://unit_icon.png" type="Texture" id=1]
+[ext_resource path="res://assets/global_map/units/unit_icon.png" type="Texture" id=1]
 [ext_resource path="res://scripts/units/enemy.gd" type="Script" id=2]
 [ext_resource path="res://scene_objects/Unit.tscn" type="PackedScene" id=3]
 
