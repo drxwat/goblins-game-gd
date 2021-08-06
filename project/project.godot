@@ -76,7 +76,7 @@ _global_script_class_icons={
 
 config/name="Godot-goblins"
 run/main_scene="res://global_map.tscn"
-config/icon="res://icon-goblin.png"
+config/icon="res://assets/app-icon/icon-goblin.png"
 
 [autoload]
 
