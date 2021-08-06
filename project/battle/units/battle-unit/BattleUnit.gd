@@ -176,8 +176,10 @@ func is_hits_target(victim: BattleUnit) -> bool:
 	return rng.randf() < hit_chance
 
 func calculate_damage(victim: BattleUnit):
-	# TODO: GET WEAPON RANGE AND CALCULATE DMG
-	return 2
+	var damage_range = global_unit.get_damage_range()
+	var damage = rng.randi_range(damage_range[0], damage_range[1])
+	print("Damage ", damage)
+	return damage
 
 func get_attack_effects():
 	return []
