@@ -143,13 +143,14 @@ func find_next_live_unit():
 		return get_first_live_unit()
 	var next_unit = get_first_live_unit() 
 	var unit_index = false
-	for unit in val_team:
-		unit_index = val_team.find(unit)
-		if unit_index < selected_index:
+	for i in range(val_team.size()):
+		var unit = val_team[i]
+		var is_selected = unit == selected_unit
+		if i < selected_index:
 			continue
-		if not is_live_unit(unit):
+		if unit.is_dead:
 			continue
-		if unit_index == selected_index:
+		if is_selected:
 			continue
 		next_unit = unit
 		break
@@ -159,8 +160,8 @@ func get_first_live_unit():
 	var val_team = team1.values()
 	var live_unit = selected_unit
 	for unit in val_team:
-		if not is_live_unit(unit):
-			continue		
+		if unit.is_dead:
+			continue
 		live_unit = unit
 		break
 	return live_unit
@@ -169,11 +170,6 @@ func unit_focus(unit: BattleUnit):
 	var target3d = unit.global_transform.origin
 	var target2d = Vector2(target3d.x, target3d.z)
 	camera.focus_to(target2d)
-
-func is_live_unit(unit: BattleUnit):
-	if unit.get_hp() <= 0:
-		return false
-	return true
 
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
@@ -394,4 +390,3 @@ func _update_unit_ui_info(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
 	if _is_ally(unit_id):
 		battleUI.update_unit_info(unit)
-
