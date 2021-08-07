@@ -39,6 +39,8 @@ var hovered_enemy: BattleUnit = null
 
 var turn_number := 1
 
+var ai_turn = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	terrain.set_obstacles($Forest)
@@ -94,11 +96,13 @@ func end_turn():
 	is_action_in_progress = true
 	ai_turn()
 
-func ai_turn():
+func ai_turn():	
+	ai_turn = true
 	battleAI.start_turn()
 
 func start_next_turn():
 	is_action_in_progress = false
+	ai_turn = false
 	turn_number += 1 # TODO: display turn number
 	for unit_id in team2:
 		team2[unit_id].next_turn_update()
@@ -174,6 +178,8 @@ func is_live_unit(unit: BattleUnit):
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
 		return
+	if ai_turn:
+		return
 	if event.button_index != BUTTON_LEFT or not event.pressed:
 		return
 	var m_position = _get_mouse_projected_position(event.position)
@@ -195,6 +201,8 @@ func _handle_left_mouse_click(event: InputEvent):
 
 func _handle_right_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
+		return
+	if ai_turn:
 		return
 	if event.button_index != BUTTON_RIGHT or not event.pressed:
 		return
