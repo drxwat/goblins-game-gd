@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://assets/battle/terrain/meshlib/terrain.meshlib" type="MeshLibrary" id=1]
 [ext_resource path="res://battle/tactical_map/tactical_map.gd" type="Script" id=2]
 [ext_resource path="res://assets/battle/terrain/meshlib/trees.meshlib" type="MeshLibrary" id=3]
+[ext_resource path="res://battle/camera/RTS3DCamera.tscn" type="PackedScene" id=4]
 [ext_resource path="res://assets/battle/terrain/meshlib/grass.meshlib" type="MeshLibrary" id=5]
 
 [node name="TacticalMap" type="Spatial"]
@@ -39,6 +40,4 @@ __meta__ = {
 "_editor_clip_": 0
 }
 
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 38.5664, 119.467 )
-current = true
+[node name="Camera" parent="." instance=ExtResource( 4 )]
