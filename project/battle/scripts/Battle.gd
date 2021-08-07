@@ -125,22 +125,51 @@ func _handle_keyboard(event: InputEvent):
 		_select_next_unit()
 
 func _select_next_unit():
-	if selected_unit == null:
-		_select_unit(team1.values()[0])
-	else:
-		var val_team = team1.values()
-		var selected_index = val_team.find(selected_unit)
-		var next_index = (selected_index + 1) % val_team.size()
+	var next_live_unit = find_next_live_unit()
+	if selected_unit != null:
 		_deselect_unit(selected_unit)
-		_select_unit(val_team[next_index])
-
-	unit_focus(selected_unit)
+	if next_live_unit:
+		_select_unit(next_live_unit)
+		unit_focus(selected_unit)
+	
+func find_next_live_unit():
+	var val_team = team1.values()
+	var selected_index = val_team.find(selected_unit)	
+	if selected_index == -1:
+		return get_first_live_unit()
+	var next_unit = get_first_live_unit() 
+	var unit_index = false
+	for unit in val_team:
+		unit_index = val_team.find(unit)
+		if unit_index < selected_index:
+			continue
+		if not is_live_unit(unit):
+			continue
+		if unit_index == selected_index:
+			continue
+		next_unit = unit
+		break
+	return next_unit
+	
+func get_first_live_unit():
+	var val_team = team1.values()
+	var live_unit = selected_unit
+	for unit in val_team:
+		if not is_live_unit(unit):
+			continue		
+		live_unit = unit
+		break
+	return live_unit
 
 func unit_focus(unit: BattleUnit):
 	var target3d = unit.global_transform.origin
 	var target2d = Vector2(target3d.x, target3d.z)
 	camera.focus_to(target2d)
 
+func is_live_unit(unit: BattleUnit):
+	if unit.get_hp() <= 0:
+		return false
+	return true
 
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
