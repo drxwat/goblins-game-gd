@@ -39,6 +39,8 @@ var hovered_enemy: BattleUnit = null
 
 var turn_number := 1
 
+var ai_turn = false
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	terrain.set_obstacles($Forest)
@@ -94,11 +96,13 @@ func end_turn():
 	is_action_in_progress = true
 	ai_turn()
 
-func ai_turn():
+func ai_turn():	
+	ai_turn = true
 	battleAI.start_turn()
 
 func start_next_turn():
 	is_action_in_progress = false
+	ai_turn = false
 	turn_number += 1 # TODO: display turn number
 	for unit_id in team2:
 		team2[unit_id].next_turn_update()
@@ -125,25 +129,52 @@ func _handle_keyboard(event: InputEvent):
 		_select_next_unit()
 
 func _select_next_unit():
-	if selected_unit == null:
-		_select_unit(team1.values()[0])
-	else:
-		var val_team = team1.values()
-		var selected_index = val_team.find(selected_unit)
-		var next_index = (selected_index + 1) % val_team.size()
+	var next_live_unit = find_next_live_unit()
+	if selected_unit != null:
 		_deselect_unit(selected_unit)
-		_select_unit(val_team[next_index])
-
-	unit_focus(selected_unit)
+	if next_live_unit:
+		_select_unit(next_live_unit)
+		unit_focus(selected_unit)
+	
+func find_next_live_unit():
+	var val_team = team1.values()
+	var selected_index = val_team.find(selected_unit)	
+	if selected_index == -1:
+		return get_first_live_unit()
+	var next_unit = get_first_live_unit() 
+	var unit_index = false
+	for i in range(val_team.size()):
+		var unit = val_team[i]
+		var is_selected = unit == selected_unit
+		if i < selected_index:
+			continue
+		if unit.is_dead:
+			continue
+		if is_selected:
+			continue
+		next_unit = unit
+		break
+	return next_unit
+	
+func get_first_live_unit():
+	var val_team = team1.values()
+	var live_unit = selected_unit
+	for unit in val_team:
+		if unit.is_dead:
+			continue
+		live_unit = unit
+		break
+	return live_unit
 
 func unit_focus(unit: BattleUnit):
 	var target3d = unit.global_transform.origin
 	var target2d = Vector2(target3d.x, target3d.z)
 	camera.focus_to(target2d)
 
-
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
+		return
+	if ai_turn:
 		return
 	if event.button_index != BUTTON_LEFT or not event.pressed:
 		return
@@ -166,6 +197,8 @@ func _handle_left_mouse_click(event: InputEvent):
 
 func _handle_right_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
+		return
+	if ai_turn:
 		return
 	if event.button_index != BUTTON_RIGHT or not event.pressed:
 		return
@@ -357,4 +390,3 @@ func _update_unit_ui_info(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
 	if _is_ally(unit_id):
 		battleUI.update_unit_info(unit)
-
