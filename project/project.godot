@@ -49,6 +49,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://battle/terrain/path_dot/PathDot.gd"
 }, {
+"base": "Reference",
+"class": "TacticalMapGenerator",
+"language": "GDScript",
+"path": "res://battle/tactical_map/scripts/tactical_map_generator.gd"
+}, {
 "base": "GridMap",
 "class": "TerrainGridMap",
 "language": "GDScript",
@@ -68,6 +73,7 @@ _global_script_class_icons={
 "GlobalUnit": "",
 "NameGenerator": "",
 "PathDot": "",
+"TacticalMapGenerator": "",
 "TerrainGridMap": "",
 "Unit": ""
 }
