@@ -3,11 +3,9 @@ extends Node
 var id_seq := 0 setget , get_new_id
 
 const DEBUG_PATH = true
-const SCENE_OBJ_PATH = "res://scene_objects/"
 
 const MOVE_AREAS := 3.0 # Amount of move zones/actions of units
 
-const ENEMY_SCENE_PATH = SCENE_OBJ_PATH + "Enemy.tscn"
 
 enum RACE { GOBLIN }
 
@@ -41,14 +39,14 @@ const WEAPON_META = {
 	},
 	WEAPON.AXE: {
 		"MIN": 4,
-		"MAX": 8,
+		"MAX": 9,
 		"EFFECTS": [
 			[EFFECTS.CRIT, 0.10]
 		]
 	},
 	WEAPON.MACE: {
-		"MIN": 4,
-		"MAX": 7,
+		"MIN": 5,
+		"MAX": 8,
 		"EFFECTS": [
 			[EFFECTS.STUN, 0.10]
 		]

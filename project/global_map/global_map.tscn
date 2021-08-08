@@ -1,27 +1,26 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=12 format=2]
 
-[ext_resource path="res://assets/global_map/tilesets/general_tileset.tres" type="TileSet" id=1]
-[ext_resource path="res://assets/global_map/tilesets/road_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://scripts/tile_map.gd" type="Script" id=3]
-[ext_resource path="res://scene_objects/Player.tscn" type="PackedScene" id=4]
-[ext_resource path="res://scripts/root.gd" type="Script" id=5]
-[ext_resource path="res://scene_objects/Trader.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/global_map/tilesets/decorations_s.tres" type="TileSet" id=7]
-[ext_resource path="res://assets/global_map/tilesets/decorations_w.tres" type="TileSet" id=8]
-[ext_resource path="res://assets/global_map/tilesets/decorations_e.tres" type="TileSet" id=9]
-[ext_resource path="res://assets/global_map/tilesets/decorations_n.tres" type="TileSet" id=10]
-[ext_resource path="res://scene_objects/Enemy.tscn" type="PackedScene" id=11]
-[ext_resource path="res://assets/global_map/tilesets/buildings_tileset.tres" type="TileSet" id=12]
+[ext_resource path="res://assets/global_map/tilesets/decorations_n.tres" type="TileSet" id=1]
+[ext_resource path="res://assets/global_map/tilesets/buildings_tileset.tres" type="TileSet" id=2]
+[ext_resource path="res://assets/global_map/tilesets/decorations_e.tres" type="TileSet" id=3]
+[ext_resource path="res://global_map/units/enemy_old/Enemy.tscn" type="PackedScene" id=4]
+[ext_resource path="res://global_map/units/player/Player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://assets/global_map/tilesets/general_tileset.tres" type="TileSet" id=7]
+[ext_resource path="res://assets/global_map/tilesets/road_tileset.tres" type="TileSet" id=8]
+[ext_resource path="res://assets/global_map/tilesets/decorations_s.tres" type="TileSet" id=9]
+[ext_resource path="res://assets/global_map/tilesets/decorations_w.tres" type="TileSet" id=10]
+[ext_resource path="res://scripts/tile_map.gd" type="Script" id=11]
+[ext_resource path="res://scripts/root.gd" type="Script" id=12]
 
 [node name="Root" type="Node2D"]
-script = ExtResource( 5 )
+script = ExtResource( 12 )
 
 [node name="TileMap" type="Node2D" parent="."]
-script = ExtResource( 3 )
+script = ExtResource( 11 )
 
 [node name="Ground" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 1 )
+tile_set = ExtResource( 7 )
 cell_size = Vector2( 256, 128 )
 centered_textures = true
 format = 1
@@ -29,7 +28,7 @@ tile_data = PoolIntArray( -1572894, 0, 0, -1572893, 0, 0, -1572892, 0, 0, -15728
 
 [node name="Road" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 2 )
+tile_set = ExtResource( 8 )
 cell_size = Vector2( 256, 128 )
 centered_textures = true
 format = 1
@@ -40,7 +39,7 @@ __meta__ = {
 
 [node name="Decor-S" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 7 )
+tile_set = ExtResource( 9 )
 cell_size = Vector2( 256, 128 )
 centered_textures = true
 format = 1
@@ -51,7 +50,7 @@ __meta__ = {
 
 [node name="Decor-W" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 8 )
+tile_set = ExtResource( 10 )
 cell_size = Vector2( 256, 128 )
 centered_textures = true
 format = 1
@@ -62,7 +61,7 @@ __meta__ = {
 
 [node name="Decor-N" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 10 )
+tile_set = ExtResource( 1 )
 cell_size = Vector2( 256, 128 )
 centered_textures = true
 format = 1
@@ -73,7 +72,7 @@ __meta__ = {
 
 [node name="Decor-E" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 9 )
+tile_set = ExtResource( 3 )
 cell_size = Vector2( 256, 128 )
 centered_textures = true
 format = 1
@@ -84,7 +83,7 @@ __meta__ = {
 
 [node name="Forest" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 1 )
+tile_set = ExtResource( 7 )
 cell_size = Vector2( 256, 128 )
 cell_y_sort = true
 centered_textures = true
@@ -96,7 +95,7 @@ __meta__ = {
 
 [node name="Buildings" type="TileMap" parent="TileMap"]
 mode = 1
-tile_set = ExtResource( 12 )
+tile_set = ExtResource( 2 )
 cell_size = Vector2( 256, 128 )
 cell_y_sort = true
 centered_textures = true
@@ -108,13 +107,9 @@ __meta__ = {
 
 [node name="Units" type="Node2D" parent="."]
 
-[node name="Enemy" parent="Units" instance=ExtResource( 11 )]
+[node name="Enemy" parent="Units" instance=ExtResource( 4 )]
 position = Vector2( -2411.31, -1126.79 )
 _aim_node_path = NodePath("../../Player")
 
-[node name="Trader" parent="Units" instance=ExtResource( 6 )]
-position = Vector2( -632.74, -253.707 )
-_aim_node_path = NodePath("../../Player")
-
-[node name="Player" parent="." instance=ExtResource( 4 )]
+[node name="Player" parent="." instance=ExtResource( 6 )]
 position = Vector2( -1394.63, -611.13 )
