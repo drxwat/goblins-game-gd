@@ -27,7 +27,12 @@ _global_script_classes=[ {
 "base": "Unit",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://scripts/units/enemy.gd"
+"path": "res://global_map/units/enemy_old/enemy.gd"
+}, {
+"base": "Node2D",
+"class": "GlobalTerrainTileMap",
+"language": "GDScript",
+"path": "res://scripts/tile_map.gd"
 }, {
 "base": "Reference",
 "class": "GlobalUnit",
@@ -49,33 +54,28 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://battle/scripts/TerrainGridMap.gd"
 }, {
-"base": "Enemy",
-"class": "Trader",
-"language": "GDScript",
-"path": "res://scripts/units/trader.gd"
-}, {
 "base": "Node2D",
 "class": "Unit",
 "language": "GDScript",
-"path": "res://scripts/units/unit.gd"
+"path": "res://global_map/units/global_map_unit/unit.gd"
 } ]
 _global_script_class_icons={
 "BattleAI": "",
 "BattleUnit": "",
 "CameraController": "",
 "Enemy": "",
+"GlobalTerrainTileMap": "",
 "GlobalUnit": "",
 "NameGenerator": "",
 "PathDot": "",
 "TerrainGridMap": "",
-"Trader": "",
 "Unit": ""
 }
 
 [application]
 
 config/name="Godot-goblins"
-run/main_scene="res://global_map.tscn"
+run/main_scene="res://global_map/global_map.tscn"
 config/icon="res://assets/app-icon/icon-goblin.png"
 
 [autoload]
@@ -83,6 +83,10 @@ config/icon="res://assets/app-icon/icon-goblin.png"
 GlobalConstants="*res://scripts/GlobalConstants.gd"
 BattleConstants="*res://battle/scripts/BattleConstants.gd"
 FullscreenOffOn="*res://scripts/fullscreenOffOn.gd"
+
+[display]
+
+window/size/fullscreen=true
 
 [importer_defaults]
 

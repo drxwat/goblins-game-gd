@@ -4,7 +4,6 @@ class_name CameraController
 enum CAMERA_ACTIONS{
 	MOVING,
 	FOCUS,
-	ROTATING_VIEW,
 }
 
 export(float,1,100) var movement_speed = 30
@@ -36,8 +35,6 @@ var focus_target : Vector2
 var focus_tween : Tween
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
-	
 	pitch = rotation.x
 	yaw = rotation.y
 
@@ -46,11 +43,8 @@ func change_action(action):
 	match(current_action):
 		CAMERA_ACTIONS.MOVING:
 			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
-			Input.set_mouse_mode(Input.MOUSE_MODE_CONFINED)
 		CAMERA_ACTIONS.FOCUS:
 			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-		CAMERA_ACTIONS.ROTATING_VIEW:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 func _process(delta):
 	
@@ -107,16 +101,3 @@ func zoom(direction : float):
 	var new_fov = fov + (sign(direction) * pow(abs(direction),zoom_sensibility)/100 * get_process_delta_time())
 	fov = clamp(new_fov,min_zoom,max_zoom)
 
-
-func rotate_view(axis : Vector2):
-	
-	var pitch_rotation_amount = -axis.y/100 * get_process_delta_time() * rotation_sensibility
-	var yaw_rotation_amount = -axis.x/100 * get_process_delta_time() * rotation_sensibility
-	
-	pitch += pitch_rotation_amount
-	pitch = clamp(pitch,-PI/2,0)
-	
-	yaw += yaw_rotation_amount
-	
-	rotation.x = pitch
-	rotation.y = yaw
