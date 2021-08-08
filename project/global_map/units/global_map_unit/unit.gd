@@ -11,7 +11,7 @@ var _target: Vector2 setget set_target
 var _path := PoolVector2Array()
 var _path_weights := PoolRealArray()
 
-onready var tile_map: Node2D = get_tree().get_root().get_node("Root/TileMap")
+onready var tile_map: GlobalTerrainTileMap = get_tree().get_root().get_node("Root/TileMap")
 
 var _path_line: Line2D
 
