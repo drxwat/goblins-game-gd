@@ -41,14 +41,14 @@ const WEAPON_META = {
 	},
 	WEAPON.AXE: {
 		"MIN": 4,
-		"MAX": 8,
+		"MAX": 9,
 		"EFFECTS": [
 			[EFFECTS.CRIT, 0.10]
 		]
 	},
 	WEAPON.MACE: {
-		"MIN": 4,
-		"MAX": 7,
+		"MIN": 5,
+		"MAX": 8,
 		"EFFECTS": [
 			[EFFECTS.STUN, 0.10]
 		]
