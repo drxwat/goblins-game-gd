@@ -46,14 +46,34 @@ func _ready():
 	randomize()
 	var a = randi() % 2
 	
-	if a == 0:
-		var randomMapGenerator = RandomMapGenerator.new(map_height, map_widht,
-			$Soil, $Obstacles, $Vegetation)
-		randomMapGenerator._create_forest_glade()
-	else:
-		var noiseMapGenerator = NoiseMapGenerator.new(map_height, map_widht,
-			$Soil, $Obstacles, $Vegetation)
-		noiseMapGenerator._generate_map()
+#	if a == 0:
+#		var randomMapGenerator = RandomMapGenerator.new(map_height, map_widht,
+#			$Soil, $Obstacles, $Vegetation)
+#		randomMapGenerator._create_forest_glade()
+#	else:
+#		var noiseMapGenerator = NoiseMapGenerator.new(map_height, map_widht,
+#			$Soil, $Obstacles, $Vegetation)
+#		noiseMapGenerator._generate_map()
+
+
+func generate_map_with_random_gen():
+	clear_map()
+	var randomMapGenerator = RandomMapGenerator.new(map_height, map_widht,
+		$Soil, $Obstacles, $Vegetation)
+	randomMapGenerator._create_forest_glade()
+	
+	
+func generate_map_with_noise_gen():
+	clear_map()
+	var noiseMapGenerator = NoiseMapGenerator.new(map_height, map_widht,
+		$Soil, $Obstacles, $Vegetation)
+	noiseMapGenerator._generate_map()
+
+
+func clear_map():
+	$Soil.clear()
+	$Obstacles.clear()
+	$Vegetation.clear()
 
 
 class AbstractMapGenerator:

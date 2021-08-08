@@ -41,3 +41,39 @@ __meta__ = {
 }
 
 [node name="Camera" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 38.2787, 3 )
+far = 250.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Spacer" type="Control" parent="VBoxContainer"]
+margin_right = 1024.0
+margin_bottom = 516.0
+size_flags_vertical = 3
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+margin_top = 520.0
+margin_right = 1024.0
+margin_bottom = 600.0
+custom_constants/separation = 25
+
+[node name="RandomGenButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 200.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 200, 80 )
+text = "Random Generator"
+
+[node name="NoiseGenButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 225.0
+margin_right = 425.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 200, 80 )
+text = "Noise Generator"
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/RandomGenButton" to="." method="generate_map_with_random_gen"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/NoiseGenButton" to="." method="generate_map_with_noise_gen"]
