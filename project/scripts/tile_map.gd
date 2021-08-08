@@ -1,4 +1,5 @@
 extends Node2D
+class_name GlobalTerrainTileMap
 
 enum WeightScales {
 	ROAD = 2,
