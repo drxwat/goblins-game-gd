@@ -14,5 +14,3 @@ screen_edge_size = 0.001
 
 [connection signal="on_change_action" from="CameraInput" to="." method="change_action"]
 [connection signal="on_change_velocity" from="CameraInput" to="." method="change_velocity"]
-[connection signal="on_rotate_view" from="CameraInput" to="." method="rotate_view"]
-[connection signal="on_zoom" from="CameraInput" to="." method="zoom"]

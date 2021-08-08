@@ -15,9 +15,7 @@ var is_keyboard_control : bool = true
 var mouse_wheel : float  = 0.0
 
 signal on_change_velocity(velocity)
-signal on_rotate_view(relative)
 signal on_change_action(new_state)
-signal on_zoom(value)
 
 var current_action
 
@@ -28,8 +26,6 @@ var swipe_start : Vector2
 #Gamepad
 var right_stick_horizontal : float
 var right_stick_vertical : float
-#Used for enabling and disabling zoom
-var right_stick_needs_reset : bool
 
 func _ready():
 	connect("on_change_action",self,"change_action")
@@ -67,22 +63,12 @@ var last_pinch_distance : float
 var pinching : float
 
 var blocked_movement : bool = false
-var can_zoom : bool = true
-
-func enable_zoom():
-	can_zoom = true
-	
-func disable_zoom():
-	can_zoom = false
 
 func enable_movement():
 	blocked_movement = false
 
 func disable_movement():
 	blocked_movement = true
-	
-func ask_right_stick_reset():
-	right_stick_needs_reset = true
 
 func _input(event):
 	if OS.get_name() == "Android" or OS.get_name() == "iOS":
@@ -101,10 +87,6 @@ func _input(event):
 			
 			#RESET PINCHING VALUE WHEN A NEW TOUCH IS DETECTED OR HAS BEEN LIFTED
 			pinching = 0.0
-			if touch_count == 2:
-				#STARTED ZOOMING, BLOCK MOVEMENT UNTIL EVERY TOUCH IS LIFTED
-				blocked_movement = true
-				start_pinch_distance = (touches[1] - touches[0]).length()
 				
 		if event is InputEventScreenDrag:
 			if touch_count == 2:
@@ -121,48 +103,11 @@ func _input(event):
 			else:
 				if current_action == CameraController.CAMERA_ACTIONS.MOVING:
 					move_swipe(event.position)
-				elif current_action == CameraController.CAMERA_ACTIONS.ROTATING_VIEW:
-					emit_signal("on_rotate_view",event.relative)
 					
 		###############MOBILE
 	else:
 	#PC##################
 	#Camera edge pushing
-		if event is InputEventMouseMotion:
-			#ROTATE VIEW
-			if current_action == CameraController.CAMERA_ACTIONS.ROTATING_VIEW:
-				emit_signal("on_rotate_view",event.relative)
-			#Gets screen size
-			var view_size = get_viewport().get_visible_rect().size - Vector2.ONE
-			#Get mouse position in percentage values relative to the screen
-			var delta = (event.position) / view_size
-			#Convert it to a range between [-1,1]
-			delta = (delta * 2) - Vector2.ONE
-			
-			if current_action == CameraController.CAMERA_ACTIONS.MOVING:
-				#Store it an buffer to use it on _process
-				#Calculates delta based on percentage between the edge size and the actual edge
-				horizontal = max(abs(delta.x) - (1.0 - screen_edge_size),0)
-				vertical = max(abs(delta.y) - (1.0 - screen_edge_size),0)
-				#Converts it to an [0.0,1.0] range
-				horizontal = range_lerp(horizontal,0.0,screen_edge_size,0.0,1.0)
-				vertical = range_lerp(vertical,0.0,screen_edge_size,0.0,1.0)
-				#Applies direction
-				horizontal *= sign(delta.x)
-				vertical *= sign(delta.y)
-			elif current_action == CameraController.CAMERA_ACTIONS.ROTATING_VIEW:
-				horizontal = delta.x
-				vertical = delta.y
-				pass
-		if event is InputEventMouseButton:
-			#WHEEL SCROLL
-			if can_zoom:
-				if event.button_index == BUTTON_WHEEL_UP or event.button_index == BUTTON_WHEEL_DOWN:
-					if event.pressed and not event.is_echo():
-						var direction = (-1 if event.button_index == BUTTON_WHEEL_UP else 0) + (1 if event.button_index == BUTTON_WHEEL_DOWN else 0)
-						mouse_wheel += direction * get_process_delta_time() * 1000
-		
-		
 		if event is InputEventJoypadMotion:
 			#Writing gamepad left axis values
 			horizontal = event.axis_value if event.axis == 0 else horizontal
@@ -177,8 +122,6 @@ func _input(event):
 			#Adjusting by deadzone
 			right_stick_horizontal = 0.0 if abs(right_stick_horizontal) < joy_dead_zone else right_stick_horizontal
 			right_stick_vertical = 0.0 if abs(right_stick_vertical) < joy_dead_zone else right_stick_vertical
-			if right_stick_vertical == 0.0:
-				right_stick_needs_reset = false
 #			print("Axis: %s -> %s" % [event.axis,event.axis_value])
 	###################PC
 
@@ -209,23 +152,9 @@ func _process(delta):
 	#PC######
 	handle_keyboard()
 
-	if Input.is_action_just_pressed("ToggleCameraAction"):
-		emit_signal("on_change_action",CameraController.CAMERA_ACTIONS.ROTATING_VIEW)
-	elif Input.is_action_just_released("ToggleCameraAction"):
-		emit_signal("on_change_action",CameraController.CAMERA_ACTIONS.MOVING)
-	
 	match(current_action):
 		CameraController.CAMERA_ACTIONS.MOVING:
 			#RESIDUAL MOVEMENT
 			if (horizontal != 0 or vertical != 0) and not blocked_movement:
 				emit_signal("on_change_velocity",Vector2(horizontal, vertical))
-			if right_stick_vertical != 0 and can_zoom and not right_stick_needs_reset:
-				emit_signal("on_zoom",right_stick_vertical*50)
-		CameraController.CAMERA_ACTIONS.ROTATING_VIEW:
-			if right_stick_horizontal != 0 or right_stick_vertical != 0:
-				emit_signal("on_rotate_view",100*Vector2(right_stick_horizontal, right_stick_vertical))
-	#MOUSE WHEEL
-	if mouse_wheel != 0:
-		mouse_wheel = mouse_wheel * mouse_wheel_damping
-		emit_signal("on_zoom",mouse_wheel)
 	#######PC
