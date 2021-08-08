@@ -2,7 +2,7 @@ extends Control
 
 onready var PreBattleDialog = $"PreBattleDialog"
 
-func _on_contacted_enemy(enemy):
+func _on_contacted_enemy(player, enemy):
 	PreBattleDialog.visible = true
 
 

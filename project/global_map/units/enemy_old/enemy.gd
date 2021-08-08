@@ -17,6 +17,8 @@ var _sprite: Sprite
 var _tween: Tween
 var _guard_area: CollisionShape2D
 
+var is_post_battle_timeout = false
+var post_battle_timeout = 2
 
 func _on_ready():
 	_guard_area = $GuardArea/CollisionShape2D
