@@ -1,12 +1,14 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/global_map/units/unit_icon.png" type="Texture" id=1]
 [ext_resource path="res://global_map/units/enemy_old/enemy.gd" type="Script" id=2]
 [ext_resource path="res://global_map/units/global_map_unit/Unit.tscn" type="PackedScene" id=3]
 
-
 [sub_resource type="CircleShape2D" id=1]
 radius = 350.0
+
+[sub_resource type="CircleShape2D" id=3]
+radius = 40.787
 
 [sub_resource type="CircleShape2D" id=2]
 radius = 1000.0
@@ -26,12 +28,21 @@ collision_layer = 2
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GuardArea" index="0"]
 shape = SubResource( 1 )
 
-[node name="VisibilityArea" type="Area2D" parent="." index="3"]
+[node name="ContactArea" type="Area2D" parent="." index="3"]
+collision_layer = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ContactArea" index="0"]
+shape = SubResource( 3 )
+
+[node name="VisibilityArea" type="Area2D" parent="." index="4"]
 collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="VisibilityArea" index="0"]
 shape = SubResource( 2 )
+
 [connection signal="body_shape_entered" from="GuardArea" to="." method="_on_GuardArea_body_shape_entered"]
 [connection signal="body_shape_exited" from="GuardArea" to="." method="_on_GuardArea_body_shape_exited"]
+[connection signal="body_shape_entered" from="ContactArea" to="." method="_on_GuardArea_body_shape_entered"]
+[connection signal="body_shape_exited" from="ContactArea" to="." method="_on_GuardArea_body_shape_exited"]
 [connection signal="body_entered" from="VisibilityArea" to="." method="_on_VisibilityArea_body_entered"]
 [connection signal="body_exited" from="VisibilityArea" to="." method="_on_VisibilityArea_body_exited"]
