@@ -84,6 +84,10 @@ GlobalConstants="*res://scripts/GlobalConstants.gd"
 BattleConstants="*res://battle/scripts/BattleConstants.gd"
 FullscreenOffOn="*res://scripts/fullscreenOffOn.gd"
 
+[display]
+
+window/size/fullscreen=true
+
 [importer_defaults]
 
 scene={
