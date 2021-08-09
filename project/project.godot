@@ -24,6 +24,21 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://battle/camera/CameraController.gd"
 }, {
+"base": "Reference",
+"class": "CitiesManager",
+"language": "GDScript",
+"path": "res://global_map/scripts/CitiesManager.gd"
+}, {
+"base": "Reference",
+"class": "City",
+"language": "GDScript",
+"path": "res://global_map/scripts/City.gd"
+}, {
+"base": "Unit",
+"class": "CityPatrol",
+"language": "GDScript",
+"path": "res://global_map/units/city_patrol/CityPatrol.gd"
+}, {
 "base": "Unit",
 "class": "Enemy",
 "language": "GDScript",
@@ -49,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://battle/terrain/path_dot/PathDot.gd"
 }, {
+"base": "Reference",
+"class": "TacticalMapGenerator",
+"language": "GDScript",
+"path": "res://battle/tactical_map/scripts/tactical_map_generator.gd"
+}, {
 "base": "GridMap",
 "class": "TerrainGridMap",
 "language": "GDScript",
@@ -63,11 +83,15 @@ _global_script_class_icons={
 "BattleAI": "",
 "BattleUnit": "",
 "CameraController": "",
+"CitiesManager": "",
+"City": "",
+"CityPatrol": "",
 "Enemy": "",
 "GlobalTerrainTileMap": "",
 "GlobalUnit": "",
 "NameGenerator": "",
 "PathDot": "",
+"TacticalMapGenerator": "",
 "TerrainGridMap": "",
 "Unit": ""
 }
@@ -87,6 +111,8 @@ FullscreenOffOn="*res://scripts/fullscreenOffOn.gd"
 [display]
 
 window/size/fullscreen=true
+window/stretch/mode="2d"
+window/stretch/aspect="expand"
 
 [importer_defaults]
 
