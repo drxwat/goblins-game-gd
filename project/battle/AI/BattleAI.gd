@@ -5,14 +5,14 @@ signal ai_turn_end
 
 var team1: Dictionary
 var team2: Dictionary
-var terrain: TerrainGridMap
+var tacticalMap: Spatial
 
 var turn_team = []
 
-func initAI(_team1: Dictionary, _team2: Dictionary, _terrain: TerrainGridMap):
+func initAI(_team1: Dictionary, _team2: Dictionary, _tacticalMap: Spatial):
 	team1 = _team1
 	team2 = _team2
-	terrain = _terrain
+	tacticalMap = _tacticalMap
 
 func start_turn():
 	for unit_id in team2:
@@ -39,10 +39,10 @@ func act_unit(unit: BattleUnit):
 	var enemy_search_restult = find_ememy(unit)
 	var enemy = enemy_search_restult[0]
 	var is_attack = enemy_search_restult[1]
-	var path = terrain.get_path_from_unit_to_unit(unit, enemy)
+	var path = tacticalMap.get_path_from_unit_to_unit(unit, enemy)
 	if path.size() > 2:
-		terrain.free_point_from_unit(unit.global_transform.origin)
-		terrain.unregister_unit(unit.global_transform.origin)
+		tacticalMap.free_point_from_unit(unit.global_transform.origin)
+		tacticalMap.unregister_unit(unit.global_transform.origin)
 		unit.connect("on_move_end", self, "_handle_unit_move_end", [unit, enemy, is_attack])
 		path.remove(0)
 		path.resize(path.size() - 1)
@@ -56,8 +56,8 @@ func _handle_unit_attack_end(unit: BattleUnit, enemy: BattleUnit):
 
 func _handle_unit_move_end(unit: BattleUnit, enemy: BattleUnit, is_attack: bool = false):
 	unit.disconnect("on_move_end", self, "_handle_unit_move_end")
-	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.id)
-	terrain.register_unit(unit.global_transform.origin, unit.id)
+	tacticalMap.occupy_point_with_unit(unit.global_transform.origin, unit.id)
+	tacticalMap.register_unit(unit.global_transform.origin, unit.id)
 	if is_attack:
 		attack_enemy(unit, enemy)
 	else:
@@ -73,7 +73,7 @@ func find_ememy(unit: BattleUnit):
 		var enemy = team1[unit_id]
 		if enemy.is_dead:
 			continue
-		var path = terrain.get_path_from_unit_to_unit(unit, enemy)
+		var path = tacticalMap.get_path_from_unit_to_unit(unit, enemy)
 		enemies.push_back([path.size() - 2, enemy])
 	enemies.sort_custom(MetaUnitTuppleSorter, "sort_ascending")
 	var close_enemies = []

@@ -10,12 +10,12 @@ var obstacles: GridMap
 var vegetation: GridMap
 
 
-func _init(_tactical_map):
+func _init(_tactical_map, _soil, _obstacles, _vegetation):
 	TacticalMap = _tactical_map
 	
-	soil = TacticalMap.get_node("Soil")
-	obstacles = TacticalMap.get_node("Obstacles")
-	vegetation = TacticalMap.get_node("Vegetation")
+	soil = _soil
+	obstacles = _obstacles
+	vegetation = _vegetation
 
 	noise = OpenSimplexNoise.new()
 	# Configure
@@ -24,7 +24,7 @@ func _init(_tactical_map):
 	noise.period = 20.0
 	noise.persistence = 0.8
 
-func _generate_map(
+func generate_map(
 		_map_widht=TacticalMap.map_widht,
 		_map_height=TacticalMap.map_height
 	):
