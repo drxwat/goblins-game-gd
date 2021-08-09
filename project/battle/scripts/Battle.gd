@@ -6,7 +6,7 @@ const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
 
 onready var camera := $Camera
-onready var terrain := $Terrain
+onready var tacticalMap := $TacticalMap
 onready var mouse_hover := $MouseHover
 onready var trace_path := $TracePath
 onready var battleUI: = $BattleUI
@@ -43,14 +43,14 @@ var ai_turn = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	terrain.set_obstacles($Forest)
-	if !terrain.is_point_walkable(team1_spawn_point):
+	tacticalMap.set_obstacles()
+	if !tacticalMap.is_point_walkable(team1_spawn_point):
 		push_error("Team1 spawn point %s is not walkable" % team1_spawn_point)
-	if !terrain.is_point_walkable(team2_spawn_point):
+	if !tacticalMap.is_point_walkable(team2_spawn_point):
 		push_error("Team2 spawn point %s is not walkable" % team2_spawn_point)
 	team1 = _init_team(team1_units_meta, team1_spawn_point)
 	team2 = _init_team(team2_units_meta, team2_spawn_point, true)
-	battleAI.initAI(team1, team2, terrain)
+	battleAI.initAI(team1, team2, tacticalMap)
 	battleAI.connect("ai_turn_end", self, "start_next_turn")
 	
 	var units = []
@@ -80,7 +80,7 @@ func _init_team(units_meta: Array, initial_spawn_point: Vector3, enemy = false) 
 		var unit = _produce_unit(global_unit)
 		_spawn_unit(unit.id, unit, $Units, spawn_point, PI if not enemy else 0)
 		team[unit.id] = unit
-		spawn_point = terrain.get_neighbor_walkable_point(spawn_point)
+		spawn_point = tacticalMap.get_neighbor_walkable_point(spawn_point)
 	return team
 
 #
@@ -181,7 +181,7 @@ func _handle_left_mouse_click(event: InputEvent):
 	var m_position = _get_mouse_projected_position(event.position)
 	if !m_position:
 		return
-	var hover_obj = terrain.get_terrain_object(m_position)
+	var hover_obj = tacticalMap.get_terrain_object(m_position)
 	if hover_obj["TYPE"] != BattleConstants.TERRAIN_OBJECTS.UNIT and selected_unit:
 		_deselect_unit(selected_unit)
 		return
@@ -211,10 +211,10 @@ func _handle_mouse_move(event: InputEvent):
 		return
 	var m_position = _get_mouse_projected_position(event.position)
 	if m_position:
-		var hover_cell = terrain.get_map_cell_center(m_position)
+		var hover_cell = tacticalMap.get_map_cell_center(m_position)
 		if hover_cell == current_hover_cell:
 			return
-		var hover_obj = terrain.get_terrain_object(m_position)
+		var hover_obj = tacticalMap.get_terrain_object(m_position)
 		if hover_obj["TYPE"] == BattleConstants.TERRAIN_OBJECTS.UNIT and not _is_ally(hover_obj["ID"]):
 			var unit_meta = _get_unit_meta_by_id(hover_obj["ID"])
 			var unit = unit_meta
@@ -233,7 +233,7 @@ func _handle_mouse_move(event: InputEvent):
 
 func _draw_trace_path(unit: BattleUnit, from: Vector3, to: Vector3):
 	_clear_trace_path()
-	var path_points = terrain.get_map_path(from, to)
+	var path_points = tacticalMap.get_map_path(from, to)
 	path_points.remove(0)
 
 	var i = 0
@@ -266,19 +266,19 @@ func _clear_trace_path():
 	trace_path_points.clear()
 
 func _move_mouse_hover(pos: Vector3):
-	mouse_hover.translation = terrain.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
+	mouse_hover.translation = tacticalMap.get_map_cell_center(pos) + MOUSE_HOVER_Y_OFFSET
 
 func _free_enemy_unit_point(unit: BattleUnit):
 	hovered_enemy = unit
-	terrain.free_point_from_unit(unit.global_transform.origin)
+	tacticalMap.free_point_from_unit(unit.global_transform.origin)
 
 func _occupy_enemy_unit_point():
 	if hovered_enemy:
-		terrain.occupy_point_with_unit(hovered_enemy.global_transform.origin, hovered_enemy.id)
+		tacticalMap.occupy_point_with_unit(hovered_enemy.global_transform.origin, hovered_enemy.id)
 		hovered_enemy = null
 
 func _color_mouse_hover(pos: Vector3):
-	var hover_obj = terrain.get_terrain_object(pos)
+	var hover_obj = tacticalMap.get_terrain_object(pos)
 	match hover_obj["TYPE"]:
 		BattleConstants.TERRAIN_OBJECTS.FREE:
 			mouse_hover.hover_neutral()
@@ -305,13 +305,13 @@ func _get_mouse_projected_position(screen_position: Vector2):
 #
 
 func _select_unit(unit: BattleUnit):
-	terrain.free_point_from_unit(unit.global_transform.origin)
+	tacticalMap.free_point_from_unit(unit.global_transform.origin)
 	selected_unit = unit
 	unit.set_selected(true)
 	battleUI.units_avatarts[unit].btn.self_modulate = battleUI.units_avatarts[unit].SELECT_BG_COLOR
 
 func _deselect_unit(unit: BattleUnit):
-	terrain.occupy_point_with_unit(unit.global_transform.origin, unit.id)
+	tacticalMap.occupy_point_with_unit(unit.global_transform.origin, unit.id)
 	selected_unit = null
 	unit.set_selected(false)
 	_clear_trace_path()
@@ -320,15 +320,15 @@ func _deselect_unit(unit: BattleUnit):
 func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
 	if unit.move_points <= 0:
 		return
-	var path = terrain.get_map_path(unit.global_transform.origin, pos)
+	var path = tacticalMap.get_map_path(unit.global_transform.origin, pos)
 	if hovered_enemy:
 		path.resize(path.size() - 1)
 	if path.size() > 1:
 		is_action_in_progress = true
 		path.remove(0)
 		unit.set_path(path)
-		terrain.free_point_from_unit(unit.global_transform.origin)
-		terrain.unregister_unit(unit.global_transform.origin)
+		tacticalMap.free_point_from_unit(unit.global_transform.origin)
+		tacticalMap.unregister_unit(unit.global_transform.origin)
 	elif hovered_enemy:
 		unit.mele_attack(hovered_enemy)
 
@@ -350,8 +350,8 @@ func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3
 	unit.connect("on_turn_end", self, "_handle_unit_attack_end", [unit_id])
 	unit.connect("on_take_damage_end", self, "_update_unit_ui_info", [unit_id])
 	unit.connect("on_counter_attack_end", self, "_update_unit_ui_info", [unit_id])
-	terrain.register_unit(pos, unit_id)
-	terrain.occupy_point_with_unit(pos, unit_id)
+	tacticalMap.register_unit(pos, unit_id)
+	tacticalMap.occupy_point_with_unit(pos, unit_id)
 
 func _is_ally(id: int):
 	return team1.has(id)
@@ -363,9 +363,9 @@ func _get_unit_meta_by_id(id: int):
 	
 func _handle_unit_move_end(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
-	terrain.register_unit(unit.global_transform.origin, unit.id)
+	tacticalMap.register_unit(unit.global_transform.origin, unit.id)
 	if hovered_enemy:
-		var path = terrain.get_map_path(unit.global_transform.origin, hovered_enemy.global_transform.origin)
+		var path = tacticalMap.get_map_path(unit.global_transform.origin, hovered_enemy.global_transform.origin)
 		if path.size() <= 2:
 			unit.mele_attack(hovered_enemy)
 			return
@@ -378,8 +378,8 @@ func _handle_unit_attack_end(unit_id: int):
 func _handle_unit_death(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
 	var point = unit.global_transform.origin
-	terrain.unregister_unit(point)
-	terrain.free_point_from_unit(point)
+	tacticalMap.unregister_unit(point)
+	tacticalMap.free_point_from_unit(point)
 	if _is_ally(unit_id):
 		battleUI.remove_unit_avatar(unit)
 	if hovered_enemy == unit:

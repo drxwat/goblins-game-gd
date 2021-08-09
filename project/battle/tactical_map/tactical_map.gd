@@ -40,22 +40,163 @@ enum ITEM_VEGETATION {
 var map_height: int = 100
 var map_widht: int = 100
 
+onready var soil: GridMap = $Soil
+onready var obstacles: GridMap = $Obstacles
+onready var vegetation: GridMap = $Vegetation
+
+
+onready var astar := AStar.new()
+
+var terrain_obj := {} # tracking object types
+
 
 func _ready():
 	randomize()
 
+func _init_map():
+	generate_map()
+	_init_astar()
+
 
 func generate_map():
 	clear_map()
-	var noiseMapGenerator = TacticalMapGenerator.new(self)
-	noiseMapGenerator._generate_map()
+	var noiseMapGenerator = TacticalMapGenerator.new(self,
+		soil, obstacles, vegetation)
+	noiseMapGenerator.generate_map()
 
 
 func clear_map():
-	$Soil.clear()
-	$Obstacles.clear()
-	$Vegetation.clear()
+	soil.clear()
+	obstacles.clear()
+	vegetation.clear()
 
 
 func _on_GenButton_pressed():
 	generate_map()
+
+########
+
+func get_map_path(from: Vector3, to: Vector3) -> PoolVector3Array:
+	return astar.get_point_path(
+			astar.get_closest_point(from), 
+			astar.get_closest_point(to)
+			)
+
+func get_path_from_unit_to_unit(from_unit: BattleUnit, to_unit: BattleUnit) -> PoolVector3Array:
+	free_point_from_unit(from_unit.global_transform.origin)
+	free_point_from_unit(to_unit.global_transform.origin)
+	var path = get_map_path(from_unit.global_transform.origin, to_unit.global_transform.origin)
+	occupy_point_with_unit(from_unit.global_transform.origin, from_unit.id)
+	occupy_point_with_unit(to_unit.global_transform.origin, to_unit.id)
+	return path
+
+
+func get_map_cell_center(point: Vector3) -> Vector3:
+	var astar_point = astar.get_closest_point(point, true)
+	return astar.get_point_position(astar_point);
+	 
+func get_cell_position(cell: Vector3) -> Vector3:
+	var point = soil.map_to_world(cell.x, cell.y, cell.z)
+	return astar.get_point_position(astar.get_closest_point(point)); 
+
+func set_obstacles():
+	for cell in obstacles.get_used_cells():
+		var point_id = astar.get_closest_point(
+			obstacles.map_to_world(cell.x, cell.y, cell.z)
+		)
+		astar.set_point_disabled(point_id)
+		
+		_register_terrain_object(
+			cell,
+			BattleConstants.TERRAIN_OBJECTS.OBSTACLE,
+			0
+		)
+	
+
+func register_unit(point: Vector3, unit_id: int):
+	_register_terrain_object(soil.world_to_map(point),
+		BattleConstants.TERRAIN_OBJECTS.UNIT,
+		unit_id
+	)
+
+func unregister_unit(point: Vector3):
+	_unregister_terrain_object(soil.world_to_map(point))
+
+func occupy_point_with_unit(point: Vector3, unit_id: int):
+	astar.set_point_disabled(astar.get_closest_point(point))
+	
+func free_point_from_unit(point: Vector3):
+	astar.set_point_disabled(astar.get_closest_point(point, true), false)
+
+func is_point_walkable(point: Vector3) -> bool:
+	return !astar.is_point_disabled(astar.get_closest_point(point))
+	
+func get_neighbor_walkable_point(point: Vector3):
+	var cell = soil.world_to_map(point)
+	var neighbors = [
+		Vector3(1, 0, 0),
+		Vector3(0, 0, 1),
+		Vector3(1, 0, 1),
+		Vector3(-1, 0, 0),
+		Vector3(-1, 0, 1)
+	]
+	for neighbor in neighbors:
+		var n_cell = cell + neighbor
+		var n_point = soil.map_to_world(n_cell.x, n_cell.y, n_cell.z)
+		var is_valid = soil.get_cell_item(n_cell.x, n_cell.y, n_cell.z) != GridMap.INVALID_CELL_ITEM
+		var is_walkable = is_point_walkable(n_point)
+		if is_valid and is_walkable:
+			return n_point
+	push_error("Point %s has no available neighbors" % point)
+	return null
+
+func get_terrain_object(point: Vector3) -> int:
+	var t_obj_key = _get_t_object_key(soil.world_to_map(point))
+	return terrain_obj.get(
+		t_obj_key,
+		{
+			"ID": 0,
+			"TYPE": BattleConstants.TERRAIN_OBJECTS.FREE
+		}
+	)
+
+func _init_astar():
+	var soil_cells = soil.get_used_cells()
+	var indexes_map = {}
+	
+	for i in range(soil_cells.size()):
+		var cell = soil.map_to_world(soil_cells[i].x, soil_cells[i].y, soil_cells[i].z)
+		indexes_map[cell] = i
+		astar.add_point(i, cell)
+
+
+	# Connecting neighbouring points
+	for cell in soil_cells:
+		var neighbours = [
+			Vector3(cell.x + 1, cell.y,  cell.z),
+			Vector3(cell.x, cell.y, cell.z + 1),
+			Vector3(cell.x + 1, cell.y, cell.z + 1),
+			Vector3(cell.x - 1, cell.y, cell.z + 1),
+			]
+		
+		for neghbour in neighbours:
+			if (soil.get_cell_item(neghbour.x, neghbour.y, neghbour.z) == GridMap.INVALID_CELL_ITEM):
+				continue
+			
+			astar.connect_points(
+					indexes_map[soil.map_to_world(cell.x, cell.y, cell.z)], 
+					indexes_map[soil.map_to_world(neghbour.x, neghbour.y, neghbour.z)]
+					)
+
+func _get_t_object_key(cell: Vector3) -> String:
+	return "%s-%s" % [cell.x, cell.z]
+	
+func _register_terrain_object(
+		cell: Vector3,
+		obj_type: int,
+		obj_id: int
+	):
+	terrain_obj[_get_t_object_key(cell)] = { "ID": obj_id, "TYPE": obj_type }
+	
+func _unregister_terrain_object(cell: Vector3):
+	terrain_obj.erase(_get_t_object_key(cell))
