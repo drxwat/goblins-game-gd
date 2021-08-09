@@ -37,8 +37,8 @@ enum ITEM_VEGETATION {
 	MUSHROOM_4
 }
 
-var map_height: int = 100
-var map_widht: int = 100
+var map_height: int = 70
+var map_widht: int = 70
 
 onready var soil: GridMap = $Soil
 onready var obstacles: GridMap = $Obstacles
@@ -53,7 +53,10 @@ var terrain_obj := {} # tracking object types
 func _ready():
 	randomize()
 
-func _init_map():
+func init_map():
+	$VBoxContainer.hide()
+	$Camera.hide()
+	
 	generate_map()
 	_init_astar()
 

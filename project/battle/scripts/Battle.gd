@@ -43,6 +43,7 @@ var ai_turn = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	tacticalMap.init_map()
 	tacticalMap.set_obstacles()
 	if !tacticalMap.is_point_walkable(team1_spawn_point):
 		push_error("Team1 spawn point %s is not walkable" % team1_spawn_point)
