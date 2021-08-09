@@ -62,18 +62,27 @@ margin_right = 1024.0
 margin_bottom = 600.0
 custom_constants/separation = 25
 
-[node name="RandomGenButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_right = 200.0
+[node name="Spacer" type="Control" parent="VBoxContainer/HBoxContainer"]
+margin_right = 387.0
 margin_bottom = 80.0
-rect_min_size = Vector2( 200, 80 )
-text = "Random Generator"
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
-[node name="NoiseGenButton" type="Button" parent="VBoxContainer/HBoxContainer"]
-margin_left = 225.0
-margin_right = 425.0
+[node name="GenButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_left = 412.0
+margin_right = 612.0
 margin_bottom = 80.0
 rect_min_size = Vector2( 200, 80 )
 text = "Noise Generator"
 
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/RandomGenButton" to="." method="generate_map_with_random_gen"]
-[connection signal="pressed" from="VBoxContainer/HBoxContainer/NoiseGenButton" to="." method="generate_map_with_noise_gen"]
+[node name="Spacer2" type="Control" parent="VBoxContainer/HBoxContainer"]
+margin_left = 637.0
+margin_right = 1024.0
+margin_bottom = 80.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/GenButton" to="." method="_on_GenButton_pressed"]
