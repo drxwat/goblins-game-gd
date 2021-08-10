@@ -1,5 +1,5 @@
 extends Node2D
-class_name GlobalTerrainTileMap
+class_name GlobalTileMap
 
 enum WeightScales {
 	ROAD = 2,
@@ -17,6 +17,7 @@ onready var astar_roads := AStar2D.new()
 onready var tm_ground: TileMap = get_node("Ground")
 onready var tm_road: TileMap = get_node("Road")
 onready var tm_forest: TileMap = get_node("Forest")
+onready var tm_buildings: TileMap = get_node("Buildings")
 
 
 func _ready():
@@ -33,6 +34,13 @@ func get_map_path(from: Vector2, to: Vector2) -> PoolVector2Array:
 	return astar.get_point_path(
 			astar.get_closest_point(from), 
 			astar.get_closest_point(to)
+			)
+
+
+func get_road_path(from: Vector2, to: Vector2) -> PoolVector2Array:
+	return astar_roads.get_point_path(
+			astar_roads.get_closest_point(from), 
+			astar_roads.get_closest_point(to)
 			)
 
 
