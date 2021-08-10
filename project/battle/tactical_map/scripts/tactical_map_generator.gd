@@ -1,6 +1,13 @@
 class_name TacticalMapGenerator
 extends Reference
 
+const STONE_CHANCE = 0.004
+const OAK_TREE_3_CHANCE = 0.002
+const OAK_TREE_2_CHANCE = 0.006
+const OAK_TREE_1_CHANCE = 0.009
+const DEAD_OAK_CHANCE = 0.001
+const DEAD_TREE_CHANCE = 0.004
+const DEAD_SPRUCE_2_CHANCE = 0.005
 
 var TacticalMap: Spatial
 var noise: OpenSimplexNoise
@@ -42,13 +49,13 @@ func _noise_parsing(_cell: Array, _n):
 			TacticalMap.ITEM_SOIL.GRASS)
 		
 		var r = randf()
-		if r < 0.002:
+		if r < OAK_TREE_3_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.OAK_TREE_3)
-		elif r < 0.006:
+		elif r < OAK_TREE_2_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.OAK_TREE_1)
-		elif r < 0.009:
+		elif r < OAK_TREE_1_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.OAK_TREE_2)
 		
@@ -57,12 +64,12 @@ func _noise_parsing(_cell: Array, _n):
 			TacticalMap.ITEM_SOIL.DIRT)
 		
 		var r3 = randf()
-		if r3 < 0.004:
+		if r3 < STONE_CHANCE:
 			obstacles.set_cell_item(_cell[0]+1, 0, _cell[1],
 						TacticalMap.ITEM_OBSTACLES.STONE_3)
 		
 		var r = randf()
-		if r < 0.001:
+		if r < DEAD_OAK_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.DEAD_OAK_3)
 			var r2 = randi() % 2
@@ -73,7 +80,7 @@ func _noise_parsing(_cell: Array, _n):
 				2:
 					obstacles.set_cell_item(_cell[0], 0, _cell[1]-1,
 						TacticalMap.ITEM_OBSTACLES.STONE_2)
-		elif r < 0.004:
+		elif r < DEAD_TREE_CHANCE:
 			var r1 = randi() % 2
 			match r1:
 				0:
@@ -82,7 +89,7 @@ func _noise_parsing(_cell: Array, _n):
 				1:
 					obstacles.set_cell_item(_cell[0], 0, _cell[1],
 						TacticalMap.ITEM_OBSTACLES.DEAD_OAK_1)
-		elif r < 0.005:
+		elif r < DEAD_SPRUCE_2_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.DEAD_SPRUCE_2)
 
