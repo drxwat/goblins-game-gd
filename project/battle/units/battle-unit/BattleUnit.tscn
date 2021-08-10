@@ -1,6 +1,7 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://battle/units/battle-unit/BattleUnit.gd" type="Script" id=1]
+[ext_resource path="res://battle/UI/Healtbar/Healthbar3D.tscn" type="PackedScene" id=2]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
@@ -30,5 +31,7 @@ material/0 = null
 [node name="AnimationPoller" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="Healthbar3D" parent="." instance=ExtResource( 2 )]
 
 [connection signal="timeout" from="AnimationPoller" to="." method="_check_animation_end"]

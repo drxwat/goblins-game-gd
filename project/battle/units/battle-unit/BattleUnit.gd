@@ -36,6 +36,7 @@ const COUTER_ATTACK_MAX_MOVE_PENALTY_DEVIDER = 6
 
 onready var animation_tree := $Gfx/AnimationTree
 onready var tween = $Gfx/Tween
+onready var healtbar = $Healthbar3D
 
 var rng = RandomNumberGenerator.new()
 
@@ -77,6 +78,7 @@ func _ready():
 		$Gfx/Armature/Skeleton/RightHandAttachment.add_child(w_mesh)
 	actions_state_machine = animation_tree[ACTIONS_ANIMATION]
 	_play_animation("idle-loop")
+	healtbar.max_value = max_hp
 
 func _physics_process(delta):
 	if is_dead:
@@ -206,6 +208,7 @@ func get_hp():
 	
 func set_hp(value: int):
 	global_unit.set_hp(value)
+	healtbar.value = value
 
 ### STATS API END ###
 
