@@ -18,5 +18,7 @@ func set_max_value(value):
 
 func set_value(value):
 	if is_instance_valid(_viewport):
-		_control.value = value
+		_control.value = int(clamp(value, 0, _control.max_value))
 		_viewport.render_target_update_mode = Viewport.UPDATE_ONCE
+		if value <= 0:
+			visible = false
