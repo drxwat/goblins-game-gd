@@ -4,9 +4,9 @@
 [ext_resource path="res://battle/units/battle-unit/BattleUnit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.gd" type="Script" id=3]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=3]
 
-[sub_resource type="CapsuleShape" id=1]
+[sub_resource type="CapsuleShape" id=2]
 radius = 0.4
 height = 0.6
 
@@ -26,10 +26,13 @@ transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.2346
 transform = Transform( 0.932757, -0.11389, -0.342043, -0.178537, 0.678327, -0.712738, 0.313191, 0.725879, 0.612381, 14.7594, 44.6098, -37.8182 )
 
 [node name="AnimationTree" parent="Gfx" index="2"]
-parameters/Actions/playback = SubResource( 2 )
+parameters/Actions/playback = SubResource( 3 )
 
 [node name="CollisionShape" parent="." index="2"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.749062, 0 )
-shape = SubResource( 1 )
+shape = SubResource( 2 )
+
+[node name="Healthbar3D" parent="." index="5"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51981, 0 )
 
 [editable path="Gfx"]

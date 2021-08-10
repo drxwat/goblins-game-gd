@@ -58,6 +58,7 @@ margin_right = 984.0
 margin_bottom = 50.0
 rect_min_size = Vector2( 80, 50 )
 focus_mode = 1
+shortcut_in_tooltip = false
 shortcut = SubResource( 2 )
 text = "NEXT TURN"
 
