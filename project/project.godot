@@ -64,6 +64,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://battle/terrain/path_dot/PathDot.gd"
 }, {
+"base": "Resource",
+"class": "SaveSettings",
+"language": "GDScript",
+"path": "res://scripts/SaveSettings.gd"
+}, {
 "base": "Reference",
 "class": "TacticalMapGenerator",
 "language": "GDScript",
@@ -91,6 +96,7 @@ _global_script_class_icons={
 "GlobalUnit": "",
 "NameGenerator": "",
 "PathDot": "",
+"SaveSettings": "",
 "TacticalMapGenerator": "",
 "TerrainGridMap": "",
 "Unit": ""
@@ -99,7 +105,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Godot-goblins"
-run/main_scene="res://main_menu/main_menu.tscn"
+run/main_scene="res://global_map/global_map.tscn"
 config/icon="res://assets/app-icon/icon-goblin.png"
 
 [autoload]
@@ -107,12 +113,12 @@ config/icon="res://assets/app-icon/icon-goblin.png"
 GlobalConstants="*res://scripts/GlobalConstants.gd"
 BattleConstants="*res://battle/scripts/BattleConstants.gd"
 FullscreenOffOn="*res://scripts/fullscreenOffOn.gd"
+Settings="*res://scripts/Settings.gd"
+SettingsControls="*res://scripts/SettingsControls.gd"
 
 [display]
 
 window/size/fullscreen=true
-window/stretch/mode="2d"
-window/stretch/aspect="expand"
 
 [importer_defaults]
 
