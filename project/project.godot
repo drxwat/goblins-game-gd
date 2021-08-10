@@ -35,9 +35,9 @@ _global_script_classes=[ {
 "path": "res://global_map/scripts/City.gd"
 }, {
 "base": "Enemy",
-"class": "CityUnit",
+"class": "CityGuard",
 "language": "GDScript",
-"path": "res://global_map/units/city_unit/CityUnit.gd"
+"path": "res://global_map/units/city_unit/CityGuard.gd"
 }, {
 "base": "Unit",
 "class": "Enemy",
@@ -85,7 +85,7 @@ _global_script_class_icons={
 "CameraController": "",
 "CitiesManager": "",
 "City": "",
-"CityUnit": "",
+"CityGuard": "",
 "Enemy": "",
 "GlobalTileMap": "",
 "GlobalUnit": "",

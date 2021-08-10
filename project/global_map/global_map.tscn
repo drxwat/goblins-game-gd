@@ -20,7 +20,6 @@ pause_mode = 2
 
 [node name="Enemy" parent="Units" instance=ExtResource( 4 )]
 position = Vector2( -2411.31, -1126.79 )
-_aim_node_path = NodePath("../../Player")
 
 [node name="Player" parent="." instance=ExtResource( 6 )]
 position = Vector2( -1394.63, -610.13 )
