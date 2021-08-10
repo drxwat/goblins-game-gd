@@ -3,7 +3,8 @@ class_name City
 
 var id: int
 var cell: Vector2
-var other_cities: Array # Array of tupples [distance_to_city: float: city: City]
+var location: Vector2
+var other_cities: Array # Array of tupples [path_to_city: PoolVector2Array: city: City]
 
 var economical_level := 1
 var economical_power := 0
@@ -16,9 +17,10 @@ var patrolls = []
 var traiders = []
 
 
-func _init(_id: int, _cell: Vector2):
+func _init(_id: int, _cell: Vector2, _location: Vector2):
 	id = _id
 	cell = _cell
+	location = _location
 
 
 func create_patroll():
