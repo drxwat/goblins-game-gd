@@ -18,6 +18,7 @@ script = ExtResource( 1 )
 base_speed = 600.0
 
 [node name="Sprite" parent="." index="0"]
+scale = Vector2( 3, 3 )
 texture = ExtResource( 3 )
 
 [node name="Tween" type="Tween" parent="." index="1"]
