@@ -60,20 +60,6 @@ func set_target(value: Vector2):
 		_target
 		)
 	
-	# Path post processing
-	path = _move_path_point_to_tile_borders(path)
-	if tile_map.is_point_inside_map(_target):
-		if (path.size() == 0):
-			path = PoolVector2Array([_target])
-		else:
-			path[-1] = _target
-	
-	if GlobalConstants.DEBUG_PATH:
-		var path_line_points = PoolVector2Array()
-		path_line_points.append(global_position)
-		path_line_points.append_array(path)
-		_path_line.points = path_line_points
-	
 	set_path(path, tile_map.get_path_weights(path))
 
 
@@ -100,6 +86,19 @@ func move_along_path(delta: float) -> void:
 
 
 func set_path(path: PoolVector2Array, weights: PoolRealArray) -> void:
+	# Path post processing
+	path = _move_path_point_to_tile_borders(path)
+	if tile_map.is_point_inside_map(_target):
+		if (path.size() == 0):
+			path = PoolVector2Array([_target])
+		else:
+			path[-1] = _target
+	
+	if GlobalConstants.DEBUG_PATH:
+		var path_line_points = PoolVector2Array()
+		path_line_points.append(global_position)
+		path_line_points.append_array(path)
+		_path_line.points = path_line_points
 	_path = path
 	_path_weights = weights
 
