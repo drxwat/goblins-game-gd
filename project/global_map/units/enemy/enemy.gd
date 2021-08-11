@@ -78,16 +78,21 @@ func interrupt_follow() -> void:
 	_switch_to_default_behavior()
 
 
-func interrupt_go_to():
+func interrupt_go_to() -> void:
 	if _patrol_points:
 		patrol()
 	else:
 		_switch_to_default_behavior()
 
 
-func interrupt_patrol():
-	_patrol_point_before_interruption = _point_of_interest
+func interrupt_patrol() -> void:
+	if not _patrol_left_points.empty():
+		_patrol_point_before_interruption = _point_of_interest
 	_switch_to_default_behavior()
+
+
+func is_patrol_over() -> bool:
+	return _patrol_left_points.empty()
 
 
 func _apply_behavior() -> void:
@@ -115,6 +120,7 @@ func _interrupt_behavior(behavior: int):
 			interrupt_go_to()
 		Behavior.PATROL:
 			interrupt_patrol()
+	_on_interrupt_behavior(behavior)
 
 
 func _switch_to_default_behavior():
@@ -138,17 +144,25 @@ func _go_to_behavior() -> void:
 
 func _patrol_behavior() -> void:
 	if _patrol_left_points.empty():
-		_patrol_left_points = PoolVector2Array(_patrol_points)
+#		_patrol_left_points = PoolVector2Array(_patrol_points)
+		_interrupt_behavior(Behavior.PATROL)
+		return
 	var next_point = _patrol_left_points[0]
 	_patrol_left_points.remove(0)
 	go_to(next_point)
 
 
+# Callback for child classes to handle behavior intrruption
+func _on_interrupt_behavior(behavior) -> void:
+	pass
+
+# Somebody enters the Guard Area
 func _handle_guard_area_violation(unit: Node2D):
 	pass
 #	follow(unit)
 
 
+# Another unit left the guard area
 func _handle_guard_area_free():
 	pass
 
