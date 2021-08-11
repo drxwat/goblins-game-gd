@@ -1,6 +1,8 @@
 extends Node2D
 
 
+const TICK_TIME = 5
+
 onready var player: Node2D = get_node("Player")
 onready var tile_map: GlobalTileMap = get_node("GlobalTileMap")
 onready var units_parent = get_node("Units");
@@ -9,6 +11,7 @@ onready var city_manager := CitiesManager.new(tile_map, 0)
 
 
 var rng = RandomNumberGenerator.new()
+var time_to_next_tick = TICK_TIME
 
 
 # Called when the node enters the scene tree for the first time.
@@ -20,8 +23,10 @@ func _ready():
 	
 
 func _process(delta):
-	pass
-
+	time_to_next_tick -= delta
+	if time_to_next_tick < 0:
+		time_to_next_tick = TICK_TIME
+		_tick_cities()
 
 func _unhandled_input(event: InputEvent):
 	if not event is InputEventMouseButton:
@@ -30,6 +35,14 @@ func _unhandled_input(event: InputEvent):
 		return
 	
 	player.set_target(get_global_mouse_position())
+
+
+func _tick_cities():
+	print("TICK")
+	for city_id in city_manager.cities:
+		var city: City = city_manager.cities[city_id]
+		yield(get_tree().create_timer(0.2), "timeout")
+		city.tick()
 
 
 func __DEBUG_cities_path_routes():

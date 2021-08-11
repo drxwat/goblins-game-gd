@@ -35,7 +35,6 @@ func _init(_global_tile_map: GlobalTileMap, cities_map_index: int):
 			cities_routes_graph.connect_points(city_from.id, city_to.id)
 		other_cities.sort_custom(TuppleSizeSorter, "sort_ascending")
 		city_from.other_cities = other_cities
-		
 
 
 class TuppleSizeSorter:

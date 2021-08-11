@@ -18,4 +18,5 @@ func _switch_to_default_behavior():
 
 func _on_interrupt_behavior(behavior: int):
 	if behavior == Behavior.PATROL and is_patrol_over():
-		pass # Get new Patrol route
+		home_city.on_city_guard_arrive(self)
+		idle()
