@@ -57,15 +57,20 @@ func _generate_soil(_map_widht, _map_height) -> void:
 
 func _generate_forest(_map_widht, _map_height) -> void:
 	var _cell: Vector2
+	var n
 	
 	for x in _map_widht:
 		for y in _map_height:
+			n = noise.get_noise_2d(x, y)
 			_cell = offset_to_origin(x,y)
-			if (randi() % 10) < 2:
-				forest.set_cellv(
-					_cell,
-					_get_random_tree()
-				)
+			if n >0:
+				if (randi() % 100) < 70:
+					forest.set_cellv(
+						_cell,
+						_get_random_tree()
+					)
+				else:
+					not_forest_cells.append(_cell)
 			else:
 				not_forest_cells.append(_cell)
 				
@@ -125,8 +130,9 @@ func _init_astar():
 	
 	for i in range(soil_cells.size()):
 		var cell = soil.map_to_world(soil_cells[i])
+		var weight: float
 		indexes_map[cell] = i
-		astar.add_point(i, Vector3(cell.x, 0, cell.y))
+		astar.add_point(i, Vector3(cell.x, 0, cell.y), 8.0)
 
 
 	# Connecting neighbouring points
@@ -172,6 +178,13 @@ func _make_path_for_settlements():
 			var path: PoolVector3Array = get_path_from_settlement_to_settlement(from, to)
 			
 			for p in path:
+				var points_i: Array = astar.get_points()
+				var points: Array
+				for p_i in points_i:
+					points.append(astar.get_point_position(p_i))
+				
+				var i = points.find(p)
+				astar.set_point_weight_scale(i, 1.0)
 				path_road.append(road.world_to_map(Vector2(p.x, p.z)))
 
 
