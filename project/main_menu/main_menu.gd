@@ -12,7 +12,7 @@ func _on_Button_Exit_pressed():
 
 
 func _on_Button_Settings_pressed():
-	pass # Replace with function body.
+	get_tree().change_scene("res://settings/settings.tscn")
 
 
 func _on_Button_Game_pressed():

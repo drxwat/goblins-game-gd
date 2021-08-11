@@ -1,15 +1,15 @@
 extends Node
 
-var actions:Array = InputMap.get_actions()
-var action_controls:Dictionary = {}
+var Actions:Array = InputMap.get_actions()
+var ActionControls:Dictionary = {}
 
 func get_input_data() -> Dictionary:
 	var inputs = {}
-	for action_name in actions:
+	for action_name in Actions:
 		var button_list_data:Dictionary = {}
-		if not action_controls.has(action_name):
+		if not ActionControls.has(action_name):
 			continue
-		var button_list:Array = action_controls[action_name]
+		var button_list:Array = ActionControls[action_name]
 		var index:int = 0
 		for button in button_list:
 			button_list_data[index] = get_button_data(button)
@@ -33,3 +33,16 @@ func get_button_data(event)->Dictionary:
 		button_data["axis_value"] = event.axis_value
 	return button_data
 
+func set_input_data(data:Array):
+	print('set_input_data =', data)
+	pass
+
+func default_controls()->void:	#Reset to project settings controls
+	InputMap.load_from_globals()
+	set_actions_info()
+
+func set_actions_info()->void:
+	ActionControls.clear()
+	for Action in Actions:
+		var ActionList:Array = InputMap.get_action_list(Action) #associated controlls to the action
+		ActionControls[Action] = ActionList

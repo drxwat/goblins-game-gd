@@ -21,12 +21,13 @@ func save_settings()->void:
 func load_settings()->bool:
 	if configFileLoad == 7: # file not created
 		save_settings()
-	else:
-		print("error code open file = ", configFileLoad)
 	if configFileLoad != OK:
+		print("error code open file = ", configFileLoad)
 		return false
 	#load input data
-	SettingsControls.set_input_data(configFile.get_section_keys(INPUT_SECTION_KEY))
+	var load_config_data_input = configFile.get_section_keys(INPUT_SECTION_KEY)
+	SettingsControls.set_input_data(load_config_data_input)
+	SettingsControls.default_controls()
 	return true
 	
 func save_settings_resource() -> void:

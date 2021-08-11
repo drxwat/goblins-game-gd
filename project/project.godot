@@ -116,10 +116,6 @@ FullscreenOffOn="*res://scripts/fullscreenOffOn.gd"
 Settings="*res://scripts/Settings.gd"
 SettingsControls="*res://scripts/SettingsControls.gd"
 
-[display]
-
-window/size/fullscreen=true
-
 [importer_defaults]
 
 scene={
