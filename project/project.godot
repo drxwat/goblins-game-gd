@@ -37,7 +37,12 @@ _global_script_classes=[ {
 "base": "Enemy",
 "class": "CityGuard",
 "language": "GDScript",
-"path": "res://global_map/units/city_unit/CityGuard.gd"
+"path": "res://global_map/units/city_guard/CityGuard.gd"
+}, {
+"base": "Enemy",
+"class": "CityTraider",
+"language": "GDScript",
+"path": "res://global_map/units/city_traider/CityTraider.gd"
 }, {
 "base": "Unit",
 "class": "Enemy",
@@ -86,6 +91,7 @@ _global_script_class_icons={
 "CitiesManager": "",
 "City": "",
 "CityGuard": "",
+"CityTraider": "",
 "Enemy": "",
 "GlobalTileMap": "",
 "GlobalUnit": "",

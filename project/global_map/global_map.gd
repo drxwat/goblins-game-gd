@@ -1,7 +1,7 @@
 extends Node2D
 
 
-const TICK_TIME = 5
+const TICK_TIME = 25
 
 onready var player: Node2D = get_node("Player")
 onready var tile_map: GlobalTileMap = get_node("GlobalTileMap")
@@ -19,7 +19,11 @@ func _ready():
 	set_process(true)
 	rng.randomize()
 	player.connect("contacted_enemy", GlobalMapUI, "_on_contacted_enemy")
-	__DEBUG_cities_path_routes()
+#	__DEBUG_cities_path_routes()
+	for city_id in city_manager.cities:
+		var city: City = city_manager.cities[city_id]
+		city.connect("exit_city", self, "_place_squad_on_the_map")
+		city.connect("enter_city", self, "_hide_squad_from_the_map")
 	
 
 func _process(delta):
@@ -37,8 +41,16 @@ func _unhandled_input(event: InputEvent):
 	player.set_target(get_global_mouse_position())
 
 
+func _place_squad_on_the_map(squad: Enemy):
+	add_child(squad)
+
+
+func _hide_squad_from_the_map(squad: Enemy):
+	remove_child(squad)
+
+
 func _tick_cities():
-	print("TICK")
+#	city_manager.cities[1].tick()
 	for city_id in city_manager.cities:
 		var city: City = city_manager.cities[city_id]
 		yield(get_tree().create_timer(0.2), "timeout")

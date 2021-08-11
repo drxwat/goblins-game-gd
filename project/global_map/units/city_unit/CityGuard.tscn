@@ -1,7 +1,0 @@
-[gd_scene load_steps=3 format=2]
-
-[ext_resource path="res://global_map/units/city_unit/CityGuard.gd" type="Script" id=1]
-[ext_resource path="res://global_map/units/enemy/Enemy.tscn" type="PackedScene" id=2]
-
-[node name="CityGuard" instance=ExtResource( 2 )]
-script = ExtResource( 1 )

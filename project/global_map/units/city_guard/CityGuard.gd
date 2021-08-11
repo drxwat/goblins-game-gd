@@ -1,7 +1,7 @@
 extends Enemy
 class_name CityGuard
 
-var home_city: City
+var home_city
 
 
 func _handle_guard_area_violation(unit: Node2D):

@@ -168,6 +168,7 @@ func _handle_guard_area_free():
 
 
 func _apply_visibility() -> void:
+	return
 	if (_tween.is_active()):
 		# warning-ignore:return_value_discarded
 		_tween.stop_all()
