@@ -1,4 +1,4 @@
-extends Unit
+extends Troop
 class_name Enemy
 
 enum Behavior { IDLE, PATROL, FOLLOW, FLEE, GO_TO }
@@ -193,7 +193,7 @@ func _on_GuardArea_body_shape_entered(_body_id, _body, _body_shape, _area_shape)
 	_in_guard_area = true
 
 
-func _on_GuardArea_body_shape_exited(_body_id, _body: Unit, _body_shape, _area_shape):
+func _on_GuardArea_body_shape_exited(_body_id, _body: Troop, _body_shape, _area_shape):
 	if not _in_guard_area:
 		return
 

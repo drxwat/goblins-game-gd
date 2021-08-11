@@ -14,10 +14,10 @@ var _ground_cells_raod_indexes = {}
 
 onready var astar := AStar2D.new()
 onready var astar_roads := AStar2D.new()
-onready var tm_ground: TileMap = get_node("Ground")
-onready var tm_road: TileMap = get_node("Road")
-onready var tm_forest: TileMap = get_node("Forest")
-onready var tm_buildings: TileMap = get_node("Buildings")
+onready var tm_ground: TileMap = $"Ground"
+onready var tm_road: TileMap = $"Road"
+onready var tm_forest: TileMap = $"Forest"
+onready var tm_buildings: TileMap = $"Buildings"
 
 
 func _ready():

@@ -44,7 +44,7 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://global_map/units/city_traider/CityTraider.gd"
 }, {
-"base": "Unit",
+"base": "Troop",
 "class": "Enemy",
 "language": "GDScript",
 "path": "res://global_map/units/enemy/enemy.gd"
@@ -80,9 +80,9 @@ _global_script_classes=[ {
 "path": "res://battle/scripts/TerrainGridMap.gd"
 }, {
 "base": "Node2D",
-"class": "Unit",
+"class": "Troop",
 "language": "GDScript",
-"path": "res://global_map/units/global_map_unit/unit.gd"
+"path": "res://global_map/units/global_map_unit/troop.gd"
 }, {
 "base": "Reference",
 "class": "WorldMapGenerator",
@@ -104,7 +104,7 @@ _global_script_class_icons={
 "PathDot": "",
 "TacticalMapGenerator": "",
 "TerrainGridMap": "",
-"Unit": "",
+"Troop": "",
 "WorldMapGenerator": ""
 }
 
