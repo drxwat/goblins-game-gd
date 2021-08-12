@@ -11,7 +11,6 @@ var configFileLoad
 func _init():
 	configFileLoad = configFile.load(CONFIG_DIR + CONFIG_FILE_NAME)
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
 	load_settings()
 
@@ -32,12 +31,8 @@ func load_settings()->bool:
 	
 func save_settings_resource() -> void:
 	# save input data
-	for input in SettingsControls.get_input_data():
-		print ("input = ", input)
+	var inputs = SettingsControls.get_input_data()
+	for input in inputs:
+		configFile.set_value(INPUT_SECTION_KEY, input, inputs[input])
 	
 	configFile.save(CONFIG_DIR + CONFIG_FILE_NAME)
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass

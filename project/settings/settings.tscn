@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/fonst/20219.ttf" type="DynamicFontData" id=1]
 [ext_resource path="res://settings/settingsScene.gd" type="Script" id=2]
+[ext_resource path="res://settings/PopupControl.tscn" type="PackedScene" id=3]
 
 [sub_resource type="DynamicFont" id=1]
 size = 32
@@ -55,6 +56,13 @@ __meta__ = {
 "_edit_use_anchors_": false
 }
 
+[node name="SaveButton" type="Button" parent="Panel/ButtonBox"]
+margin_top = 18.0
+margin_right = 1024.0
+margin_bottom = 57.0
+custom_fonts/font = SubResource( 1 )
+text = "Save"
+
 [node name="CancelButton" type="Button" parent="Panel/ButtonBox"]
 margin_top = 61.0
 margin_right = 1024.0
@@ -62,4 +70,7 @@ margin_bottom = 100.0
 custom_fonts/font = SubResource( 1 )
 text = "Cancel"
 
+[node name="Popup" parent="Panel" instance=ExtResource( 3 )]
+
+[connection signal="pressed" from="Panel/ButtonBox/SaveButton" to="." method="_on_SaveButton_pressed"]
 [connection signal="pressed" from="Panel/ButtonBox/CancelButton" to="." method="_on_CancelButton_pressed"]
