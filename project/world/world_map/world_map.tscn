@@ -1,8 +1,8 @@
 [gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://global_map/world_map/world_map.gd" type="Script" id=1]
+[ext_resource path="res://world/world_map/world_map.gd" type="Script" id=1]
 [ext_resource path="res://assets/global_map/tilesets/general_tileset.tres" type="TileSet" id=2]
-[ext_resource path="res://global_map/world_map/scripts/testCamera2D.gd" type="Script" id=3]
+[ext_resource path="res://world/world_map/scripts/testCamera2D.gd" type="Script" id=3]
 [ext_resource path="res://assets/global_map/tilesets/buildings_tileset.tres" type="TileSet" id=4]
 [ext_resource path="res://assets/global_map/tilesets/road_tileset.tres" type="TileSet" id=5]
 
