@@ -27,32 +27,32 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "CitiesManager",
 "language": "GDScript",
-"path": "res://global_map/scripts/CitiesManager.gd"
+"path": "res://world/scripts/CitiesManager.gd"
 }, {
 "base": "Reference",
 "class": "City",
 "language": "GDScript",
-"path": "res://global_map/scripts/City.gd"
+"path": "res://world/scripts/City.gd"
 }, {
 "base": "Enemy",
 "class": "CityGuard",
 "language": "GDScript",
-"path": "res://global_map/units/city_guard/CityGuard.gd"
+"path": "res://world/units/city_guard/CityGuard.gd"
 }, {
 "base": "Enemy",
 "class": "CityTraider",
 "language": "GDScript",
-"path": "res://global_map/units/city_traider/CityTraider.gd"
+"path": "res://world/units/city_traider/CityTraider.gd"
 }, {
-"base": "Unit",
+"base": "Troop",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://global_map/units/enemy/enemy.gd"
+"path": "res://world/units/enemy/enemy.gd"
 }, {
 "base": "Node2D",
 "class": "GlobalTileMap",
 "language": "GDScript",
-"path": "res://global_map/map/GlobalTileMap.gd"
+"path": "res://world/map/GlobalTileMap.gd"
 }, {
 "base": "Reference",
 "class": "GlobalUnit",
@@ -80,14 +80,14 @@ _global_script_classes=[ {
 "path": "res://battle/scripts/TerrainGridMap.gd"
 }, {
 "base": "Node2D",
-"class": "Unit",
+"class": "Troop",
 "language": "GDScript",
-"path": "res://global_map/units/global_map_unit/unit.gd"
+"path": "res://world/units/global_map_unit/troop.gd"
 }, {
 "base": "Reference",
 "class": "WorldMapGenerator",
 "language": "GDScript",
-"path": "res://global_map/world_map/scripts/world_map_generator.gd"
+"path": "res://world/world_map/scripts/world_map_generator.gd"
 } ]
 _global_script_class_icons={
 "BattleAI": "",
@@ -104,7 +104,7 @@ _global_script_class_icons={
 "PathDot": "",
 "TacticalMapGenerator": "",
 "TerrainGridMap": "",
-"Unit": "",
+"Troop": "",
 "WorldMapGenerator": ""
 }
 

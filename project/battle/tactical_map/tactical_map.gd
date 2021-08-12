@@ -37,8 +37,15 @@ enum ITEM_VEGETATION {
 	MUSHROOM_4
 }
 
-var map_height: int = 70
 var map_widht: int = 70
+var map_height: int = 70
+
+var grass_game_count: int = 600
+var grass_area: Vector2 = Vector2(map_widht*2, map_height*2)
+var grass_blade_height: Vector2 = Vector2(0.5, 0.5) # rand_range(x, y)
+var grass_blade_width: Vector2 = Vector2(0.01, 0.2) # rand_range(x, y)
+
+onready var grass: Spatial = $Grass
 
 onready var soil: GridMap = $Soil
 onready var obstacles: GridMap = $Obstacles
@@ -63,9 +70,16 @@ func init_map():
 
 func generate_map():
 	clear_map()
+	
 	var noiseMapGenerator = TacticalMapGenerator.new(self,
 		soil, obstacles, vegetation)
 	noiseMapGenerator.generate_map()
+	
+	grass.game_count = grass_game_count
+	grass.area = grass_area
+	grass.blade_height = grass_blade_height
+	grass.blade_width = grass_blade_width
+	grass.rebuild()
 
 
 func clear_map():
@@ -76,6 +90,18 @@ func clear_map():
 
 func _on_GenButton_pressed():
 	generate_map()
+
+
+func is_grass_soil(_global_v: Vector3) -> bool:
+	var result: bool = false
+	
+	var cell = soil.world_to_map(_global_v)
+	if (cell in soil.get_used_cells() and
+	soil.get_cell_item(cell.x, cell.y, cell.z) == ITEM_SOIL.GRASS):
+		result = true
+	
+	return result
+
 
 ########
 

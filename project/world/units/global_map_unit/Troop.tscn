@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://assets/global_map/units/icon.png" type="Texture" id=1]
+[ext_resource path="res://world/units/global_map_unit/troop.gd" type="Script" id=2]
+
+[node name="Unit" type="Node2D"]
+script = ExtResource( 2 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
