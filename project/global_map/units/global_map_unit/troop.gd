@@ -3,7 +3,7 @@
 # Implements movement to target
 #
 extends Node2D
-class_name Unit
+class_name Troop
 
 
 
@@ -17,6 +17,7 @@ onready var tile_map: GlobalTileMap = get_tree().get_root().get_node("GlobalMap/
 
 var _path_line: Line2D
 
+var units = []
 
 func _ready():
 	if GlobalConstants.DEBUG_PATH:

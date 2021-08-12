@@ -3,9 +3,9 @@ extends Node2D
 
 const TICK_TIME = 25
 
-onready var player: Node2D = get_node("Player")
-onready var tile_map: GlobalTileMap = get_node("GlobalTileMap")
-onready var units_parent = get_node("Units");
+onready var player: Node2D = $"Player"
+onready var tile_map: GlobalTileMap = $"GlobalTileMap"
+onready var units_parent = $"Units"
 onready var GlobalMapUI = $"CanvasLayer/GlobalMapUI"
 onready var city_manager := CitiesManager.new(tile_map, 0)
 

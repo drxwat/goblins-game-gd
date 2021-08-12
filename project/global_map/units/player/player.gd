@@ -1,4 +1,4 @@
-extends Unit
+extends Troop
 
 signal contacted_enemy(player, enemy)
 

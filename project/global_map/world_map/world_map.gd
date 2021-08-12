@@ -33,8 +33,8 @@ func _ready():
 
 func generate_map():
 	clear_map()
-	var mapGenerator = WorldMapGenerator.new(self,
-		soil, forest, settlements, road
+	var mapGenerator = WorldMapGenerator.new(
+		self, soil, forest, settlements, road
 	)
 	mapGenerator.generate_map()
 
