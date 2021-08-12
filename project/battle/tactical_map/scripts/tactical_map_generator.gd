@@ -36,22 +36,35 @@ func generate_map(
 		_map_height=TacticalMap.map_height
 	):
 	var n: float
+	var amount_grass_cells: int = 0
 	
 	for x in _map_widht:
 		for y in _map_height:
 			n = noise.get_noise_2d(x, y)
 			var cell = offset_to_origin(x,y)
-			_noise_parsing(cell, n)
+			var items = _noise_parsing(cell, n)
+			
+			if items.soil == TacticalMap.ITEM_SOIL.GRASS:
+				amount_grass_cells += 1
+	
+	set_meta("_amount_grass_cells", amount_grass_cells)
+
+
+func get_amount_grass_cells():
+	return get_meta("_amount_grass_cells")
+
 
 func _noise_parsing(_cell: Array, _n):
+	var items: Dictionary
+	
 	if _n >= 0.0:
-		soil.set_cell_item(_cell[0], 0, _cell[1],
-			TacticalMap.ITEM_SOIL.GRASS)
+		items["soil"] = TacticalMap.ITEM_SOIL.GRASS
+		soil.set_cell_item(_cell[0], 0, _cell[1], items["soil"])
 		
 		var r = randf()
 		if r < OAK_TREE_3_CHANCE:
-			obstacles.set_cell_item(_cell[0], 0, _cell[1],
-				TacticalMap.ITEM_OBSTACLES.OAK_TREE_3)
+			items["obstacles"] = TacticalMap.ITEM_OBSTACLES.OAK_TREE_3
+			obstacles.set_cell_item(_cell[0], 0, _cell[1], items["obstacles"])
 		elif r < OAK_TREE_2_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.OAK_TREE_1)
@@ -60,8 +73,8 @@ func _noise_parsing(_cell: Array, _n):
 				TacticalMap.ITEM_OBSTACLES.OAK_TREE_2)
 		
 	else:
-		soil.set_cell_item(_cell[0], 0, _cell[1],
-			TacticalMap.ITEM_SOIL.DIRT)
+		items["soil"] = TacticalMap.ITEM_SOIL.DIRT
+		soil.set_cell_item(_cell[0], 0, _cell[1], items["soil"])
 		
 		var r3 = randf()
 		if r3 < STONE_CHANCE:
@@ -92,6 +105,8 @@ func _noise_parsing(_cell: Array, _n):
 		elif r < DEAD_SPRUCE_2_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.DEAD_SPRUCE_2)
+	
+	return items
 
 
 func offset_to_origin(x: int, y: int) -> Array:
