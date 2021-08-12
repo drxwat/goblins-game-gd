@@ -1,7 +1,7 @@
 extends Node2D
 
 
-const TICK_TIME = 25
+const TICK_TIME = 15
 
 onready var player: Node2D = $"Player"
 onready var tile_map: GlobalTileMap = $"GlobalTileMap"
