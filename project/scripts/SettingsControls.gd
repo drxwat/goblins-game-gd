@@ -33,9 +33,18 @@ func get_button_data(event)->Dictionary:
 		button_data["axis_value"] = event.axis_value
 	return button_data
 
-func set_input_data(data:Array):
-	print('set_input_data =', data)
-	pass
+func set_input_data(inputs:Dictionary):
+	for action_name in Actions:
+		ActionControls[action_name] = []
+	var action_names:Array = inputs.keys()
+	for action_name in action_names:
+		var button_names = inputs[action_name].keys()
+		for button_name in button_names:
+			var button = inputs[action_name][button_name]
+			var event:InputEvent = set_button_data(button)
+			ActionControls[action_name].push_back(event)
+	set_InputMap()
+	set_actions_info()
 
 func default_controls()->void:	#Reset to project settings controls
 	InputMap.load_from_globals()
