@@ -1,7 +1,7 @@
 [gd_scene load_steps=7 format=2]
 
-[ext_resource path="res://global_map/units/enemy/enemy.gd" type="Script" id=1]
-[ext_resource path="res://global_map/units/global_map_unit/Troop.tscn" type="PackedScene" id=2]
+[ext_resource path="res://world/units/enemy/enemy.gd" type="Script" id=1]
+[ext_resource path="res://world/units/global_map_unit/Troop.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/global_map/units/unit_icon.png" type="Texture" id=3]
 
 [sub_resource type="CircleShape2D" id=1]

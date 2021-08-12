@@ -1,6 +1,6 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://global_map/map/GlobalTileMap.gd" type="Script" id=1]
+[ext_resource path="res://world/map/GlobalTileMap.gd" type="Script" id=1]
 [ext_resource path="res://assets/global_map/tilesets/decorations_e.tres" type="TileSet" id=2]
 [ext_resource path="res://assets/global_map/tilesets/buildings_tileset.tres" type="TileSet" id=3]
 [ext_resource path="res://assets/global_map/tilesets/decorations_n.tres" type="TileSet" id=4]

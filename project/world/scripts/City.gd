@@ -7,8 +7,8 @@ signal exit_city
 signal enter_city
 
 var rng = RandomNumberGenerator.new()
-var city_guard_scene: PackedScene = preload("res://global_map/units/city_guard/CityGuard.tscn")
-var city_traider_scene: PackedScene = preload("res://global_map/units/city_traider/CityTraider.tscn")
+var city_guard_scene: PackedScene = preload("res://world/units/city_guard/CityGuard.tscn")
+var city_traider_scene: PackedScene = preload("res://world/units/city_traider/CityTraider.tscn")
 
 var id: int
 var cell: Vector2
