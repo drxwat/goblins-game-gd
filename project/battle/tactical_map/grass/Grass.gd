@@ -87,18 +87,25 @@ func rebuild():
 	mesh_rid = rid_blade_mesh()
 	VisualServer.multimesh_set_mesh(multimesh, mesh_rid)
 	
-	var bpt = get_count() / thread_count  # blades per thread
+#	var bpt = get_count() / thread_count  # blades per thread
 	threads = []
 	
 	amount_blade_in_cell = get_parent()._amount_blade_in_cell
 	grass_cell_size = get_parent().cell_size
 	grass_cells = get_parent().get_global_coord_used_grass_cells()
 	
-	amount_blade_in_cell = 140
+	amount_blade_in_cell = 40
 	
-	var bpt_cell = grass_cells.size() / thread_count
+	var bpt = int(ceil(amount_blade_in_cell*grass_cells.size() / thread_count))
+	var bpt_cell = int(ceil(grass_cells.size() / thread_count))
+	
+	bpt += 10000
+	
+	var bpt_remainder = int(ceil((amount_blade_in_cell*grass_cells.size()) % thread_count))
+	var bpt_cell_remainder = int(ceil(grass_cells.size() % thread_count))
 	
 	var arg: Array
+	var rng = RandomNumberGenerator.new()
 	
 	for t in thread_count:
 		arg = [
@@ -107,8 +114,15 @@ func rebuild():
 			bpt * t + bpt,
 			bpt_cell * t,
 			bpt_cell * t + bpt_cell,
-			grass_cells, amount_blade_in_cell, grass_cell_size
+			grass_cells, amount_blade_in_cell, grass_cell_size,
+			rng
 		]
+		
+		if t == (thread_count - 1):
+			arg[2] += bpt_remainder
+			arg[4] += bpt_cell_remainder
+			
+		
 		threads.append(Thread.new())
 		threads[t].start(self, "thread_worker", arg)
 #			breakpoint
@@ -141,8 +155,9 @@ func thread_worker(data: Array):
 	var cells = data[5]
 	var amount_blade_in_cell = data[6]
 	var grass_cell_size: Vector2 = data[7]
+	var rng = data[8]
 	
-	var rng = RandomNumberGenerator.new()
+	
 	
 	var checking: bool = false
 	
@@ -157,6 +172,18 @@ func thread_worker(data: Array):
 #		checking = true
 #	else:
 #		amount_blade_in_cell = amount_available_blades / amount_available_cells
+	
+	print(
+		"start_cell: ", start_cell, "\t",
+		"stop_cell: ", stop_cell, "\t",
+		"amount_available_cells: ", amount_available_cells
+	)
+	
+	print(
+		"start: ", start, "\t",
+		"stop: ", stop, "\t",
+		"amount_available_blades: ", amount_available_blades
+	)
 	
 	for i in range(start, stop):
 		setup_blade(
