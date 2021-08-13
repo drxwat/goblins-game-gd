@@ -24,8 +24,10 @@ func load_settings()->bool:
 		print("error code open file = ", configFileLoad)
 		return false
 	#load input data
-	var load_config_data_input = configFile.get_section_keys(INPUT_SECTION_KEY)
-	SettingsControls.set_input_data(load_config_data_input)
+	var load_config_data_input = configFile.get_section(INPUT_SECTION_KEY)
+	print("load_config_data_input = ", load_config_data_input)
+	if load_config_data_input:
+		SettingsControls.set_input_data(load_config_data_input)
 	SettingsControls.default_controls()
 	return true
 	

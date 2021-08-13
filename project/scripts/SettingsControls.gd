@@ -55,3 +55,25 @@ func set_actions_info()->void:
 	for Action in Actions:
 		var ActionList:Array = InputMap.get_action_list(Action) #associated controlls to the action
 		ActionControls[Action] = ActionList
+
+func set_button_data(button:Dictionary)->InputEvent:
+	var NewEvent:InputEvent
+	if button.EventType == "InputEventKey":
+		NewEvent = InputEventKey.new()
+		NewEvent.scancode = button.scancode
+	if button.EventType == "InputEventJoypadButton":
+		NewEvent = InputEventJoypadButton.new()
+		NewEvent.device = button.device
+		NewEvent.button_index = button.button_index
+	if button.EventType == "InputEventJoypadMotion":
+		NewEvent = InputEventJoypadMotion.new()
+		NewEvent.device = button.device
+		NewEvent.axis = button.axis
+		NewEvent.axis_value = button.axis_value
+	return NewEvent
+
+func set_InputMap()->void:
+	for action_name in Actions:
+		InputMap.action_erase_events(action_name)
+		for event in ActionControls[action_name]:
+			InputMap.action_add_event(action_name, event)
