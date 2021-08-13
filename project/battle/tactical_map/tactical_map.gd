@@ -40,10 +40,13 @@ enum ITEM_VEGETATION {
 var map_widht: int = 70
 var map_height: int = 70
 
-var grass_game_count: int = 600
+var cell_size: Vector2 = Vector2(2, 2)
+
+var grass_game_count: int = 600000
 var grass_area: Vector2 = Vector2(map_widht*2, map_height*2)
 var grass_blade_height: Vector2 = Vector2(0.5, 0.5) # rand_range(x, y)
 var grass_blade_width: Vector2 = Vector2(0.01, 0.2) # rand_range(x, y)
+var _amount_blade_in_cell: int
 
 onready var grass: Spatial = $Grass
 
@@ -75,11 +78,15 @@ func generate_map():
 		soil, obstacles, vegetation)
 	noiseMapGenerator.generate_map()
 	
+	var amount: int = noiseMapGenerator.get_amount_grass_cells()
+	_amount_blade_in_cell = grass_game_count / amount
+	_amount_blade_in_cell = ceil(_amount_blade_in_cell)
+	
 	grass.game_count = grass_game_count
 	grass.area = grass_area
 	grass.blade_height = grass_blade_height
 	grass.blade_width = grass_blade_width
-	grass.rebuild()
+	grass.generate()
 
 
 func clear_map():
@@ -101,6 +108,22 @@ func is_grass_soil(_global_v: Vector3) -> bool:
 		result = true
 	
 	return result
+
+
+func get_global_coord_used_grass_cells():
+	var used_cells: Array = soil.get_used_cells()
+	var global_coord_used_grass_cells: Array
+	
+	var item: int
+	var global_coord_item: Vector3
+	
+	for cell in used_cells:
+		item = soil.get_cell_item(cell.x, cell.y, cell.z)
+		if item == ITEM_SOIL.GRASS:
+			global_coord_item = soil.map_to_world(cell.x, cell.y, cell.z)
+			global_coord_used_grass_cells.append(global_coord_item)
+	
+	return global_coord_used_grass_cells
 
 
 ########
