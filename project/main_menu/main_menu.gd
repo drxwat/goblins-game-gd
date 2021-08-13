@@ -16,7 +16,7 @@ func _on_Button_Settings_pressed():
 
 
 func _on_Button_Game_pressed():
-	get_tree().change_scene("res://global_map/global_map.tscn")
+	get_tree().change_scene("res://world/world.tscn")
 
 
 func _ready():
