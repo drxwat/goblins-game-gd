@@ -173,17 +173,7 @@ func thread_worker(data: Array):
 #	else:
 #		amount_blade_in_cell = amount_available_blades / amount_available_cells
 	
-	print(
-		"start_cell: ", start_cell, "\t",
-		"stop_cell: ", stop_cell, "\t",
-		"amount_available_cells: ", amount_available_cells
-	)
 	
-	print(
-		"start: ", start, "\t",
-		"stop: ", stop, "\t",
-		"amount_available_blades: ", amount_available_blades
-	)
 	
 	for i in range(start, stop):
 		setup_blade(
