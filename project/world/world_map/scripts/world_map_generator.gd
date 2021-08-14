@@ -37,7 +37,7 @@ func _init(_world_map, _soil, _forest, _settlements, _road):
 func generate_map(
 	_map_widht=WorldMap.map_widht,
 	_map_height=WorldMap.map_height
-):
+) -> void:
 	_generate_soil(_map_widht, _map_height)
 	_generate_forest(_map_widht, _map_height)
 	_generate_settlements(_map_widht, _map_height)
@@ -124,7 +124,7 @@ func _generate_settlements(_map_widht, _map_height) -> void:
 	
 	
 
-func _init_astar():
+func _init_astar() -> void:
 	var soil_cells = soil.get_used_cells()
 	var indexes_map = {}
 	
@@ -154,7 +154,7 @@ func _init_astar():
 					)
 
 
-func set_obstacles(_obstacles):
+func set_obstacles(_obstacles) -> void:
 	for cell in _obstacles.get_used_cells():
 		var c = _obstacles.map_to_world(cell)
 		var point_id = astar.get_closest_point(
@@ -163,7 +163,7 @@ func set_obstacles(_obstacles):
 		astar.set_point_disabled(point_id)
 
 
-func _make_path_for_settlements():
+func _make_path_for_settlements() -> void:
 	var from = settlements.get_used_cells()[1]
 	var to = settlements.get_used_cells()[2]
 	
@@ -190,7 +190,8 @@ func _make_path_for_settlements():
 
 
 func get_path_from_settlement_to_settlement(
-		from: Vector2, to: Vector2) -> PoolVector3Array:
+	from: Vector2, to: Vector2
+) -> PoolVector3Array:
 	var from_v: Vector2 = settlements.map_to_world(from)
 	var to_v: Vector2 = settlements.map_to_world(to)
 	var path = get_map_path(
@@ -207,7 +208,7 @@ func get_map_path(_from: Vector3, _to: Vector3) -> PoolVector3Array:
 			)
 
 
-func _create_roads():
+func _create_roads() -> void:
 	for cell in path_road:
 		road.set_cellv(cell, 2) 
 #		forest.set_cellv(cell,4) # temporarity

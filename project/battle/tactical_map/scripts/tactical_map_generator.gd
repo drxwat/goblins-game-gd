@@ -34,7 +34,7 @@ func _init(_tactical_map, _soil, _obstacles, _vegetation):
 func generate_map(
 		_map_widht=TacticalMap.map_widht,
 		_map_height=TacticalMap.map_height
-	):
+	) -> void:
 	var n: float
 	var amount_grass_cells: int = 0
 	
@@ -50,11 +50,11 @@ func generate_map(
 	set_meta("_amount_grass_cells", amount_grass_cells)
 
 
-func get_amount_grass_cells():
+func get_amount_grass_cells() -> int:
 	return get_meta("_amount_grass_cells")
 
 
-func _noise_parsing(_cell: Array, _n):
+func _noise_parsing(_cell: Array, _n) -> Dictionary:
 	var items: Dictionary
 	
 	if _n >= 0.0:
