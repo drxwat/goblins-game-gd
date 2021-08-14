@@ -31,7 +31,7 @@ func _ready():
 	pass
 
 
-func generate_map():
+func generate_map() -> void:
 	clear_map()
 	var mapGenerator = WorldMapGenerator.new(
 		self, soil, forest, settlements, road
@@ -39,7 +39,7 @@ func generate_map():
 	mapGenerator.generate_map()
 
 
-func clear_map():
+func clear_map() -> void:
 	soil.clear()
 	forest.clear()
 	settlements.clear()

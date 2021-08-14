@@ -63,7 +63,7 @@ var terrain_obj := {} # tracking object types
 func _ready():
 	randomize()
 
-func init_map():
+func init_map() -> void:
 	$VBoxContainer.hide()
 	$Camera.hide()
 	
@@ -71,7 +71,7 @@ func init_map():
 	_init_astar()
 
 
-func generate_map():
+func generate_map() -> void:
 	clear_map()
 	
 	var noiseMapGenerator = TacticalMapGenerator.new(self,
@@ -89,7 +89,7 @@ func generate_map():
 	grass.generate()
 
 
-func clear_map():
+func clear_map() -> void:
 	soil.clear()
 	obstacles.clear()
 	vegetation.clear()
