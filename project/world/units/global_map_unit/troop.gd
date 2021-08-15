@@ -104,6 +104,10 @@ func set_path(path: PoolVector2Array, weights: PoolRealArray) -> void:
 	_path_weights = weights
 
 
+func _play_move_animation(direction: Vector2):
+	pass
+
+
 # Adjusts path points from the center of the tile to it's border towards next tile
 # It forces terrain weight to affect only within the tile
 func _move_path_point_to_tile_borders(path: PoolVector2Array) -> PoolVector2Array:
