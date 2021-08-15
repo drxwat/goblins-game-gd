@@ -100,7 +100,7 @@ base_speed = 400.0
 position = Vector2( 0.690796, -104.798 )
 frames = SubResource( 1 )
 animation = "walk_up"
-frame = 20
+frame = 2
 speed_scale = 6.0
 playing = true
 flip_h = true
@@ -111,6 +111,7 @@ scale = Vector2( 3, 3 )
 
 [node name="Camera2D" type="Camera2D" parent="." index="2"]
 current = true
+zoom = Vector2( 2, 2 )
 
 [node name="KinematicBody2D" type="KinematicBody2D" parent="." index="3"]
 position = Vector2( 0, -28.0758 )
