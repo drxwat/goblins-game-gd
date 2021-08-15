@@ -20,11 +20,11 @@ layers = 524288
 layers = 524288
 
 [node name="RightHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="4"]
-transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.234627, -0.226973, 0.972389, -0.054241, -34.0632, 4.23172, -36.0197 )
+transform = Transform( 0.503172, 0.254929, 0.825729, -0.580083, 0.807883, 0.104064, -0.640563, -0.531353, 0.554385, -16.5259, 72.9541, -75.0842 )
 bone_name = "mixamorig_right_hand"
 
 [node name="LeftHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="5"]
-transform = Transform( 0.932757, -0.11389, -0.342043, -0.178537, 0.678327, -0.712738, 0.313191, 0.725879, 0.612381, 14.7594, 44.6098, -37.8182 )
+transform = Transform( 0.308678, -0.863043, 0.399843, -0.118465, 0.382215, 0.916448, -0.943761, -0.330255, 0.0157408, -8.47349, 70.5408, -100.245 )
 bone_name = "mixamorig_left_hand"
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="2"]

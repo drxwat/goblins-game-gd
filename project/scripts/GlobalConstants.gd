@@ -8,7 +8,7 @@ const DEBUG_CITIES_ROUTES = true
 const MOVE_AREAS := 3.0 # Amount of move zones/actions of units
 
 
-enum RACE { GOBLIN }
+enum RACE { GOBLIN, HUMAN }
 
 enum STATS { ATTACK, DAMAGE, DEFENCE, HIT_POINTS, MOVE_POINTS }
 
@@ -18,9 +18,18 @@ const RACE_META = {
 	RACE.GOBLIN: {
 		"STATS": {
 			STATS.ATTACK: 6.0,
+			STATS.DEFENCE: 8.0,
+			STATS.DAMAGE: 5.0,
+			STATS.HIT_POINTS: 25.0,
+			STATS.MOVE_POINTS: 6.0
+		}
+	},
+	RACE.HUMAN: {
+		"STATS": {
+			STATS.ATTACK: 7.0,
 			STATS.DEFENCE: 5.0,
-			STATS.DAMAGE: 0.0,
-			STATS.HIT_POINTS: 15.0,
+			STATS.DAMAGE: 6.0,
+			STATS.HIT_POINTS: 30.0,
 			STATS.MOVE_POINTS: 6.0
 		}
 	}

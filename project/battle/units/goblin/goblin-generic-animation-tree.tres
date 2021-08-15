@@ -44,7 +44,7 @@ states/react/position = Vector2( -254.617, 77 )
 states/slash/node = SubResource( 5 )
 states/slash/position = Vector2( -281.617, 182 )
 transitions = [ "slash", "idle-loop", SubResource( 6 ), "bow-shot", "idle-loop", SubResource( 7 ), "react", "idle-loop", SubResource( 8 ), "idle-loop", "death", SubResource( 9 ) ]
-graph_offset = Vector2( -729.617, -26.844 )
+graph_offset = Vector2( -793.617, -111.844 )
 
 [sub_resource type="AnimationNodeBlend2" id=11]
 
@@ -52,7 +52,6 @@ graph_offset = Vector2( -729.617, -26.844 )
 animation = "run-loop"
 
 [resource]
-graph_offset = Vector2( -139.866, 7.2379 )
 nodes/Actions/node = SubResource( 10 )
 nodes/Actions/position = Vector2( 400, 60 )
 nodes/Locomotion/node = SubResource( 11 )
