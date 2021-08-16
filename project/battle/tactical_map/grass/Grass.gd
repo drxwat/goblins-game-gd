@@ -104,31 +104,36 @@ func rebuild():
 #	var bpt_remainder = int(ceil((amount_blade_in_cell*grass_cells.size()) % thread_count))
 	var bpt_cell_remainder = int(ceil(grass_cells.size() % thread_count))
 	
-	var arg: Array
+	var arg: Dictionary
 	var rng = RandomNumberGenerator.new()
 	
 	var index: int = 0
 	
 	for t in thread_count:
-		arg = [
-			multimesh,
-			index,
-			index + (bpt_cell * amount_blade_in_cell),
-			bpt_cell * t,
-			bpt_cell * t + bpt_cell,
-			grass_cells, amount_blade_in_cell, grass_cell_size,
-			rng
-		]
+		arg.clear()
+		
+		
+		arg["multimesh"] = multimesh
+		arg["start_index"] = index
+		arg["stop_index"] = index + (bpt_cell * amount_blade_in_cell)
+		arg["start_cell"] = bpt_cell * t
+		arg["stop_cell"] = bpt_cell * t + bpt_cell
+		arg["cells"] = grass_cells
+		arg["cell_size"] = grass_cell_size
+		arg["amount_blade_in_cell"] = amount_blade_in_cell
+		arg["rng"] = rng
+		
 		
 		if t == (thread_count - 1):
-			arg[2] += (bpt_cell_remainder * amount_blade_in_cell)
-			arg[4] += bpt_cell_remainder
+			arg["stop_index"] += (bpt_cell_remainder * amount_blade_in_cell)
+			arg["stop_cell"] += bpt_cell_remainder
 		
 		index += (bpt_cell * amount_blade_in_cell)
 		
 		
+		
 		threads.append(Thread.new())
-		threads[t].start(self, "thread_worker", arg)
+		threads[t].start(self, "thread_worker", arg.duplicate())
 #			breakpoint
 	
 	for t in thread_count:
@@ -150,16 +155,21 @@ func clear():
 	VisualServer.free_rid(multimesh_rid)
 
 
-func thread_worker(data: Array):
-	var rid = data[0]
-	var start = data[1]
-	var stop = data[2]
-	var start_cell = data[3]
-	var stop_cell = data[4]
-	var cells = data[5]
-	var amount_blade_in_cell = data[6]
-	var grass_cell_size: Vector2 = data[7]
-	var rng = data[8]
+func thread_worker(data: Dictionary):
+	var rid: RID = data["multimesh"]
+	
+	var start: int = data["start_index"]
+	var stop: int = data["stop_index"]
+	
+	var start_cell: int = data["start_cell"]
+	var stop_cell: int = data["stop_cell"]
+	
+	var cells: Array = data["cells"]
+	var grass_cell_size: Vector2 = data["cell_size"]
+	var amount_blade_in_cell: int = data["amount_blade_in_cell"]
+	
+	var rng: RandomNumberGenerator = data["rng"]
+	
 	
 	
 	
