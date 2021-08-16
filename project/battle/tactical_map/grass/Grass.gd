@@ -17,19 +17,20 @@ var mesh_rid: RID
 
 var material = preload("res://assets/battle/grass/Grass.material").get_rid()
 
-var grass_cells: Array
-var grass_cell_size: Vector2
-var amount_blade_in_cell: int
-
 
 func _ready():
 	pass
 
 
-func generate():
+func generate(
+	_cells: Array,
+	_cell_size: Vector2,
+	_amount_blade_in_cell: int
+):
 	if multimesh_rid != null and mesh_rid != null:
 		clear()
-	rebuild()
+	
+	rebuild(_cells, _cell_size, _amount_blade_in_cell)
 
 
 func rid_blade_mesh() -> RID:
@@ -56,26 +57,25 @@ func rid_blade_mesh() -> RID:
 	return mesh
 
 
-func rebuild():
+func rebuild(_cells: Array, _cell_size: Vector2, _amount_blade_in_cell: int):
 	var multimesh = VisualServer.multimesh_create()
 	multimesh_rid = multimesh
 	
-	VisualServer.multimesh_allocate(multimesh, get_count(), VisualServer.MULTIMESH_TRANSFORM_3D, VisualServer.MULTIMESH_COLOR_NONE, VisualServer.MULTIMESH_CUSTOM_DATA_FLOAT)
+	var instances_count = _cells.size() * _amount_blade_in_cell
+	VisualServer.multimesh_allocate(
+		multimesh, instances_count,
+		VisualServer.MULTIMESH_TRANSFORM_3D,
+		VisualServer.MULTIMESH_COLOR_NONE,
+		VisualServer.MULTIMESH_CUSTOM_DATA_FLOAT
+	)
 	
 	mesh_rid = rid_blade_mesh()
 	VisualServer.multimesh_set_mesh(multimesh, mesh_rid)
 	
-	
 	threads = []
 	
-	amount_blade_in_cell = get_parent()._amount_blade_in_cell
-	grass_cell_size = get_parent().cell_size
-	grass_cells = get_parent().get_global_coord_used_grass_cells()
-	
-	amount_blade_in_cell = 40
-	
-	var bpt_cell = int(ceil(grass_cells.size() / thread_count))
-	var bpt_cell_remainder = int(ceil(grass_cells.size() % thread_count))
+	var bpt_cell = int(ceil(_cells.size() / thread_count))
+	var bpt_cell_remainder = int(ceil(_cells.size() % thread_count))
 	
 	var arg: Dictionary
 	var rng = RandomNumberGenerator.new()
@@ -85,26 +85,25 @@ func rebuild():
 	for t in thread_count:
 		arg.clear()
 		
-		
 		arg["multimesh"] = multimesh
 		
 		arg["start_cell"] = bpt_cell * t
 		arg["stop_cell"] = bpt_cell * t + bpt_cell
 		
 		arg["start_index"] = index
-		arg["stop_index"] = index + (bpt_cell * amount_blade_in_cell)
+		arg["stop_index"] = index + (bpt_cell * _amount_blade_in_cell)
 		
-		arg["cells"] = grass_cells
-		arg["cell_size"] = grass_cell_size
-		arg["amount_blade_in_cell"] = amount_blade_in_cell
+		arg["cells"] = _cells
+		arg["cell_size"] = _cell_size
+		arg["amount_blade_in_cell"] = _amount_blade_in_cell
 		
 		arg["rng"] = rng
 		
 		if t == (thread_count - 1):
-			arg["stop_index"] += (bpt_cell_remainder * amount_blade_in_cell)
+			arg["stop_index"] += (bpt_cell_remainder * _amount_blade_in_cell)
 			arg["stop_cell"] += bpt_cell_remainder
 		
-		index += (bpt_cell * amount_blade_in_cell)
+		index += (bpt_cell * _amount_blade_in_cell)
 		
 		threads.append(Thread.new())
 		threads[t].start(self, "thread_worker", arg.duplicate())
@@ -175,7 +174,10 @@ func setup_blade(
 	var x = cell_size.x
 	var y = cell_size.y
 	
-	var rand_shift = Vector2(rng.randf_range(-x/2, x/2), rng.randf_range(-y/2, y/2))
+	var rand_shift = Vector2(
+		rng.randf_range(-x/2, x/2),
+		rng.randf_range(-y/2, y/2)
+	)
 	
 	var position: Vector3
 	position = cell_coord
@@ -191,10 +193,13 @@ func setup_blade(
 	transform.basis = Basis.IDENTITY.rotated(Vector3.UP, deg2rad(rotation))
 	
 	VisualServer.multimesh_instance_set_transform(rid, i, transform)
-	VisualServer.multimesh_instance_set_custom_data(rid, i, Color(width, height, deg2rad(sway_pitch), deg2rad(sway_yaw)))
-
-func get_count():
-	if Engine.editor_hint:
-		return editor_count
-	else:
-		return game_count
+	VisualServer.multimesh_instance_set_custom_data(
+		rid,
+		i,
+		Color(
+			width,
+			height,
+			deg2rad(sway_pitch),
+			deg2rad(sway_yaw)
+		)
+	)
