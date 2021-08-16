@@ -30,30 +30,7 @@ func generate():
 	if multimesh_rid != null and mesh_rid != null:
 		clear()
 	rebuild()
-	
 
-func make_blade_mesh() -> ArrayMesh:
-	var mesh = ArrayMesh.new()
-	var arr = []
-	arr.resize(Mesh.ARRAY_MAX)
-	
-	var verts = PoolVector3Array()
-	var uvs = PoolVector2Array()
-	
-	verts.push_back(Vector3(-0.5, 0.0, 0.0))
-	verts.push_back(Vector3(0.5, 0.0, 0.0))
-	verts.push_back(Vector3(0.0, 1.0, 0.0))
-	
-	uvs.push_back(Vector2(0.0, 0.0))
-	uvs.push_back(Vector2(1.0, 0.0))
-	uvs.push_back(Vector2(0.5, 1.0))
-	
-	arr[Mesh.ARRAY_VERTEX] = verts
-	arr[Mesh.ARRAY_TEX_UV] = uvs
-	
-	mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, arr)
-	
-	return mesh
 
 func rid_blade_mesh() -> RID:
 	var mesh = VisualServer.mesh_create()
@@ -77,6 +54,7 @@ func rid_blade_mesh() -> RID:
 	VisualServer.mesh_add_surface_from_arrays(mesh, Mesh.PRIMITIVE_TRIANGLES, arr)
 	
 	return mesh
+
 
 func rebuild():
 	var multimesh = VisualServer.multimesh_create()
