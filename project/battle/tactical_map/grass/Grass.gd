@@ -87,7 +87,7 @@ func rebuild():
 	mesh_rid = rid_blade_mesh()
 	VisualServer.multimesh_set_mesh(multimesh, mesh_rid)
 	
-#	var bpt = get_count() / thread_count  # blades per thread
+	
 	threads = []
 	
 	amount_blade_in_cell = get_parent()._amount_blade_in_cell
@@ -96,12 +96,7 @@ func rebuild():
 	
 	amount_blade_in_cell = 40
 	
-#	var bpt = int(ceil(amount_blade_in_cell*grass_cells.size() / thread_count))
 	var bpt_cell = int(ceil(grass_cells.size() / thread_count))
-	
-#	bpt += 10000
-	
-#	var bpt_remainder = int(ceil((amount_blade_in_cell*grass_cells.size()) % thread_count))
 	var bpt_cell_remainder = int(ceil(grass_cells.size() % thread_count))
 	
 	var arg: Dictionary
@@ -114,15 +109,18 @@ func rebuild():
 		
 		
 		arg["multimesh"] = multimesh
-		arg["start_index"] = index
-		arg["stop_index"] = index + (bpt_cell * amount_blade_in_cell)
+		
 		arg["start_cell"] = bpt_cell * t
 		arg["stop_cell"] = bpt_cell * t + bpt_cell
+		
+		arg["start_index"] = index
+		arg["stop_index"] = index + (bpt_cell * amount_blade_in_cell)
+		
 		arg["cells"] = grass_cells
 		arg["cell_size"] = grass_cell_size
 		arg["amount_blade_in_cell"] = amount_blade_in_cell
-		arg["rng"] = rng
 		
+		arg["rng"] = rng
 		
 		if t == (thread_count - 1):
 			arg["stop_index"] += (bpt_cell_remainder * amount_blade_in_cell)
@@ -130,16 +128,11 @@ func rebuild():
 		
 		index += (bpt_cell * amount_blade_in_cell)
 		
-		
-		
 		threads.append(Thread.new())
 		threads[t].start(self, "thread_worker", arg.duplicate())
-#			breakpoint
 	
 	for t in thread_count:
 		threads[t].wait_to_finish()
-		
-	
 	
 	var instance = VisualServer.instance_create()
 	var scenario = get_world().scenario
