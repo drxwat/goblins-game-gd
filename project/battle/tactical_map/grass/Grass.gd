@@ -158,34 +158,20 @@ func thread_worker(data: Dictionary):
 	var stop_cell: int = data["stop_cell"]
 	
 	var cells: Array = data["cells"]
-	var grass_cell_size: Vector2 = data["cell_size"]
+	var cell_size: Vector2 = data["cell_size"]
 	var amount_blade_in_cell: int = data["amount_blade_in_cell"]
 	
 	var rng: RandomNumberGenerator = data["rng"]
 	
-	
-	
-	
-	var checking: bool = false
-	
 	var cell_index: int = start_cell
 	var cell_current_number_blades: int = 0
 	
-	var amount_available_cells = stop_cell - start_cell
-	var amount_wishful_blades = amount_available_cells * amount_blade_in_cell
-	var amount_available_blades = stop - start
-	
-#	if amount_wishful_blades <= amount_available_blades:
-#		checking = true
-#	else:
-#		amount_blade_in_cell = amount_available_blades / amount_available_cells
-	
-	
-	
 	for i in range(start, stop):
 		setup_blade(
-			rid, i,
-			cells[cell_index], grass_cell_size,
+			rid,
+			i,
+			cells[cell_index],
+			cell_size,
 			rng
 		)
 		cell_current_number_blades += 1
@@ -194,19 +180,22 @@ func thread_worker(data: Dictionary):
 			cell_current_number_blades = 0
 			cell_index += 1
 		
-		
 		if cell_index == stop_cell:
 			break
 
-func setup_blade(rid: RID, i: int,
-cell_coord: Vector3, grass_cell_size: Vector2,
-rng
-):
+
+func setup_blade(
+	rid: RID,
+	i: int,
+	cell_coord: Vector3,
+	cell_size: Vector2,
+	rng: RandomNumberGenerator
+) -> void:
 	var width = rand_range(blade_width.x, blade_width.y)
 	var height = rand_range(blade_height.x, blade_height.y)
 	
-	var x = grass_cell_size.x
-	var y = grass_cell_size.y
+	var x = cell_size.x
+	var y = cell_size.y
 	
 	var rand_shift = Vector2(rng.randf_range(-x/2, x/2), rng.randf_range(-y/2, y/2))
 	
