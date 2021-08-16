@@ -96,22 +96,24 @@ func rebuild():
 	
 	amount_blade_in_cell = 40
 	
-	var bpt = int(ceil(amount_blade_in_cell*grass_cells.size() / thread_count))
+#	var bpt = int(ceil(amount_blade_in_cell*grass_cells.size() / thread_count))
 	var bpt_cell = int(ceil(grass_cells.size() / thread_count))
 	
-	bpt += 10000
+#	bpt += 10000
 	
-	var bpt_remainder = int(ceil((amount_blade_in_cell*grass_cells.size()) % thread_count))
+#	var bpt_remainder = int(ceil((amount_blade_in_cell*grass_cells.size()) % thread_count))
 	var bpt_cell_remainder = int(ceil(grass_cells.size() % thread_count))
 	
 	var arg: Array
 	var rng = RandomNumberGenerator.new()
 	
+	var index: int = 0
+	
 	for t in thread_count:
 		arg = [
 			multimesh,
-			bpt * t,
-			bpt * t + bpt,
+			index,
+			index + (bpt_cell * amount_blade_in_cell),
 			bpt_cell * t,
 			bpt_cell * t + bpt_cell,
 			grass_cells, amount_blade_in_cell, grass_cell_size,
@@ -119,9 +121,11 @@ func rebuild():
 		]
 		
 		if t == (thread_count - 1):
-			arg[2] += bpt_remainder
+			arg[2] += (bpt_cell_remainder * amount_blade_in_cell)
 			arg[4] += bpt_cell_remainder
-			
+		
+		index += (bpt_cell * amount_blade_in_cell)
+		
 		
 		threads.append(Thread.new())
 		threads[t].start(self, "thread_worker", arg)
