@@ -42,8 +42,8 @@ __meta__ = {
 }
 
 [node name="Grass" parent="." instance=ExtResource( 6 )]
-blade_height = Vector2( 0.5, 0.08 )
-blade_width = Vector2( 0.5, 0.02 )
+blade_height = Vector2( 0.3, 0.5 )
+blade_width = Vector2( 0.01, 0.2 )
 thread_count = 8
 
 [node name="Camera" parent="." instance=ExtResource( 4 )]

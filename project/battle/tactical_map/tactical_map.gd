@@ -42,11 +42,7 @@ var map_height: int = 70
 
 var cell_size: Vector2 = Vector2(2, 2)
 
-var grass_game_count: int = 600000
-var grass_area: Vector2 = Vector2(map_widht*2, map_height*2)
-var grass_blade_height: Vector2 = Vector2(0.5, 0.5) # rand_range(x, y)
-var grass_blade_width: Vector2 = Vector2(0.01, 0.2) # rand_range(x, y)
-var _amount_blade_in_cell: int
+var amount_blade_in_cell: int = 40
 
 onready var grass: Spatial = $Grass
 
@@ -78,15 +74,8 @@ func generate_map() -> void:
 		soil, obstacles, vegetation)
 	noiseMapGenerator.generate_map()
 	
-	var amount: int = noiseMapGenerator.get_amount_grass_cells()
-	_amount_blade_in_cell = grass_game_count / amount
-	_amount_blade_in_cell = ceil(_amount_blade_in_cell)
-	
-	grass.game_count = grass_game_count
-	grass.area = grass_area
-	grass.blade_height = grass_blade_height
-	grass.blade_width = grass_blade_width
-	grass.generate()
+	var grass_cells = get_global_coord_used_grass_cells()
+	grass.generate(grass_cells, cell_size, amount_blade_in_cell)
 
 
 func clear_map() -> void:
