@@ -7,6 +7,5 @@
 [node name="AnimationTree" type="AnimationTree"]
 tree_root = ExtResource( 1 )
 anim_player = NodePath("../AnimationPlayer")
-active = true
 parameters/Actions/playback = SubResource( 1 )
 parameters/Locomotion/blend_amount = 0.0

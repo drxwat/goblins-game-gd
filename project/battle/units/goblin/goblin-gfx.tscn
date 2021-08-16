@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/battle/units/goblin/model/goblin-generic.glb" type="PackedScene" id=1]
-[ext_resource path="res://battle/units/goblin/goblin-generic-animation-tree.tres" type="AnimationNodeBlendTree" id=2]
+[ext_resource path="res://battle/units/battle-unit/BattleUnitAnimationTree.tscn" type="PackedScene" id=2]
 
 [sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
@@ -20,18 +20,15 @@ layers = 524288
 layers = 524288
 
 [node name="RightHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="4"]
-transform = Transform( 0.503172, 0.254929, 0.825729, -0.580083, 0.807883, 0.104064, -0.640563, -0.531353, 0.554385, -16.5259, 72.9541, -75.0842 )
+transform = Transform( 0.217137, 0.103104, 0.97068, 0.949368, 0.208991, -0.234569, -0.227048, 0.972467, -0.0525042, -34.0114, 4.28487, -36.0655 )
 bone_name = "mixamorig_right_hand"
 
 [node name="LeftHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="5"]
-transform = Transform( 0.308678, -0.863043, 0.399843, -0.118465, 0.382215, 0.916448, -0.943761, -0.330255, 0.0157408, -8.47349, 70.5408, -100.245 )
+transform = Transform( 0.932582, -0.116241, -0.341727, -0.176901, 0.678048, -0.713411, 0.314635, 0.725767, 0.611773, 14.7168, 44.6996, -37.9184 )
 bone_name = "mixamorig_left_hand"
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="2"]
-tree_root = ExtResource( 2 )
-anim_player = NodePath("../AnimationPlayer")
+[node name="AnimationTree" parent="." index="2" instance=ExtResource( 2 )]
 active = true
 parameters/Actions/playback = SubResource( 1 )
-parameters/Locomotion/blend_amount = 0.0
 
 [node name="Tween" type="Tween" parent="." index="3"]
