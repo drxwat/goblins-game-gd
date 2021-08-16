@@ -1,16 +1,22 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://assets/battle/units/goblin/model/goblin-generic.glb" type="PackedScene" id=1]
 [ext_resource path="res://battle/units/weapon/scene_objects/Mace.tscn" type="PackedScene" id=2]
+[ext_resource path="res://battle/units/weapon/scene_objects/Bow.tscn" type="PackedScene" id=3]
 
 [node name="goblin-generic" instance=ExtResource( 1 )]
 
-[node name="Skeleton" parent="Armature" index="0"]
-bones/30/bound_children = [ NodePath("BoneAttachment") ]
-
 [node name="BoneAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="4"]
-transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.234627, -0.226973, 0.972389, -0.054241, -34.0632, 4.23172, -36.0197 )
+transform = Transform( 0.578116, 0.424202, 0.697018, 0.102973, 0.809477, -0.578051, -0.80943, 0.405955, 0.42429, -20.3864, 64.6842, -45.8645 )
 bone_name = "mixamorig_right_hand"
 
 [node name="Mace00_mesh" parent="Armature/Skeleton/BoneAttachment" index="0" instance=ExtResource( 2 )]
 transform = Transform( 0.567189, 1.87066, -0.423009, -1.91318, 0.520982, -0.261361, -0.134269, 0.478767, 1.9372, -4.21638, 10.4414, 2.72012 )
+visible = false
+
+[node name="BoneAttachment2" type="BoneAttachment" parent="Armature/Skeleton" index="5"]
+transform = Transform( 0.198435, -0.480689, -0.854144, -0.338468, 0.784252, -0.519989, 0.919816, 0.392285, -0.00707493, 13.6147, 41.0795, -26.7773 )
+bone_name = "mixamorig_left_hand"
+
+[node name="Bow00_mesh" parent="Armature/Skeleton/BoneAttachment2" index="0" instance=ExtResource( 3 )]
+transform = Transform( 0.0817395, 2.46188, 0.427164, -0.656025, -0.391254, 2.38045, 2.41101, -0.189924, 0.633229, -57.2778, 8.03529, 3.01204 )

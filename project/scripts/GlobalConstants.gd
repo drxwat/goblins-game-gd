@@ -69,8 +69,9 @@ const WEAPON_META = {
 		]
 	},
 	WEAPON.BOW: {
-		"MIN": 0,
-		"MAX": 0,
+		"IS_LEFT_HANDED": true,
+		"MIN": 3,
+		"MAX": 7,
 		"IS_RANGE": true,
 		"EFFECTS": [
 			[EFFECTS.HIT_CHANCE, -0.10]

@@ -20,10 +20,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.8 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.230514 )
 
 [node name="RightHandAttachment" parent="Gfx/Armature/Skeleton" index="4"]
-transform = Transform( 0.218128, 0.104674, 0.97029, 0.949834, 0.205568, -0.235706, -0.224133, 0.973029, -0.0545827, -34.2981, 3.90129, -36.0334 )
+transform = Transform( 0.607568, 0.0620407, 0.791841, 0.743837, 0.305135, -0.594642, -0.27851, 0.950286, 0.139242, -22.5204, 38.4394, -30.4923 )
 
 [node name="LeftHandAttachment" parent="Gfx/Armature/Skeleton" index="5"]
-transform = Transform( 0.934744, -0.151487, -0.321409, -0.169235, 0.605562, -0.777595, 0.312428, 0.781247, 0.540409, 14.298, 45.0611, -38.0051 )
+transform = Transform( 0.294143, -0.0850616, -0.951968, -0.925447, 0.223516, -0.305921, 0.238802, 0.970981, -0.0129742, 27.2097, 25.7005, -28.7948 )
 
 [node name="AnimationTree" parent="Gfx" index="2"]
 parameters/Actions/playback = SubResource( 1 )
@@ -33,6 +33,6 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.74
 shape = SubResource( 2 )
 
 [node name="Healthbar3D" parent="." index="5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51981, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96686, 0 )
 
 [editable path="Gfx"]

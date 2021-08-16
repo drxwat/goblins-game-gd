@@ -7,19 +7,19 @@
 
 [node name="peasant-1-gfx" instance=ExtResource( 1 )]
 
-[node name="Skeleton" parent="Armature" index="0"]
-bones/10/bound_children = [ NodePath("LeftHandAttachment") ]
-bones/26/bound_children = [ NodePath("RightHandAttachment") ]
+[node name="peasant_5" parent="Armature/Skeleton" index="0"]
+layers = 524288
 
 [node name="LeftHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="1"]
-transform = Transform( 0.77029, 0.321026, -0.550996, -0.576861, 0.719085, -0.38749, 0.271819, 0.616327, 0.739091, 29.1059, 18.2485, -98.3486 )
+transform = Transform( 0.58556, 0.275114, -0.762516, -0.597179, 0.782501, -0.176268, 0.548176, 0.558574, 0.622493, 19.4461, 42.0918, -97.5314 )
 bone_name = "mixamorig_LeftHand"
 
 [node name="RightHandAttachment" type="BoneAttachment" parent="Armature/Skeleton" index="2"]
-transform = Transform( -0.314801, -0.266357, 0.911017, 0.913984, 0.1738, 0.366641, -0.255992, 0.948076, 0.188734, -28.9031, -19.0114, -96.2713 )
+transform = Transform( -0.9033, -0.414377, -0.111088, 0.243102, -0.707761, 0.663306, -0.353482, 0.572159, 0.740057, -19.9178, -35.3859, -98.0268 )
 bone_name = "mixamorig_RightHand"
 
 [node name="AnimationTree" parent="." index="2" instance=ExtResource( 2 )]
+active = true
 parameters/Actions/playback = SubResource( 1 )
 
 [node name="Tween" type="Tween" parent="." index="3"]
