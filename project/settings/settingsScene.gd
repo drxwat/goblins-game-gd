@@ -49,6 +49,7 @@ func remove_control(Bind:Array)->void:
 	SettingsControls.ActionControls[Name].remove(index)
 	InputMap.action_erase_event(Name, event)
 	print("remove control = ", event)
+	node.queue_free()
 
 func add_control(action)->void:
 	get_focus_owner().release_focus()

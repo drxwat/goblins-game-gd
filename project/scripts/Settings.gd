@@ -24,9 +24,16 @@ func load_settings()->bool:
 		print("error code open file = ", configFileLoad)
 		return false
 	#load input data
-	var load_config_data_input = configFile.get_section_keys(INPUT_SECTION_KEY)
-	SettingsControls.set_input_data(load_config_data_input)
-	SettingsControls.default_controls()
+	var load_config_data_input = {}
+	var load_config_data_inputs = configFile.get_section_keys(INPUT_SECTION_KEY)
+	for config_input in load_config_data_inputs:
+		var load_config_input = configFile.get_value(INPUT_SECTION_KEY, config_input, false)
+		if load_config_input:
+			load_config_data_input[config_input] = load_config_input
+	if load_config_data_input:
+		SettingsControls.set_input_data(load_config_data_input)
+	else:
+		SettingsControls.default_controls()
 	return true
 	
 func save_settings_resource() -> void:
