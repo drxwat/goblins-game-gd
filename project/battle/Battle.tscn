@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://battle/tactical_map/tactical_map.tscn" type="PackedScene" id=1]
 [ext_resource path="res://battle/scripts/Battle.gd" type="Script" id=2]
 [ext_resource path="res://battle/CameraSpot/CameraSpot.tscn" type="PackedScene" id=3]
 [ext_resource path="res://battle/UI/BattleUI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://battle/camera/RTS3DCamera.tscn" type="PackedScene" id=5]
 [ext_resource path="res://battle/scene_objects/MouseHover/MouseHover.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/battle/images/sky.jpg" type="Texture" id=10]
 
@@ -43,9 +42,6 @@ environment = SubResource( 2 )
 
 [node name="MouseHover" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
-
-[node name="Camera" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 4.14993, 6.79355, 26.1493 )
 
 [node name="TracePath" type="Spatial" parent="."]
 
