@@ -39,8 +39,10 @@ func generate_map(
 	_map_height=WorldMap.map_height
 ) -> void:
 	_generate_soil(_map_widht, _map_height)
-	_generate_forest(_map_widht, _map_height)
 	_generate_settlements(_map_widht, _map_height)
+	_generate_roads()
+	_generate_forest(_map_widht, _map_height)
+	
 
 
 func _generate_soil(_map_widht, _map_height) -> void:
@@ -53,24 +55,33 @@ func _generate_soil(_map_widht, _map_height) -> void:
 				_cell,
 				WorldMap.GENERAL_TILESET.GRASS
 			)
+			not_forest_cells.append(_cell)
 
 
 func _generate_forest(_map_widht, _map_height) -> void:
 	var _cell: Vector2
 	var n
 	
+	not_forest_cells.clear()
+	
 	for x in _map_widht:
 		for y in _map_height:
 			n = noise.get_noise_2d(x, y)
 			_cell = offset_to_origin(x,y)
-			if n >0:
-				if (randi() % 100) < 70:
-					forest.set_cellv(
-						_cell,
-						_get_random_tree()
-					)
-				else:
-					not_forest_cells.append(_cell)
+			if (n >0 and
+				is_empty_cell(_cell)
+			):
+				forest.set_cellv(
+					_cell,
+					_get_random_tree()
+				)
+#				if (randi() % 100) < 70:
+#					forest.set_cellv(
+#						_cell,
+#						_get_random_tree()
+#					)
+#				else:
+#					not_forest_cells.append(_cell)
 			else:
 				not_forest_cells.append(_cell)
 				
@@ -108,21 +119,41 @@ func _generate_settlements(_map_widht, _map_height) -> void:
 		
 		if (is_empty_cell(cell) and
 			is_empty_cell(Vector2(cell.x, cell.y-1)) and
-			is_soil(Vector2(cell.x, cell.y-1))
+			is_soil(Vector2(cell.x, cell.y-1)) and
+			_check_settlement_distance(cell)
 		):
 			settlements.set_cellv(
 				cell,
 				WorldMap.SETTLEMENTS.CITY
 			)
 			number_existing_cities += 1
-	
+
+
+func _generate_roads():
 	_init_astar()
-	set_obstacles(forest)
+#	set_obstacles(forest)
 	set_obstacles(settlements)
 	_make_path_for_settlements()
 	_create_roads()
+
+
+func _check_settlement_distance(_cell: Vector2) -> bool:
+	var result: bool = false
 	
+	var settlements_cells: Array = settlements.get_used_cells()
+	if settlements_cells.size() == 0:
+		print("first")
+		result = true
+	else:
+		for cell in settlements_cells:
+			if _cell.distance_to(cell) >= 14:
+				result = true
+			else:
+				result = false
+				return result
 	
+	return result
+
 
 func _init_astar() -> void:
 	var soil_cells = soil.get_used_cells()
@@ -217,7 +248,10 @@ func _create_roads() -> void:
 func is_empty_cell(_cell) -> bool:
 	var result: bool = false
 	
-	if (not is_forest(_cell)) and (not is_settlements(_cell)):
+	if ( (not is_forest(_cell)) and
+		(not is_settlements(_cell)) and
+		not is_road(_cell)
+	):
 		result = true
 	
 	return result
@@ -247,6 +281,15 @@ func is_settlements(_cell) -> bool:
 		result = true
 	else:
 		result = false
+	
+	return result
+
+
+func is_road(_cell) -> bool:
+	var result: bool = false
+	
+	if road.get_cellv(_cell) != road.INVALID_CELL:
+		result = true
 	
 	return result
 
