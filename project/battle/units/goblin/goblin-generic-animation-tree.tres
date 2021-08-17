@@ -1,24 +1,24 @@
 [gd_resource type="AnimationNodeBlendTree" load_steps=15 format=2]
 
-[sub_resource type="AnimationNodeAnimation" id=13]
+[sub_resource type="AnimationNodeAnimation" id=1]
 animation = "bow-shot"
 
-[sub_resource type="AnimationNodeAnimation" id=14]
+[sub_resource type="AnimationNodeAnimation" id=2]
 animation = "bow-take-aim"
 
-[sub_resource type="AnimationNodeAnimation" id=2]
+[sub_resource type="AnimationNodeAnimation" id=3]
 animation = "death"
 
-[sub_resource type="AnimationNodeAnimation" id=3]
+[sub_resource type="AnimationNodeAnimation" id=4]
 animation = "idle-loop"
 
-[sub_resource type="AnimationNodeAnimation" id=4]
+[sub_resource type="AnimationNodeAnimation" id=5]
 animation = "react"
 
-[sub_resource type="AnimationNodeAnimation" id=5]
+[sub_resource type="AnimationNodeAnimation" id=6]
 animation = "slash"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=6]
+[sub_resource type="AnimationNodeStateMachineTransition" id=7]
 switch_mode = 2
 auto_advance = true
 xfade_time = 0.2
@@ -30,41 +30,41 @@ xfade_time = 0.2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id=9]
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=15]
+[sub_resource type="AnimationNodeStateMachineTransition" id=10]
 switch_mode = 2
 auto_advance = true
 
-[sub_resource type="AnimationNodeStateMachineTransition" id=16]
+[sub_resource type="AnimationNodeStateMachineTransition" id=11]
 switch_mode = 2
 auto_advance = true
 
-[sub_resource type="AnimationNodeStateMachine" id=10]
-states/bow-shot/node = SubResource( 13 )
+[sub_resource type="AnimationNodeStateMachine" id=12]
+states/bow-shot/node = SubResource( 1 )
 states/bow-shot/position = Vector2( -254.617, -7.844 )
-states/bow-take-aim/node = SubResource( 14 )
+states/bow-take-aim/node = SubResource( 2 )
 states/bow-take-aim/position = Vector2( -14.617, -16.844 )
-states/death/node = SubResource( 2 )
+states/death/node = SubResource( 3 )
 states/death/position = Vector2( -380.617, 260.156 )
-states/idle-loop/node = SubResource( 3 )
+states/idle-loop/node = SubResource( 4 )
 states/idle-loop/position = Vector2( -435.617, 77 )
-states/react/node = SubResource( 4 )
+states/react/node = SubResource( 5 )
 states/react/position = Vector2( -254.617, 77 )
-states/slash/node = SubResource( 5 )
+states/slash/node = SubResource( 6 )
 states/slash/position = Vector2( -280.617, 182 )
-transitions = [ "slash", "idle-loop", SubResource( 6 ), "react", "idle-loop", SubResource( 8 ), "idle-loop", "death", SubResource( 9 ), "bow-take-aim", "bow-shot", SubResource( 15 ), "bow-shot", "idle-loop", SubResource( 16 ) ]
+transitions = [ "slash", "idle-loop", SubResource( 7 ), "react", "idle-loop", SubResource( 8 ), "idle-loop", "death", SubResource( 9 ), "bow-take-aim", "bow-shot", SubResource( 10 ), "bow-shot", "idle-loop", SubResource( 11 ) ]
 graph_offset = Vector2( -821.617, -37.844 )
 
-[sub_resource type="AnimationNodeBlend2" id=11]
+[sub_resource type="AnimationNodeBlend2" id=13]
 
-[sub_resource type="AnimationNodeAnimation" id=12]
+[sub_resource type="AnimationNodeAnimation" id=14]
 animation = "run-loop"
 
 [resource]
-nodes/Actions/node = SubResource( 10 )
+nodes/Actions/node = SubResource( 12 )
 nodes/Actions/position = Vector2( 400, 60 )
-nodes/Locomotion/node = SubResource( 11 )
+nodes/Locomotion/node = SubResource( 13 )
 nodes/Locomotion/position = Vector2( 660, 220 )
-nodes/Run/node = SubResource( 12 )
+nodes/Run/node = SubResource( 14 )
 nodes/Run/position = Vector2( 360, 380 )
 nodes/output/position = Vector2( 920, 220 )
 node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "Actions", "Locomotion", 1, "Run" ]

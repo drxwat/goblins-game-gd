@@ -5,7 +5,7 @@ const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
 
-onready var camera := $Camera
+onready var camera := $CameraSpot/Camera
 onready var tacticalMap := $TacticalMap
 onready var mouse_hover := $MouseHover
 onready var trace_path := $TracePath
