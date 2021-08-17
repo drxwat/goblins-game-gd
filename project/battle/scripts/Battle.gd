@@ -5,7 +5,7 @@ const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
 
-onready var camera := $Camera
+onready var camera := $CameraSpot/Camera
 onready var tacticalMap := $TacticalMap
 onready var mouse_hover := $MouseHover
 onready var trace_path := $TracePath
@@ -59,6 +59,7 @@ func _ready():
 		units.push_back(team1[unit_id])
 	battleUI.set_player_units(units)
 	battleUI.connect("focus_unit", self, "on_focus_unit")
+	unit_focus(team1[1])
 
 
 func on_focus_unit(unit: BattleUnit):
@@ -169,8 +170,8 @@ func get_first_live_unit():
 
 func unit_focus(unit: BattleUnit):
 	var target3d = unit.global_transform.origin
-	var target2d = Vector2(target3d.x, target3d.z)
-	camera.focus_to(target2d)
+#	var target2d = Vector2(target3d.x, target3d.z)
+	$CameraSpot.focus_to(target3d)
 
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
