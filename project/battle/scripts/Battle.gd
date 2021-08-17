@@ -59,6 +59,7 @@ func _ready():
 		units.push_back(team1[unit_id])
 	battleUI.set_player_units(units)
 	battleUI.connect("focus_unit", self, "on_focus_unit")
+	unit_focus(team1[1])
 
 
 func on_focus_unit(unit: BattleUnit):
@@ -169,8 +170,8 @@ func get_first_live_unit():
 
 func unit_focus(unit: BattleUnit):
 	var target3d = unit.global_transform.origin
-	var target2d = Vector2(target3d.x, target3d.z)
-	camera.focus_to(target2d)
+#	var target2d = Vector2(target3d.x, target3d.z)
+	$CameraSpot.focus_to(target3d)
 
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
