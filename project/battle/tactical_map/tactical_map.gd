@@ -37,8 +37,14 @@ enum ITEM_VEGETATION {
 	MUSHROOM_4
 }
 
-var map_height: int = 70
 var map_widht: int = 70
+var map_height: int = 70
+
+var cell_size: Vector2 = Vector2(2, 2)
+
+var amount_blade_in_cell: int = 40
+
+onready var grass: Spatial = $Grass
 
 onready var soil: GridMap = $Soil
 onready var obstacles: GridMap = $Obstacles
@@ -53,7 +59,7 @@ var terrain_obj := {} # tracking object types
 func _ready():
 	randomize()
 
-func init_map():
+func init_map() -> void:
 	$VBoxContainer.hide()
 	$Camera.hide()
 	
@@ -61,14 +67,18 @@ func init_map():
 	_init_astar()
 
 
-func generate_map():
+func generate_map() -> void:
 	clear_map()
+	
 	var noiseMapGenerator = TacticalMapGenerator.new(self,
 		soil, obstacles, vegetation)
 	noiseMapGenerator.generate_map()
+	
+	var grass_cells = get_global_coord_used_grass_cells()
+	grass.generate(grass_cells, cell_size, amount_blade_in_cell)
 
 
-func clear_map():
+func clear_map() -> void:
 	soil.clear()
 	obstacles.clear()
 	vegetation.clear()
@@ -76,6 +86,34 @@ func clear_map():
 
 func _on_GenButton_pressed():
 	generate_map()
+
+
+func is_grass_soil(_global_v: Vector3) -> bool:
+	var result: bool = false
+	
+	var cell = soil.world_to_map(_global_v)
+	if (cell in soil.get_used_cells() and
+	soil.get_cell_item(cell.x, cell.y, cell.z) == ITEM_SOIL.GRASS):
+		result = true
+	
+	return result
+
+
+func get_global_coord_used_grass_cells():
+	var used_cells: Array = soil.get_used_cells()
+	var global_coord_used_grass_cells: Array
+	
+	var item: int
+	var global_coord_item: Vector3
+	
+	for cell in used_cells:
+		item = soil.get_cell_item(cell.x, cell.y, cell.z)
+		if item == ITEM_SOIL.GRASS:
+			global_coord_item = soil.map_to_world(cell.x, cell.y, cell.z)
+			global_coord_used_grass_cells.append(global_coord_item)
+	
+	return global_coord_used_grass_cells
+
 
 ########
 

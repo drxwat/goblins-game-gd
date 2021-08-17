@@ -27,27 +27,32 @@ _global_script_classes=[ {
 "base": "Reference",
 "class": "CitiesManager",
 "language": "GDScript",
-"path": "res://global_map/scripts/CitiesManager.gd"
+"path": "res://world/scripts/CitiesManager.gd"
 }, {
 "base": "Reference",
 "class": "City",
 "language": "GDScript",
-"path": "res://global_map/scripts/City.gd"
+"path": "res://world/scripts/City.gd"
 }, {
-"base": "Unit",
-"class": "CityPatrol",
+"base": "Enemy",
+"class": "CityGuard",
 "language": "GDScript",
-"path": "res://global_map/units/city_patrol/CityPatrol.gd"
+"path": "res://world/units/city_guard/CityGuard.gd"
 }, {
-"base": "Unit",
+"base": "Enemy",
+"class": "CityTraider",
+"language": "GDScript",
+"path": "res://world/units/city_traider/CityTraider.gd"
+}, {
+"base": "Troop",
 "class": "Enemy",
 "language": "GDScript",
-"path": "res://global_map/units/enemy_old/enemy.gd"
+"path": "res://world/units/enemy/enemy.gd"
 }, {
 "base": "Node2D",
-"class": "GlobalTerrainTileMap",
+"class": "GlobalTileMap",
 "language": "GDScript",
-"path": "res://scripts/tile_map.gd"
+"path": "res://world/map/GlobalTileMap.gd"
 }, {
 "base": "Reference",
 "class": "GlobalUnit",
@@ -75,9 +80,14 @@ _global_script_classes=[ {
 "path": "res://battle/scripts/TerrainGridMap.gd"
 }, {
 "base": "Node2D",
-"class": "Unit",
+"class": "Troop",
 "language": "GDScript",
-"path": "res://global_map/units/global_map_unit/unit.gd"
+"path": "res://world/units/global_map_unit/troop.gd"
+}, {
+"base": "Reference",
+"class": "WorldMapGenerator",
+"language": "GDScript",
+"path": "res://world/world_map/scripts/world_map_generator.gd"
 } ]
 _global_script_class_icons={
 "BattleAI": "",
@@ -85,15 +95,17 @@ _global_script_class_icons={
 "CameraController": "",
 "CitiesManager": "",
 "City": "",
-"CityPatrol": "",
+"CityGuard": "",
+"CityTraider": "",
 "Enemy": "",
-"GlobalTerrainTileMap": "",
+"GlobalTileMap": "",
 "GlobalUnit": "",
 "NameGenerator": "",
 "PathDot": "",
 "TacticalMapGenerator": "",
 "TerrainGridMap": "",
-"Unit": ""
+"Troop": "",
+"WorldMapGenerator": ""
 }
 
 [application]
@@ -110,7 +122,6 @@ FullscreenOffOn="*res://scripts/fullscreenOffOn.gd"
 
 [display]
 
-window/size/fullscreen=true
 window/stretch/mode="2d"
 window/stretch/aspect="expand"
 
@@ -1185,6 +1196,16 @@ F11={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777254,"unicode":0,"echo":false,"script":null)
  ]
 }
+ScrollUp={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":4,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
+ScrollDown={
+"deadzone": 0.5,
+"events": [ Object(InputEventMouseButton,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"button_mask":0,"position":Vector2( 0, 0 ),"global_position":Vector2( 0, 0 ),"factor":1.0,"button_index":5,"pressed":false,"doubleclick":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -1192,4 +1213,5 @@ F11={
 
 [rendering]
 
+threads/thread_model=2
 environment/default_environment="res://default_env.tres"

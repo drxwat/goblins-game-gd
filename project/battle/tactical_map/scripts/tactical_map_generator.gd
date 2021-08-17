@@ -1,6 +1,13 @@
 class_name TacticalMapGenerator
 extends Reference
 
+const STONE_CHANCE = 0.004
+const OAK_TREE_3_CHANCE = 0.002
+const OAK_TREE_2_CHANCE = 0.006
+const OAK_TREE_1_CHANCE = 0.009
+const DEAD_OAK_CHANCE = 0.001
+const DEAD_TREE_CHANCE = 0.004
+const DEAD_SPRUCE_2_CHANCE = 0.005
 
 var TacticalMap: Spatial
 var noise: OpenSimplexNoise
@@ -27,42 +34,55 @@ func _init(_tactical_map, _soil, _obstacles, _vegetation):
 func generate_map(
 		_map_widht=TacticalMap.map_widht,
 		_map_height=TacticalMap.map_height
-	):
+	) -> void:
 	var n: float
+	var amount_grass_cells: int = 0
 	
 	for x in _map_widht:
 		for y in _map_height:
 			n = noise.get_noise_2d(x, y)
 			var cell = offset_to_origin(x,y)
-			_noise_parsing(cell, n)
+			var items = _noise_parsing(cell, n)
+			
+			if items.soil == TacticalMap.ITEM_SOIL.GRASS:
+				amount_grass_cells += 1
+	
+	set_meta("_amount_grass_cells", amount_grass_cells)
 
-func _noise_parsing(_cell: Array, _n):
+
+func get_amount_grass_cells() -> int:
+	return get_meta("_amount_grass_cells")
+
+
+func _noise_parsing(_cell: Array, _n) -> Dictionary:
+	var items: Dictionary
+	
 	if _n >= 0.0:
-		soil.set_cell_item(_cell[0], 0, _cell[1],
-			TacticalMap.ITEM_SOIL.GRASS)
+		items["soil"] = TacticalMap.ITEM_SOIL.GRASS
+		soil.set_cell_item(_cell[0], 0, _cell[1], items["soil"])
 		
 		var r = randf()
-		if r < 0.002:
-			obstacles.set_cell_item(_cell[0], 0, _cell[1],
-				TacticalMap.ITEM_OBSTACLES.OAK_TREE_3)
-		elif r < 0.006:
+		if r < OAK_TREE_3_CHANCE:
+			items["obstacles"] = TacticalMap.ITEM_OBSTACLES.OAK_TREE_3
+			obstacles.set_cell_item(_cell[0], 0, _cell[1], items["obstacles"])
+		elif r < OAK_TREE_2_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.OAK_TREE_1)
-		elif r < 0.009:
+		elif r < OAK_TREE_1_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.OAK_TREE_2)
 		
 	else:
-		soil.set_cell_item(_cell[0], 0, _cell[1],
-			TacticalMap.ITEM_SOIL.DIRT)
+		items["soil"] = TacticalMap.ITEM_SOIL.DIRT
+		soil.set_cell_item(_cell[0], 0, _cell[1], items["soil"])
 		
 		var r3 = randf()
-		if r3 < 0.004:
+		if r3 < STONE_CHANCE:
 			obstacles.set_cell_item(_cell[0]+1, 0, _cell[1],
 						TacticalMap.ITEM_OBSTACLES.STONE_3)
 		
 		var r = randf()
-		if r < 0.001:
+		if r < DEAD_OAK_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.DEAD_OAK_3)
 			var r2 = randi() % 2
@@ -73,7 +93,7 @@ func _noise_parsing(_cell: Array, _n):
 				2:
 					obstacles.set_cell_item(_cell[0], 0, _cell[1]-1,
 						TacticalMap.ITEM_OBSTACLES.STONE_2)
-		elif r < 0.004:
+		elif r < DEAD_TREE_CHANCE:
 			var r1 = randi() % 2
 			match r1:
 				0:
@@ -82,9 +102,11 @@ func _noise_parsing(_cell: Array, _n):
 				1:
 					obstacles.set_cell_item(_cell[0], 0, _cell[1],
 						TacticalMap.ITEM_OBSTACLES.DEAD_OAK_1)
-		elif r < 0.005:
+		elif r < DEAD_SPRUCE_2_CHANCE:
 			obstacles.set_cell_item(_cell[0], 0, _cell[1],
 				TacticalMap.ITEM_OBSTACLES.DEAD_SPRUCE_2)
+	
+	return items
 
 
 func offset_to_origin(x: int, y: int) -> Array:

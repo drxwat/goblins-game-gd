@@ -21,9 +21,11 @@ const SPEED  := 300
 
 const LOCOMOTION_ANIMATION = "parameters/Locomotion/blend_amount"
 const ACTIONS_ANIMATION = "parameters/Actions/playback"
-const MELE_ATTACK_ANIMATION_NAME = "slash"
+const MELEE_ATTACK_ANIMATION_NAME = "slash"
 const TAKE_DAMAGE_ANIMATION_NAME = "react"
 const DIE_ANIMATION_NAME = "death"
+const RANGE_TAKE_AIM_ANIMATION_NAME = "bow-take-aim"
+const RANGE_SHOT_ANIMATION_NAME =  "bow-shot"
 const ANIMATION_TRANSITION = 0.4
 const ROTATION_TRANSITION = 0.1
 
@@ -62,20 +64,22 @@ var actions_state_machine
 var couter_attacks_made := 0
 
 
-export(GlobalConstants.WEAPON) var right_hand = GlobalConstants.WEAPON.NONE
-export (GlobalConstants.WEAPON) var left_hand = GlobalConstants.WEAPON.NONE
+export(GlobalConstants.WEAPON) var weapon = GlobalConstants.WEAPON.NONE
 export (GlobalConstants.BATTLE_TEAM) var team
 
 func _ready():
 	rng.randomize()
 	var weapon_meta = _get_weapon_meta()
-	if right_hand != GlobalConstants.WEAPON.NONE and weapon_meta.has(right_hand):
-		var w_meta = weapon_meta.get(right_hand)
+	if weapon != GlobalConstants.WEAPON.NONE and weapon_meta.has(weapon):
+		var w_meta = weapon_meta.get(weapon)
 		var w_mesh = w_meta.mesh_scene.instance()
 		w_mesh.scale = w_meta.scale
 		w_mesh.translation = w_meta.translation
 		w_mesh.rotation_degrees = w_meta.rotation_degrees
-		$Gfx/Armature/Skeleton/RightHandAttachment.add_child(w_mesh)
+		if GlobalConstants.WEAPON_META[weapon].get("IS_LEFT_HANDED"):
+			$Gfx/Armature/Skeleton/LeftHandAttachment.add_child(w_mesh)
+		else:
+			$Gfx/Armature/Skeleton/RightHandAttachment.add_child(w_mesh)
 	actions_state_machine = animation_tree[ACTIONS_ANIMATION]
 	_play_animation("idle-loop")
 	healtbar.max_value = max_hp
@@ -115,7 +119,7 @@ func mele_attack(unit: BattleUnit):
 	var actions_amount = floor(move_points / (max_move_points / GlobalConstants.MOVE_AREAS))
 	for i in range(clamp(actions_amount + 1, 1, GlobalConstants.MOVE_AREAS)):	
 		var with_counter_attack = unit.has_counter_attack
-		_play_action_animation(MELE_ATTACK_ANIMATION_NAME)
+		_play_action_animation(MELEE_ATTACK_ANIMATION_NAME)
 		yield(self, "on_attack_end")
 		attack(unit, unit.has_counter_attack)
 		yield(unit, "on_take_damage_end")
@@ -128,9 +132,16 @@ func mele_attack(unit: BattleUnit):
 	move_points = 0
 	emit_signal("on_turn_end")
 
+func range_attack(unit: BattleUnit):
+	_rotate_unit(global_transform.origin.direction_to(unit.global_transform.origin))
+	var actions_amount = floor(move_points / (max_move_points / GlobalConstants.MOVE_AREAS))
+	for i in range(clamp(actions_amount + 1, 1, GlobalConstants.MOVE_AREAS)):
+		_play_action_animation(RANGE_TAKE_AIM_ANIMATION_NAME)
+		yield(self, "on_attack_end")
+
 func counter_attack(unit: BattleUnit):
 	couter_attacks_made += 1
-	_play_action_animation(MELE_ATTACK_ANIMATION_NAME)
+	_play_action_animation(MELEE_ATTACK_ANIMATION_NAME)
 	yield(self, "on_attack_end")
 	attack(unit, false)
 	yield(unit, "on_take_damage_end")
@@ -142,9 +153,7 @@ func counter_attack(unit: BattleUnit):
 
 func get_has_counter_attack():
 	return couter_attacks_made < MAX_COUNTER_ATTACKS
-	
-func range_attack(unit: BattleUnit):
-	pass
+
 
 func take_damage(from: BattleUnit, damage: int, with_counter_attack = true):
 	_rotate_unit(global_transform.origin.direction_to(from.global_transform.origin))
@@ -169,7 +178,6 @@ func die():
 	emit_signal("on_take_damage_end")
 	_play_animation(DIE_ANIMATION_NAME)
 	emit_signal("on_dead")
-	
 
 func is_hits_target(victim: BattleUnit) -> bool:
 	var attach_def_diff = global_unit.get_attack() - victim.global_unit.get_defence()
@@ -182,6 +190,9 @@ func calculate_damage(victim: BattleUnit):
 	var damage = rng.randi_range(damage_range[0], damage_range[1])
 	print("Damage ", damage)
 	return damage
+
+func has_range_attack() -> bool:
+	return GlobalConstants.WEAPON_META[weapon].get("IS_RANGE")
 
 func get_attack_effects():
 	return []
@@ -222,13 +233,21 @@ func _play_action_animation(animation_name):
 	$AnimationPoller.start()
 
 func _check_animation_end():
-	if actions_state_machine.get_current_node() != current_animation:
-		if current_animation == MELE_ATTACK_ANIMATION_NAME:
+	var state_machine_animation = actions_state_machine.get_current_node()
+	if state_machine_animation != current_animation:
+		print(current_animation)
+		if current_animation == MELEE_ATTACK_ANIMATION_NAME:
+			current_animation = null
+			emit_signal("on_attack_end")
+		if current_animation == RANGE_TAKE_AIM_ANIMATION_NAME and \
+		not(state_machine_animation in [RANGE_TAKE_AIM_ANIMATION_NAME, RANGE_SHOT_ANIMATION_NAME]):
 			current_animation = null
 			emit_signal("on_attack_end")
 		elif current_animation == TAKE_DAMAGE_ANIMATION_NAME:
 			current_animation = null
 			emit_signal("on_take_damage_end")
+		else:
+			$AnimationPoller.start()
 	else:
 		$AnimationPoller.start()
 

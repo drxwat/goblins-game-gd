@@ -2,12 +2,13 @@ extends Node
 
 var id_seq := 0 setget , get_new_id
 
-const DEBUG_PATH = true
+const DEBUG_PATH = false
+const DEBUG_CITIES_ROUTES = true
 
 const MOVE_AREAS := 3.0 # Amount of move zones/actions of units
 
 
-enum RACE { GOBLIN }
+enum RACE { GOBLIN, HUMAN }
 
 enum STATS { ATTACK, DAMAGE, DEFENCE, HIT_POINTS, MOVE_POINTS }
 
@@ -17,9 +18,18 @@ const RACE_META = {
 	RACE.GOBLIN: {
 		"STATS": {
 			STATS.ATTACK: 6.0,
+			STATS.DEFENCE: 8.0,
+			STATS.DAMAGE: 5.0,
+			STATS.HIT_POINTS: 25.0,
+			STATS.MOVE_POINTS: 6.0
+		}
+	},
+	RACE.HUMAN: {
+		"STATS": {
+			STATS.ATTACK: 7.0,
 			STATS.DEFENCE: 5.0,
-			STATS.DAMAGE: 0.0,
-			STATS.HIT_POINTS: 15.0,
+			STATS.DAMAGE: 6.0,
+			STATS.HIT_POINTS: 30.0,
 			STATS.MOVE_POINTS: 6.0
 		}
 	}
@@ -59,8 +69,9 @@ const WEAPON_META = {
 		]
 	},
 	WEAPON.BOW: {
-		"MIN": 0,
-		"MAX": 0,
+		"IS_LEFT_HANDED": true,
+		"MIN": 3,
+		"MAX": 7,
 		"IS_RANGE": true,
 		"EFFECTS": [
 			[EFFECTS.HIT_CHANCE, -0.10]

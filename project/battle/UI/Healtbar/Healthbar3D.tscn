@@ -31,9 +31,9 @@ shadow_atlas_quad_2 = 0
 shadow_atlas_quad_3 = 0
 
 [node name="ProgressBar" type="ProgressBar" parent="Viewport"]
-margin_right = 4.0
-margin_bottom = 14.0
-rect_min_size = Vector2( 200, 25 )
+margin_right = 200.0
+margin_bottom = 15.0
+rect_min_size = Vector2( 200, 15 )
 custom_styles/fg = SubResource( 1 )
 custom_styles/bg = SubResource( 2 )
 value = 100.0

@@ -4,7 +4,7 @@
 [ext_resource path="res://battle/units/battle-unit/BattleUnit.tscn" type="PackedScene" id=2]
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.gd" type="Script" id=3]
 
-[sub_resource type="AnimationNodeStateMachinePlayback" id=3]
+[sub_resource type="AnimationNodeStateMachinePlayback" id=1]
 
 [sub_resource type="CapsuleShape" id=2]
 radius = 0.4
@@ -20,19 +20,19 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.8 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.230514 )
 
 [node name="RightHandAttachment" parent="Gfx/Armature/Skeleton" index="4"]
-transform = Transform( 0.216838, 0.104754, 0.970571, 0.949454, 0.208531, -0.234627, -0.226973, 0.972389, -0.054241, -34.0632, 4.23172, -36.0197 )
+transform = Transform( 0.607568, 0.0620407, 0.791841, 0.743837, 0.305135, -0.594642, -0.27851, 0.950286, 0.139242, -22.5204, 38.4394, -30.4923 )
 
 [node name="LeftHandAttachment" parent="Gfx/Armature/Skeleton" index="5"]
-transform = Transform( 0.932757, -0.11389, -0.342043, -0.178537, 0.678327, -0.712738, 0.313191, 0.725879, 0.612381, 14.7594, 44.6098, -37.8182 )
+transform = Transform( 0.294143, -0.0850616, -0.951968, -0.925447, 0.223516, -0.305921, 0.238802, 0.970981, -0.0129742, 27.2097, 25.7005, -28.7948 )
 
 [node name="AnimationTree" parent="Gfx" index="2"]
-parameters/Actions/playback = SubResource( 3 )
+parameters/Actions/playback = SubResource( 1 )
 
 [node name="CollisionShape" parent="." index="2"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.749062, 0 )
 shape = SubResource( 2 )
 
 [node name="Healthbar3D" parent="." index="5"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.51981, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.96686, 0 )
 
 [editable path="Gfx"]

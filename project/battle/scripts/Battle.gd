@@ -5,7 +5,7 @@ const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
 
-onready var camera := $Camera
+onready var camera := $CameraSpot/Camera
 onready var tacticalMap := $TacticalMap
 onready var mouse_hover := $MouseHover
 onready var trace_path := $TracePath
@@ -14,17 +14,17 @@ onready var battleAI: = BattleAI.new()
 
 
 var team1_units_meta = [
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.BOW, {}),
+	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {}),
 	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
 ]
 
 var team1_spawn_point = Vector3(1, 0, 19)
 
 var team2_units_meta = [
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.MACE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
+	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {}),
+	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {})
 ]
 var team2_spawn_point = Vector3(1, 0, 1)
 
@@ -59,6 +59,7 @@ func _ready():
 		units.push_back(team1[unit_id])
 	battleUI.set_player_units(units)
 	battleUI.connect("focus_unit", self, "on_focus_unit")
+	unit_focus(team1[1])
 
 
 func on_focus_unit(unit: BattleUnit):
@@ -169,8 +170,8 @@ func get_first_live_unit():
 
 func unit_focus(unit: BattleUnit):
 	var target3d = unit.global_transform.origin
-	var target2d = Vector2(target3d.x, target3d.z)
-	camera.focus_to(target2d)
+#	var target2d = Vector2(target3d.x, target3d.z)
+	$CameraSpot.focus_to(target3d)
 
 func _handle_left_mouse_click(event: InputEvent):
 	if not event is InputEventMouseButton:
@@ -204,8 +205,11 @@ func _handle_right_mouse_click(event: InputEvent):
 	if event.button_index != BUTTON_RIGHT or not event.pressed:
 		return
 	var m_position = _get_mouse_projected_position(event.position)
+	if selected_unit.has_range_attack() and hovered_enemy:
+		_handle_unit_range_attack(selected_unit, hovered_enemy)
+		return
 	if m_position and selected_unit:
-		_move_and_attack_unit(selected_unit, m_position)
+		_handle_unit_move(selected_unit, m_position)
 
 func _handle_mouse_move(event: InputEvent):
 	if not event is InputEventMouseMotion:
@@ -318,7 +322,7 @@ func _deselect_unit(unit: BattleUnit):
 	_clear_trace_path()
 	battleUI.units_avatarts[unit].btn.self_modulate = battleUI.units_avatarts[unit].DEFAULT_BG_COLOR
 
-func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
+func _handle_unit_move(unit: BattleUnit, pos: Vector3):
 	if unit.move_points <= 0:
 		return
 	var path = tacticalMap.get_map_path(unit.global_transform.origin, pos)
@@ -333,11 +337,14 @@ func _move_and_attack_unit(unit: BattleUnit, pos: Vector3):
 	elif hovered_enemy:
 		unit.mele_attack(hovered_enemy)
 
+func _handle_unit_range_attack(unit: BattleUnit, target: BattleUnit):
+	unit.range_attack(target)
+
 func _produce_unit(global_unit: GlobalUnit) -> BattleUnit:
 	var unit_scene = BattleConstants.RACES_SCENES[global_unit.race]
 	var unit = unit_scene.instance()
 	unit.global_unit = global_unit
-	unit.right_hand = global_unit.weapon # TODO: Initialize weapon inside BattleUnit
+	unit.weapon = global_unit.weapon # TODO: Initialize weapon inside BattleUnit
 	return unit
 
 func _spawn_unit(unit_id: int, unit: BattleUnit, parent_node: Node, pos: Vector3, rot: float):

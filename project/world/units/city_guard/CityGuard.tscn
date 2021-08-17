@@ -1,0 +1,8 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://world/units/enemy/Enemy.tscn" type="PackedScene" id=1]
+[ext_resource path="res://world/units/city_guard/CityGuard.gd" type="Script" id=2]
+
+[node name="CityGuard" instance=ExtResource( 1 )]
+script = ExtResource( 2 )
+base_speed = 300.0
