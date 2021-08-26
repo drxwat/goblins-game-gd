@@ -195,10 +195,13 @@ func set_obstacles(_obstacles) -> void:
 
 
 func _make_path_for_settlements() -> void:
-	var from = settlements.get_used_cells()[1]
-	var to = settlements.get_used_cells()[2]
+#	var from = settlements.get_used_cells()[1]
+#	var to = settlements.get_used_cells()[2]
 	
-	var a = settlements.get_used_cells()
+	var from: Vector2
+	var to: Vector2
+	
+	var a: Array = settlements.get_used_cells()
 	a.resize(2)
 	
 	for s in a:
@@ -206,7 +209,11 @@ func _make_path_for_settlements() -> void:
 			from = s1
 			to = s
 			
-			var path: PoolVector3Array = get_path_from_settlement_to_settlement(from, to)
+			from += Vector2(0, 1)
+			to += Vector2(0, 1)
+			
+			var path: PoolVector3Array
+			path = get_path_from_settlement_to_settlement(from, to)
 			
 			for p in path:
 				var points_i: Array = astar.get_points()
