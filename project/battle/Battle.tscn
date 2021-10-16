@@ -46,6 +46,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
 [node name="Camera" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 4.14993, 6.79355, 26.1493 )
+visible = false
 
 [node name="TracePath" type="Spatial" parent="."]
 
