@@ -92,11 +92,11 @@ func _get_random_tree() -> int:
 	var result: int
 	
 	if n < 9:
-		result = WorldMap.FOREST_TILESET.F3
-	elif n < 60:
+		result = WorldMap.FOREST_TILESET.F1
+	elif n < 15:
 		result = WorldMap.FOREST_TILESET.F2
 	else:
-		result = WorldMap.FOREST_TILESET.F1
+		result = WorldMap.FOREST_TILESET.F3
 	
 	return result
 
