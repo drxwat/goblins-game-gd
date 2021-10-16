@@ -10,6 +10,16 @@ enum GENERAL_TILESET {
 	BIG_TREE_YELLOW
 }
 
+enum SOIL_TILESET {
+	GRASS
+}
+
+enum FOREST_TILESET {
+	F1,
+	F2,
+	F3
+}
+
 enum SETTLEMENTS {
 	CITY
 }
