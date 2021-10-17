@@ -45,6 +45,12 @@ func _input(event: InputEvent):
 	if Input.is_action_pressed("middle_mouse")\
 	and event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * horz_rotation_speed * 0.01 * g_delta)
+	
+	if Input.is_action_pressed("middle_mouse")\
+	and event is InputEventMouseMotion:
+		$Gizmo.rotate_x(
+			-event.relative.y * horz_rotation_speed * 0.01 * g_delta
+		)
 
 	if	(Input.is_action_pressed("left")
 	or	Input.is_action_pressed("right")
