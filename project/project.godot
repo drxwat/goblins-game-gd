@@ -122,9 +122,9 @@ config/icon="res://assets/app-icon/icon-goblin.png"
 
 [autoload]
 
-GlobalConstants="*res://scripts/GlobalConstants.gd"
-BattleConstants="*res://battle/scripts/BattleConstants.gd"
-FullscreenOffOn="*res://scripts/fullscreenOffOn.gd"
+GlobalConstants="*res://scripts/autoloads/GlobalConstants.gd"
+BattleConstants="*res://battle/scripts/autoloads/BattleConstants.gd"
+FullscreenOffOn="*res://scripts/autoloads/fullscreenOffOn.gd"
 
 [display]
 
