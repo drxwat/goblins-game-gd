@@ -60,6 +60,8 @@ func _ready():
 	battleUI.set_player_units(units)
 	battleUI.connect("focus_unit", self, "on_focus_unit")
 	unit_focus(team1[1])
+	
+	$Soundtrack.play()
 
 
 func on_focus_unit(unit: BattleUnit):
