@@ -120,6 +120,10 @@ config/name="Godot-goblins"
 run/main_scene="res://main_menu/main_menu.tscn"
 config/icon="res://assets/app-icon/icon-goblin.png"
 
+[audio]
+
+default_bus_layout="res://assets/music/default_bus_layout.tres"
+
 [autoload]
 
 GlobalConstants="*res://scripts/autoloads/GlobalConstants.gd"

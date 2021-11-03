@@ -23,6 +23,8 @@ func _ready():
 	get_tree().connect("screen_resized", self, "_screen_resized")
 	_screen_resized()
 	$"Viewport/Spatial/GoblinBattleUnit".healtbar.visible = false
+	
+	$Soundtrack.play()
 
 
 func _screen_resized():
