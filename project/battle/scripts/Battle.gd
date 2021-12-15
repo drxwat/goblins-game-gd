@@ -1,9 +1,12 @@
 extends Spatial
+class_name Battle
 
 const RAY_LENGTH = 1000
 const MOUSE_HOVER_Y_OFFSET = Vector3(0, 0.05, 0)
 
 const path_dot_scene = preload("res://battle/terrain/path_dot/PathDot.tscn")
+
+export var is_auto_generated := false
 
 onready var camera := $CameraSpot/Gizmo/Camera
 onready var tacticalMap := $TacticalMap
@@ -43,7 +46,7 @@ var ai_turn = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	tacticalMap.init_map()
+	tacticalMap.init_map(is_auto_generated)
 	tacticalMap.set_obstacles()
 	if !tacticalMap.is_point_walkable(team1_spawn_point):
 		push_error("Team1 spawn point %s is not walkable" % team1_spawn_point)
@@ -60,8 +63,6 @@ func _ready():
 	battleUI.set_player_units(units)
 	battleUI.connect("focus_unit", self, "on_focus_unit")
 	unit_focus(team1[1])
-	
-	$Soundtrack.play()
 
 
 func on_focus_unit(unit: BattleUnit):

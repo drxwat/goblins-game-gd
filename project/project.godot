@@ -9,6 +9,11 @@
 config_version=4
 
 _global_script_classes=[ {
+"base": "Spatial",
+"class": "Battle",
+"language": "GDScript",
+"path": "res://battle/scripts/Battle.gd"
+}, {
 "base": "Reference",
 "class": "BattleAI",
 "language": "GDScript",
@@ -95,6 +100,7 @@ _global_script_classes=[ {
 "path": "res://world/world_map/scripts/world_map_generator.gd"
 } ]
 _global_script_class_icons={
+"Battle": "",
 "BattleAI": "",
 "BattleUnit": "",
 "CameraController": "",
