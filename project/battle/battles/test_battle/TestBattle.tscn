@@ -19,4 +19,8 @@ data = {
 "cells": PoolIntArray(  )
 }
 
+[node name="GIProbe" type="GIProbe" parent="." index="9"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -17.4277, 3.84686, 2.68849 )
+extents = Vector3( 61.7459, 7.48374, 42.4761 )
+
 [editable path="TacticalMap"]
