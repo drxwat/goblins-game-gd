@@ -59,11 +59,11 @@ var terrain_obj := {} # tracking object types
 func _ready():
 	randomize()
 
-func init_map() -> void:
+func init_map(auto_generate_map := false) -> void:
 	$VBoxContainer.hide()
-	$Camera.hide()
 	
-	generate_map()
+	if auto_generate_map:
+		generate_map()
 	_init_astar()
 
 
