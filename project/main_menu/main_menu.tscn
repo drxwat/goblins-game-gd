@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=2]
+[gd_scene load_steps=29 format=2]
 
 [ext_resource path="res://battle/units/goblin/goblin-battle-unit/GoblinBattleUnit.tscn" type="PackedScene" id=1]
 [ext_resource path="res://main_menu/noise.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/battle/terrain/models/trees/SpruceTreeLeaf.material" type="Material" id=7]
 [ext_resource path="res://assets/fonst/20219.ttf" type="DynamicFontData" id=8]
 [ext_resource path="res://main_menu/main_menu.gd" type="Script" id=9]
+[ext_resource path="res://assets/music/geek_tavern.ogg" type="AudioStream" id=10]
 
 [sub_resource type="ProceduralSky" id=1]
 
@@ -372,6 +373,10 @@ custom_styles/disabled = SubResource( 17 )
 custom_styles/normal = SubResource( 17 )
 text = "EXIT"
 flat = true
+
+[node name="Soundtrack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 10 )
+bus = "Menu_soundtrack"
 
 [connection signal="pressed" from="MenuUI/Panel/VBoxContainer/Button_Game" to="." method="_on_Button_Game_pressed"]
 [connection signal="pressed" from="MenuUI/Panel/VBoxContainer/Button_Settings" to="." method="_on_Button_Settings_pressed"]

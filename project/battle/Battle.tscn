@@ -4,7 +4,7 @@
 [ext_resource path="res://battle/scripts/Battle.gd" type="Script" id=2]
 [ext_resource path="res://battle/CameraSpot/CameraSpot.tscn" type="PackedScene" id=3]
 [ext_resource path="res://battle/UI/BattleUI.tscn" type="PackedScene" id=4]
-[ext_resource path="res://battle/camera/RTS3DCamera.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/music/goblin_battle.mp3" type="AudioStream" id=5]
 [ext_resource path="res://battle/scene_objects/MouseHover/MouseHover.tscn" type="PackedScene" id=6]
 [ext_resource path="res://assets/battle/images/sky.jpg" type="Texture" id=10]
 
@@ -44,9 +44,6 @@ environment = SubResource( 2 )
 [node name="MouseHover" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0 )
 
-[node name="Camera" parent="." instance=ExtResource( 5 )]
-transform = Transform( 1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 4.14993, 6.79355, 26.1493 )
-
 [node name="TracePath" type="Spatial" parent="."]
 
 [node name="DirectionalLight" type="DirectionalLight" parent="."]
@@ -57,5 +54,9 @@ directional_shadow_mode = 0
 directional_shadow_depth_range = 1
 
 [node name="CameraSpot" parent="." instance=ExtResource( 3 )]
+
+[node name="Soundtrack" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "Battle_soundtrack"
 
 [connection signal="next_turn_pressed" from="BattleUI" to="." method="end_turn"]

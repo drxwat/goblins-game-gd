@@ -53,7 +53,7 @@ func _generate_soil(_map_widht, _map_height) -> void:
 			_cell = offset_to_origin(x,y)
 			soil.set_cellv(
 				_cell,
-				WorldMap.GENERAL_TILESET.GRASS
+				WorldMap.SOIL_TILESET.GRASS
 			)
 			not_forest_cells.append(_cell)
 
@@ -92,11 +92,11 @@ func _get_random_tree() -> int:
 	var result: int
 	
 	if n < 9:
-		result = WorldMap.GENERAL_TILESET.BIG_TREE_YELLOW
-	elif n < 60:
-		result = WorldMap.GENERAL_TILESET.BIG_TREE_DARK
+		result = WorldMap.FOREST_TILESET.F1
+	elif n < 15:
+		result = WorldMap.FOREST_TILESET.F2
 	else:
-		result = WorldMap.GENERAL_TILESET.BIG_TREE_LIGHT
+		result = WorldMap.FOREST_TILESET.F3
 	
 	return result
 
