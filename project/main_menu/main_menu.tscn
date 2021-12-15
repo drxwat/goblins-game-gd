@@ -200,13 +200,13 @@ use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 8 )
 
-[sub_resource type="StyleBoxEmpty" id=17]
-
 [sub_resource type="DynamicFont" id=18]
 size = 32
 use_mipmaps = true
 use_filter = true
 font_data = ExtResource( 8 )
+
+[sub_resource type="StyleBoxEmpty" id=17]
 
 [node name="Menu" type="CanvasLayer"]
 script = ExtResource( 9 )
@@ -335,13 +335,13 @@ rect_min_size = Vector2( 0, 50 )
 margin_top = 312.0
 margin_right = 350.0
 margin_bottom = 345.0
+custom_colors/font_color_hover = Color( 1, 0.913725, 0, 1 )
+custom_fonts/font = SubResource( 18 )
 custom_styles/hover = SubResource( 17 )
 custom_styles/pressed = SubResource( 17 )
 custom_styles/focus = SubResource( 17 )
 custom_styles/disabled = SubResource( 17 )
 custom_styles/normal = SubResource( 17 )
-custom_fonts/font = SubResource( 18 )
-custom_colors/font_color_hover = Color( 1, 0.913725, 0, 1 )
 text = "GAME"
 flat = true
 
@@ -349,13 +349,13 @@ flat = true
 margin_top = 360.0
 margin_right = 350.0
 margin_bottom = 393.0
+custom_colors/font_color_hover = Color( 1, 0.913725, 0, 1 )
+custom_fonts/font = SubResource( 18 )
 custom_styles/hover = SubResource( 17 )
 custom_styles/pressed = SubResource( 17 )
 custom_styles/focus = SubResource( 17 )
 custom_styles/disabled = SubResource( 17 )
 custom_styles/normal = SubResource( 17 )
-custom_fonts/font = SubResource( 18 )
-custom_colors/font_color_hover = Color( 1, 0.913725, 0, 1 )
 text = "SETTINGS"
 flat = true
 
@@ -363,13 +363,13 @@ flat = true
 margin_top = 408.0
 margin_right = 350.0
 margin_bottom = 441.0
+custom_colors/font_color_hover = Color( 1, 0.913725, 0, 1 )
+custom_fonts/font = SubResource( 18 )
 custom_styles/hover = SubResource( 17 )
 custom_styles/pressed = SubResource( 17 )
 custom_styles/focus = SubResource( 17 )
 custom_styles/disabled = SubResource( 17 )
 custom_styles/normal = SubResource( 17 )
-custom_fonts/font = SubResource( 18 )
-custom_colors/font_color_hover = Color( 1, 0.913725, 0, 1 )
 text = "EXIT"
 flat = true
 
