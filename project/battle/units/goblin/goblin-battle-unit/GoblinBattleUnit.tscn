@@ -19,6 +19,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.8 )
 [node name="Gfx" parent="." index="1" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.230514 )
 
+[node name="Skeleton" parent="Gfx/Armature" index="0"]
+bones/10/bound_children = [ NodePath("LeftHandAttachment") ]
+bones/30/bound_children = [ NodePath("RightHandAttachment") ]
+
 [node name="RightHandAttachment" parent="Gfx/Armature/Skeleton" index="4"]
 transform = Transform( 0.607568, 0.0620407, 0.791841, 0.743837, 0.305135, -0.594642, -0.27851, 0.950286, 0.139242, -22.5204, 38.4394, -30.4923 )
 
