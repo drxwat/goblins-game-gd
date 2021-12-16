@@ -110,18 +110,19 @@ func set_path(path: PoolVector3Array) -> void:
 		path.resize(move_points)
 	_path = path
 	
-func attack(unit: BattleUnit, with_counter_attack: bool):
-	var damage = calculate_damage(unit) if is_hits_target(unit) else 0
+func hit_enemy(unit: BattleUnit, with_counter_attack: bool, with_weapon = true):
+	var damage = calculate_damage(unit, with_weapon) if is_hits_target(unit) else 0
 	unit.take_damage(self, damage, with_counter_attack)
+	
 
-func mele_attack(unit: BattleUnit):
+func melee_attack(unit: BattleUnit):
 	_rotate_unit(global_transform.origin.direction_to(unit.global_transform.origin))
 	var actions_amount = floor(move_points / (max_move_points / GlobalConstants.MOVE_AREAS))
 	for i in range(clamp(actions_amount + 1, 1, GlobalConstants.MOVE_AREAS)):	
 		var with_counter_attack = unit.has_counter_attack
 		_play_action_animation(MELEE_ATTACK_ANIMATION_NAME)
 		yield(self, "on_attack_end")
-		attack(unit, unit.has_counter_attack)
+		hit_enemy(unit, unit.has_counter_attack, false if has_range_attack() else true)
 		yield(unit, "on_take_damage_end")
 		if unit.is_dead:
 			break
@@ -138,12 +139,17 @@ func range_attack(unit: BattleUnit):
 	for i in range(clamp(actions_amount + 1, 1, GlobalConstants.MOVE_AREAS)):
 		_play_action_animation(RANGE_TAKE_AIM_ANIMATION_NAME)
 		yield(self, "on_attack_end")
+		hit_enemy(unit, false)
+		if unit.is_dead:
+			break
+	move_points = 0
+	emit_signal("on_turn_end")
 
 func counter_attack(unit: BattleUnit):
 	couter_attacks_made += 1
 	_play_action_animation(MELEE_ATTACK_ANIMATION_NAME)
 	yield(self, "on_attack_end")
-	attack(unit, false)
+	hit_enemy(unit, false)
 	yield(unit, "on_take_damage_end")
 	var move_point_penalty = max_move_points / COUTER_ATTACK_MAX_MOVE_PENALTY_DEVIDER
 	move_points -= move_point_penalty
@@ -185,14 +191,21 @@ func is_hits_target(victim: BattleUnit) -> bool:
 	var hit_chance = clamp(raw_hit_cance, MIN_HIT_CHANCE, MAX_HIT_CHANCE)
 	return rng.randf() < hit_chance
 
-func calculate_damage(victim: BattleUnit):
-	var damage_range = global_unit.get_damage_range()
-	var damage = rng.randi_range(damage_range[0], damage_range[1])
+func calculate_damage(victim: BattleUnit, with_weapon = true):
+	var damage: int
+	if with_weapon:
+		var damage_range = global_unit.get_damage_range()
+		damage = rng.randi_range(damage_range[0], damage_range[1])
+	else:
+		damage = global_unit.get_base_damage()
 	print("Damage ", damage)
 	return damage
 
 func has_range_attack() -> bool:
 	return GlobalConstants.WEAPON_META[weapon].get("IS_RANGE")
+	
+func get_range_attack_disance():
+	return GlobalConstants.WEAPON_META[weapon].get("RANGE_DISTANCE")
 
 func get_attack_effects():
 	return []
@@ -235,7 +248,6 @@ func _play_action_animation(animation_name):
 func _check_animation_end():
 	var state_machine_animation = actions_state_machine.get_current_node()
 	if state_machine_animation != current_animation:
-		print(current_animation)
 		if current_animation == MELEE_ATTACK_ANIMATION_NAME:
 			current_animation = null
 			emit_signal("on_attack_end")

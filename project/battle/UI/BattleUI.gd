@@ -45,3 +45,6 @@ func on_next_turn_press():
 
 func enable_next_turn_button():
 	next_turn_btn.disabled = false
+	
+func end_battle():
+	$AcceptDialog.popup()

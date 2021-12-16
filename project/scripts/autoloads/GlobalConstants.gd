@@ -19,7 +19,7 @@ const RACE_META = {
 		"STATS": {
 			STATS.ATTACK: 6.0,
 			STATS.DEFENCE: 8.0,
-			STATS.DAMAGE: 5.0,
+			STATS.DAMAGE: 3.0,
 			STATS.HIT_POINTS: 25.0,
 			STATS.MOVE_POINTS: 6.0
 		}
@@ -28,7 +28,7 @@ const RACE_META = {
 		"STATS": {
 			STATS.ATTACK: 7.0,
 			STATS.DEFENCE: 5.0,
-			STATS.DAMAGE: 6.0,
+			STATS.DAMAGE: 3.0,
 			STATS.HIT_POINTS: 30.0,
 			STATS.MOVE_POINTS: 6.0
 		}
@@ -75,7 +75,8 @@ const WEAPON_META = {
 		"IS_RANGE": true,
 		"EFFECTS": [
 			[EFFECTS.HIT_CHANCE, -0.10]
-		]
+		],
+		"RANGE_DISTANCE": 3,
 	},
 }
 

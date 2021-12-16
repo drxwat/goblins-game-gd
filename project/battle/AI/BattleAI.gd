@@ -65,7 +65,7 @@ func _handle_unit_move_end(unit: BattleUnit, enemy: BattleUnit, is_attack: bool 
 
 func attack_enemy(unit: BattleUnit, enemy: BattleUnit):
 	unit.connect("on_turn_end", self, "_handle_unit_attack_end", [unit, enemy])
-	unit.mele_attack(enemy)
+	unit.melee_attack(enemy)
 
 func find_ememy(unit: BattleUnit):
 	var enemies = []

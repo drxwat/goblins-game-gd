@@ -67,4 +67,4 @@ nodes/Locomotion/position = Vector2( 660, 220 )
 nodes/Run/node = SubResource( 14 )
 nodes/Run/position = Vector2( 360, 380 )
 nodes/output/position = Vector2( 920, 220 )
-node_connections = [ "Locomotion", 0, "Actions", "Locomotion", 1, "Run", "output", 0, "Locomotion" ]
+node_connections = [ "output", 0, "Locomotion", "Locomotion", 0, "Actions", "Locomotion", 1, "Run" ]
