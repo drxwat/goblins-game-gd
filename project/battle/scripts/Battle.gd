@@ -19,15 +19,15 @@ onready var battleAI: = BattleAI.new()
 var team1_units_meta = [
 	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.BOW, {}),
 	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.AXE, {})
+	GlobalUnit.new(GlobalConstants.RACE.GOBLIN, GlobalConstants.WEAPON.BOW, {})
 ]
 
 var team1_spawn_point = Vector3(1, 0, 19)
 
 var team2_units_meta = [
 	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {}),
-	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {})
+#	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {}),
+#	GlobalUnit.new(GlobalConstants.RACE.HUMAN, GlobalConstants.WEAPON.NONE, {})
 ]
 var team2_spawn_point = Vector3(1, 0, 1)
 
@@ -208,7 +208,7 @@ func _handle_right_mouse_click(event: InputEvent):
 	if event.button_index != BUTTON_RIGHT or not event.pressed:
 		return
 	var m_position = _get_mouse_projected_position(event.position)
-	if selected_unit.has_range_attack() and hovered_enemy:
+	if selected_unit and selected_unit.has_range_attack() and hovered_enemy:
 		_handle_unit_range_attack(selected_unit, hovered_enemy)
 		return
 	if m_position and selected_unit:
@@ -338,10 +338,17 @@ func _handle_unit_move(unit: BattleUnit, pos: Vector3):
 		tacticalMap.free_point_from_unit(unit.global_transform.origin)
 		tacticalMap.unregister_unit(unit.global_transform.origin)
 	elif hovered_enemy:
-		unit.mele_attack(hovered_enemy)
+		unit.melee_attack(hovered_enemy)
 
 func _handle_unit_range_attack(unit: BattleUnit, target: BattleUnit):
-	unit.range_attack(target)
+	if unit.move_points <= 0:
+		return
+	var path = tacticalMap.get_map_path(unit.global_transform.origin, target.global_transform.origin)
+	if path.size() > 2:
+		if path.size() < 2 + unit.get_range_attack_disance():
+			unit.range_attack(target)
+	else:
+		unit.melee_attack(target)
 
 func _produce_unit(global_unit: GlobalUnit) -> BattleUnit:
 	var unit_scene = BattleConstants.RACES_SCENES[global_unit.race]
@@ -378,7 +385,7 @@ func _handle_unit_move_end(unit_id: int):
 	if hovered_enemy:
 		var path = tacticalMap.get_map_path(unit.global_transform.origin, hovered_enemy.global_transform.origin)
 		if path.size() <= 2:
-			unit.mele_attack(hovered_enemy)
+			unit.melee_attack(hovered_enemy)
 			return
 	is_action_in_progress = false
 
@@ -395,9 +402,28 @@ func _handle_unit_death(unit_id: int):
 		battleUI.remove_unit_avatar(unit)
 	if hovered_enemy == unit:
 		hovered_enemy = null
-
+	check_battle_end_condition()
 
 func _update_unit_ui_info(unit_id: int):
 	var unit = _get_unit_meta_by_id(unit_id)
 	if _is_ally(unit_id):
 		battleUI.update_unit_info(unit)
+		
+func check_battle_end_condition():
+	var is_lose = true
+	var is_win = true
+	for unit_id in team1:
+		var unit = team1[unit_id]
+		if not unit.is_dead:
+			is_lose = false
+			break
+	for unit_id in team2:
+		var unit = team2[unit_id]
+		if not unit.is_dead:
+			is_win = false
+			break
+	if is_win:
+		battleUI.end_battle()
+		return
+	if is_lose:
+		battleUI.end_battle()

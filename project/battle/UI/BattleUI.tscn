@@ -62,4 +62,15 @@ shortcut_in_tooltip = false
 shortcut = SubResource( 2 )
 text = "NEXT TURN"
 
+[node name="AcceptDialog" type="AcceptDialog" parent="."]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -62.0
+margin_top = -29.0
+margin_right = 62.0
+margin_bottom = 29.0
+dialog_text = "BATTLE IS OVER! "
+
 [connection signal="pressed" from="MarginContainer/VBoxContainer/Actions/NextTurn" to="." method="on_next_turn_press"]
