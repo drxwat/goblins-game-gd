@@ -1,10 +1,10 @@
 extends CanvasLayer
 
-var visible = true setget set_visible
-
-func set_visible(val):
-	visible = val
-	$"MenuUI".visible = val
+#var visible = true setget set_visible
+#
+#func set_visible(val):
+#	visible = val
+#	$"MenuUI".visible = val
 
 
 func _on_Button_Exit_pressed():

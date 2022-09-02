@@ -12,9 +12,6 @@ script = ExtResource( 2 )
 [node name="Soil" type="GridMap" parent="."]
 mesh_library = ExtResource( 1 )
 cell_center_y = false
-data = {
-"cells": PoolIntArray(  )
-}
 __meta__ = {
 "_editor_clip_": 0
 }
@@ -22,9 +19,6 @@ __meta__ = {
 [node name="Obstacles" type="GridMap" parent="."]
 mesh_library = ExtResource( 3 )
 cell_center_y = false
-data = {
-"cells": PoolIntArray(  )
-}
 __meta__ = {
 "_editor_clip_": 0
 }
@@ -33,9 +27,6 @@ __meta__ = {
 mesh_library = ExtResource( 5 )
 cell_size = Vector3( 1, 1, 1 )
 cell_center_y = false
-data = {
-"cells": PoolIntArray(  )
-}
 __meta__ = {
 "_editor_clip_": 0
 }
