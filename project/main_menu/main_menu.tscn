@@ -227,7 +227,6 @@ current = true
 [node name="waterfall" type="MeshInstance" parent="Viewport/Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.8169, 3.9706, -1.19745 )
 mesh = SubResource( 5 )
-material/0 = null
 
 [node name="GoblinBattleUnit" parent="Viewport/Spatial" instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.13657, -0.319452, 1.35271 )
@@ -244,7 +243,6 @@ transform = Transform( 3.46264, 0, 9.38137, 0, 15, 0, -9.38137, 0, 3.46264, 0.85
 [node name="terra" type="MeshInstance" parent="Viewport/Spatial"]
 transform = Transform( 9.89173, -1.46756, 0, 1.46756, 9.89173, 0, 0, 0, 10, 16.7968, -0.930909, -4.59234 )
 mesh = SubResource( 7 )
-material/0 = null
 
 [node name="trees" type="Spatial" parent="Viewport/Spatial"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.8277, -0.943017, -7.1415 )
@@ -252,35 +250,26 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 31.8277, -0.943017, -7.1415 )
 [node name="DeadSpruce1" type="MeshInstance" parent="Viewport/Spatial/trees"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -7.79445, 0.0671425, 0.0769499 )
 mesh = SubResource( 8 )
-material/0 = null
 
 [node name="DeadSpruce2" type="MeshInstance" parent="Viewport/Spatial/trees"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0536418, 0.00801468, 0.0965469 )
 mesh = SubResource( 9 )
-material/0 = null
 
 [node name="DeadSpruce3" type="MeshInstance" parent="Viewport/Spatial/trees"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.58918, 0.0107565, -0.373781 )
 mesh = SubResource( 10 )
-material/0 = null
 
 [node name="SpruceTree1" type="MeshInstance" parent="Viewport/Spatial/trees"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8.18639, 0.00545168, -10.4662 )
 mesh = SubResource( 11 )
-material/0 = null
-material/1 = null
 
 [node name="SpruceTree2" type="MeshInstance" parent="Viewport/Spatial/trees"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0536437, 0.0771561, -10.1331 )
 mesh = SubResource( 12 )
-material/0 = null
-material/1 = null
 
 [node name="SpruceTree3" type="MeshInstance" parent="Viewport/Spatial/trees"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.86353, -0.14356, -10.4074 )
 mesh = SubResource( 13 )
-material/0 = null
-material/1 = null
 
 [node name="MenuUI" type="Control" parent="."]
 anchor_right = 1.0
